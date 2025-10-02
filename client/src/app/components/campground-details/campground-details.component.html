@@ -1,0 +1,14 @@
+<section class="container">
+  <h2>Campground Details</h2>
+
+  @if (campground$ | async; as campground) {
+    <div class="camp-detail">
+      <h3>{{ campground.title }}</h3>
+      <img [src]="campground.image" [alt]="campground.title">
+      <p>{{ campground.description }}</p>
+      <p><strong>Location:</strong> {{ campground.location }}</p>
+    </div>
+  } @else {
+    <p>Loading campground details...</p>
+  }
+</section>

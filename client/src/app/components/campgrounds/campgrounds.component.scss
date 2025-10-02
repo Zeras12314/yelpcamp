@@ -1,0 +1,9 @@
+ul {
+  list-style-type: none; /* removes bullets */
+  padding: 0;            /* removes left padding */
+  margin: 0;             /* optional: removes default margin */
+}
+
+li {
+  margin-bottom: 1rem;   /* optional: spacing between items */
+}

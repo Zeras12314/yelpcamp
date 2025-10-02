@@ -1,22 +1,16 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Campground {
-  _id?: string;
-  name: string;
-  location: string;
-  description?: string;
-  price?: number;
-}
+import { Campground } from '../models/campground.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CampgroundsService {
+  private http = inject(HttpClient)
   private apiUrl = 'http://localhost:3000/api/campgrounds'; // 🔹 replace with your backend URL
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   // Get all campgrounds
   getCampgrounds(): Observable<Campground[]> {
