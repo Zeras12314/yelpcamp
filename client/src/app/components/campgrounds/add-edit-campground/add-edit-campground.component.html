@@ -1,0 +1,40 @@
+<form [formGroup]="campground" 
+      class="card p-4 shadow-sm w-75 mx-auto mt-4">
+
+  <!-- Title -->
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input id="title" type="text" formControlName="title" class="form-control" placeholder="Enter title">
+  </div>
+
+  <!-- Image -->
+  <div class="mb-3">
+    <label for="image" class="form-label">Image URL</label>
+    <input id="image" type="text" formControlName="image" class="form-control" placeholder="https://example.com/camp.jpg">
+  </div>
+
+  <!-- Price -->
+  <div class="mb-3">
+    <label for="price" class="form-label">Price ($)</label>
+    <input id="price" type="number" formControlName="price" class="form-control" placeholder="0">
+  </div>
+
+  <!-- Description -->
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea id="description" formControlName="description" rows="3" class="form-control" placeholder="Enter description"></textarea>
+  </div>
+
+  <!-- Location -->
+  <div class="mb-3">
+    <label for="location" class="form-label">Location</label>
+    <input id="location" type="text" formControlName="location" class="form-control" placeholder="Enter location">
+  </div>
+
+  <!-- Submit -->
+  <div class="text-end">
+    <button type="submit" class="btn btn-success" [disabled]="campground.invalid">
+      Save Campground
+    </button>
+  </div>
+</form>
