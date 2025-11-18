@@ -2,9 +2,7 @@ import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { Campground } from '../../models/campground.model';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { selectCampGrounds, selectLoading } from '../../store/camp.selector';
-import { loadCampGrounds } from '../../store/camp.action';
+import { StoreService } from '../../store/store.service';
 
 @Component({
   selector: 'app-campgrounds',
@@ -14,16 +12,27 @@ import { loadCampGrounds } from '../../store/camp.action';
 })
 export class CampgroundsComponent {
   private router = inject(Router);
-  private store = inject(Store);
-  campGrounds$ = this.store.select(selectCampGrounds); // like create observable and assigning the value
-  loading$ = this.store.select(selectLoading);
+  private storeService = inject(StoreService);
+  campGrounds$ = this.storeService.campGrounds$;
+  loading$ = this.storeService.loading$;
+  campGrounds: Campground[] = [];
 
   ngOnInit() {
-        this.store.dispatch(loadCampGrounds());
+    this.storeService.getCampGrounds();
+    // Subscribe to observable and copy data to local array
+    this.campGrounds$.subscribe((camps) => {
+      this.campGrounds = [...camps];
+    });
   }
 
   viewDetails(camp: Campground) {
     this.router.navigate(['/campground-details', camp._id]);
-    
+  }
+  sortByDate() {
+    this.campGrounds = [...this.campGrounds].sort((a, b) => {
+      const timeA = parseInt(a._id.substring(0, 8), 16);
+      const timeB = parseInt(b._id.substring(0, 8), 16);
+      return timeB - timeA; // newest first
+    });
   }
 }
