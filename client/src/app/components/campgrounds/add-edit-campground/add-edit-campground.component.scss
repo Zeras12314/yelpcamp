@@ -1,0 +1,6 @@
+@use "../../../../styles/tokens.scss" as *;
+
+.add-edit-container {
+  max-width: 600px;
+  padding: $space-4;
+}

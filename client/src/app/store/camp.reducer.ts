@@ -1,6 +1,13 @@
 import { createReducer, on } from '@ngrx/store';
 import { Campground } from '../models/campground.model';
-import { loadCampGrounds, loadCampGroundsSuccess } from './camp.action';
+import {
+  addCampgroundSuccess,
+  loadCampGrounds,
+  loadCampGroundsSuccess,
+  updateCampground,
+  updateCampgroundFailure,
+  updateCampgroundSuccess,
+} from './camp.action';
 
 export interface CampGroundState {
   campgrounds: Campground[];
@@ -22,5 +29,24 @@ export const campGroundsReducer = createReducer(
     ...state,
     campgrounds,
     loading: false,
+  })),
+  on(updateCampground, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(updateCampgroundSuccess, (state, { campground }) => ({
+    ...state,
+    campgrounds: state.campgrounds.map((camp) =>
+      camp._id === campground._id ? campground : camp
+    ),
+    loading: false,
+  })),
+  on(updateCampgroundFailure, (state) => ({
+    ...state,
+    loading: false,
+  })),
+  on(addCampgroundSuccess, (state, { campground }) => ({
+    ...state,
+    campgrounds: [...state.campgrounds, campground],
   }))
 );
