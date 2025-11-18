@@ -10,5 +10,6 @@ export const routes: Routes = [
   { path: 'not-found', component: NotFoundComponent },
   { path: 'campground-details/:id', component: CampgroundDetailsComponent },
   { path: 'campgrounds/:id/:action', component: AddEditCampgroundComponent },
+  { path: 'campgrounds/add-campground', component: AddEditCampgroundComponent },
   { path: '**', redirectTo: 'not-found' },
 ];
