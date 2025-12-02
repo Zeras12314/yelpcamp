@@ -4,12 +4,14 @@ import { CampgroundsService } from '../services/campgrounds.service';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import * as CampGroundsAction from './camp.action';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class CampGroundEffects {
   actions$ = inject(Actions);
   campService = inject(CampgroundsService);
   router = inject(Router);
+  toastr = inject(ToastrService);
 
   constructor() {}
 
@@ -31,23 +33,27 @@ export class CampGroundEffects {
     )
   );
 
-  updateCampground$ = createEffect(() =>
+updateCampground$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CampGroundsAction.updateCampground),
       mergeMap(({ id, campground }) =>
         this.campService.updateCampground(id, campground).pipe(
-          map((updatedCampground) =>
-            CampGroundsAction.updateCampgroundSuccess({
+          map((updatedCampground) => {
+            // Show success toastr
+            this.toastr.success('Successfully updated!', updatedCampground.title);
+            return CampGroundsAction.updateCampgroundSuccess({
               campground: updatedCampground,
-            })
-          ),
-          catchError((error) =>
-            of(
+            });
+          }),
+          catchError((error) => {
+            // Show error toastr
+            this.toastr.error('Failed to update campground', 'Error');
+            return of(
               CampGroundsAction.updateCampgroundFailure({
                 error: error.message,
               })
-            )
-          )
+            );
+          })
         )
       )
     )
@@ -62,19 +68,23 @@ export class CampGroundEffects {
     { dispatch: false }
   );
 
-  addCampground$ = createEffect(() =>
+addCampground$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CampGroundsAction.addCampground),
       mergeMap(({ campground }) =>
         this.campService.createCampground(campground).pipe(
-          map((newCampground) =>
-            CampGroundsAction.addCampgroundSuccess({
+          map((newCampground) => {
+            // Show success toastr
+            this.toastr.success('Successfully created!', newCampground.title);
+            return CampGroundsAction.addCampgroundSuccess({
               campground: newCampground,
-            })
-          ),
-          catchError((error) =>
-            of(CampGroundsAction.addCampgroundFailure({ error: error.message }))
-          )
+            });
+          }),
+          catchError((error) => {
+            // Show error toastr
+            this.toastr.error('Failed to create campground', 'Error');
+            return of(CampGroundsAction.addCampgroundFailure({ error: error.message }));
+          })
         )
       )
     )

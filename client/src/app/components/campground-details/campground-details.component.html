@@ -1,14 +1,28 @@
-<section class="container">
-  <h2>Campground Details</h2>
-
+<section class="container mt-5">
   @if (campground$ | async; as camp) {
-  <div class="camp-detail">
-    <h3>{{ camp.title }}</h3>
-    <img [src]="camp.image" [alt]="camp.title">
-    <p>{{ camp.description }}</p>
-    <p><strong>Location:</strong> {{ camp.location }}</p>
+
+  <div class="row">
+    <div class="col-6 offset-3">
+      <div class="card mb-3" style="width: 100%;">
+        <img [src]="camp.image" [alt]="camp.title" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{ camp?.title }}</h5>
+          <p class="card-text">{{ camp?.description }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item text-muted">{{camp?.location}}</li>
+          <li class="list-group-item">${{camp?.price}}/night</li>
+        </ul>
+        <div class="card-body">
+          <a (click)="editCampground(camp._id)" class="card-link btn btn-sm btn-info">Edit</a>
+          <a class="card-link btn btn-sm btn-danger">Delete</a>
+        </div>
+        <div class="card-footer text-body-secondary">
+          2 days ago
+        </div>
+      </div>
+    </div>
   </div>
-  <button class="btn btn-primary" (click)="editCampground(camp._id)">Update {{camp.title}} Details</button>
   } @else {
   <p>No Campground data to display</p>
   }

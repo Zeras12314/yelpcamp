@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { Campground } from '../../models/campground.model';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { StoreService } from '../../store/store.service';
 
 @Component({
   selector: 'app-campgrounds',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, RouterLink],
   templateUrl: './campgrounds.component.html',
   styleUrl: './campgrounds.component.scss',
 })
