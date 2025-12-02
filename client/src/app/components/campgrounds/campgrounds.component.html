@@ -1,39 +1,40 @@
 <section class="container">
   <h2>Campgrounds</h2>
+  <a [routerLink]="['/campgrounds/add-campground']">Add Campground</a>
 
   @if (loading$ | async) {
-    <p>Loading campgrounds...</p>
+  <p>Loading campgrounds...</p>
   }
   @else {
-    @if (campGrounds$ | async; as campgrounds) {
-      <ul class="list-unstyled">
-        @for (camp of campgrounds; track camp._id) {
-          <li>
-            <div class="camp-detail card mb-3">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img [src]="camp.image" [alt]="camp.title" class="img-fluid rounded-start">
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">{{ camp.title }}</h5>
-                    <p class="card-text">{{ camp.description }}</p>
-                    <p class="card-text">
-                      <small class="text-muted">{{ camp.description }}</small>
-                    </p>
-                    <button class="btn btn-primary" (click)="viewDetails(camp)">
-                      View {{ camp.title }}
-                    </button>
-                  </div>
-                </div>
-              </div>
+  @if (campGrounds$ | async; as campgrounds) {
+  <ul class="list-unstyled">
+    @for (camp of campgrounds; track camp._id) {
+    <li>
+      <div class="camp-detail card mb-3">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img [src]="camp.image" [alt]="camp.title" class="img-fluid rounded-start">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ camp.title }}</h5>
+              <p class="card-text">{{ camp.description }}</p>
+              <p class="card-text">
+                <small class="text-muted">{{ camp.description }}</small>
+              </p>
+              <button class="btn btn-primary" (click)="viewDetails(camp)">
+                View {{ camp.title }}
+              </button>
             </div>
-          </li>
-        }
-      </ul>
+          </div>
+        </div>
+      </div>
+    </li>
     }
-    @else {
-      <p>No data to display</p>
-    }
+  </ul>
+  }
+  @else {
+  <p>No data to display</p>
+  }
   }
 </section>
