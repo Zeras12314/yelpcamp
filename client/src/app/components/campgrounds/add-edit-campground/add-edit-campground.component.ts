@@ -1,15 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { createCampgroundForm } from '../../shared/forms/campground-form';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { StoreService } from '../../../store/store.service';
 import { Campground } from '../../../models/campground.model';
 import { Store } from '@ngrx/store';
 import { addCampground, updateCampground } from '../../../store/camp.action';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-edit-campground',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './add-edit-campground.component.html',
   styleUrl: './add-edit-campground.component.scss',
 })
@@ -17,6 +18,7 @@ export class AddEditCampgroundComponent implements OnInit {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
   storeService = inject(StoreService);
+  toastr = inject(ToastrService);
   store = inject(Store);
   campgroundForm: FormGroup = createCampgroundForm();
   btnLabel: string = '';
