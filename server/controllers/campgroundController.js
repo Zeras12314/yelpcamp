@@ -1,6 +1,26 @@
 const campgroundData = require("../models/campground");
 const mongoose = require("mongoose");
 const { asyncHandler } = require("../utils/asyncHandler");
+const Joi = require("joi");
+
+const validateCampground = (data) => {
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    image: Joi.string().required(),
+    price: Joi.number().required().min(1),
+    description: Joi.string().required().min(10),
+    location: Joi.string().required().min(5),
+  });
+
+  const { error, value } = schema.validate(data, { abortEarly: false });
+  if (error) {
+    const messages = error.details.map((d) => d.message);
+    const err = new Error(messages.join(", "));
+    err.statusCode = 400;
+    throw err;
+  }
+  return value;
+};
 
 // GET ALL CAMPGROUNDS
 const getAllCampgrounds = asyncHandler(async (req, res) => {
@@ -20,10 +40,11 @@ const getCampground = asyncHandler(async (req, res) => {
 
 // CREATE NEW CAMPGROUND
 const newCampground = asyncHandler(async (req, res) => {
-  const extistingCamp = await campgroundData.findOne({
-    title: req.body.title,
+  const validatedData = validateCampground(req.body);
+  const existingCamp = await campgroundData.findOne({
+    title: validatedData.title,
   });
-  if (extistingCamp) {
+  if (existingCamp) {
     return res.status(400).json({ message: "Campground already exists" });
   }
   const camp = await campgroundData.create(req.body);
@@ -32,19 +53,20 @@ const newCampground = asyncHandler(async (req, res) => {
 
 // UPDATE CAMPGROUND BY ID
 const updateCampground = asyncHandler(async (req, res) => {
-  const { id, price } = req.params;
+  const validatedData = validateCampground(req.body);
+  const { id } = req.params;
   // Validate the ID format (optional, but recommended for added safety)
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid ID" });
   }
-  if (typeof price !== "number" || price <= 0) {
-    return res
-      .status(400)
-      .json({ message: "Price should be greater than zero" });
-  }
-  const campGround = await campgroundData.findByIdAndUpdate(id, req.body);
+  const campGround = await campgroundData.findByIdAndUpdate(id, validatedData, {
+    new: true,
+  });
+
   if (!campGround) {
-    return res.status(404).json(`cannot find any Campground with ID ${id}`);
+    return res
+      .status(404)
+      .json({ message: `Cannot find any campground with ID ${id}` });
   }
 
   const updateCampGround = await campgroundData.findById(id);
