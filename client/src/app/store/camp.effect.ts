@@ -83,7 +83,7 @@ addCampground$ = createEffect(() =>
           }),
           catchError((error) => {
             // Show error toastr
-            this.toastr.error('Failed to create campground', 'Error');
+            this.toastr.error(error.error.message, 'Error');
             return of(CampGroundsAction.addCampgroundFailure({ error: error.message }));
           })
         )
