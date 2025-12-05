@@ -46,8 +46,9 @@ updateCampground$ = createEffect(() =>
             });
           }),
           catchError((error) => {
+            console.log(error)
             // Show error toastr
-            this.toastr.error('Failed to update campground', 'Error');
+            this.toastr.error(error.error.message, 'Error');
             return of(
               CampGroundsAction.updateCampgroundFailure({
                 error: error.message,
