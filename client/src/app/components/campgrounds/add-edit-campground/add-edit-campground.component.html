@@ -7,6 +7,10 @@
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input id="title" type="text" formControlName="title" class="form-control" placeholder="Enter title">
+        @if(campgroundForm.controls['title'].invalid && campgroundForm.controls['title'].touched){
+        <small class="text-danger">Title is required.</small>
+        }
+
       </div>
 
       <!-- Image -->
@@ -15,12 +19,18 @@
         <input id="image" type="text" formControlName="image" class="form-control"
           placeholder="https://example.com/camp.jpg">
       </div>
+      @if(campgroundForm.controls['image'].invalid && campgroundForm.controls['image'].touched){
+      <small class="text-danger">Image URL is required.</small>
+      }
 
       <!-- Price -->
       <div class="mb-3">
         <label for="price" class="form-label">Price ($)</label>
         <input id="price" type="number" formControlName="price" class="form-control" placeholder="0">
       </div>
+      @if(campgroundForm.controls['price'].invalid && campgroundForm.controls['price'].touched){
+      <small class="text-danger">Price is required.</small>
+      }
 
       <!-- Description -->
       <div class="mb-3">
@@ -28,12 +38,18 @@
         <textarea id="description" formControlName="description" rows="5" class="form-control"
           placeholder="Enter description"></textarea>
       </div>
+      @if(campgroundForm.controls['description'].invalid && campgroundForm.controls['description'].touched){
+      <small class="text-danger">Description is required.</small>
+      }
 
       <!-- Location -->
       <div class="mb-3">
         <label for="location" class="form-label">Location</label>
         <input id="location" type="text" formControlName="location" class="form-control" placeholder="Enter location">
       </div>
+      @if(campgroundForm.controls['location'].invalid && campgroundForm.controls['location'].touched){
+      <small class="text-danger">Location is required.</small>
+      }
 
       <!-- Submit -->
       <div class="d-flex justify-content-between mt-4">
