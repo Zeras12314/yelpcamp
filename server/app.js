@@ -32,6 +32,7 @@ connect
     console.log(error.message);
   });
 
+// Global error handler
 app.use((err, req, res, next) => {
   console.error("ERROR:", err.message);
 
