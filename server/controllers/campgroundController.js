@@ -84,7 +84,7 @@ const deleteCampGounrd = asyncHandler(async (req, res) => {
   if (!campGround) {
     return res.status(404).json(`cannot find any camp ground with ID ${id}`);
   }
-  res.status(200).json(campGround);
+  res.status(200).json(`Successfully deleted ${campGround.title}`);
 });
 
 module.exports = {
