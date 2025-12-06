@@ -42,3 +42,18 @@ export const addCampgroundFailure = createAction(
   '[Campground] Add Campground Failure',
   props<{ error: any }>()
 );
+
+export const deleteCampground = createAction(
+  '[Campground] Delete Campground',
+  props<{ id: string }>()
+);
+
+export const deleteCampgroundSuccess = createAction(
+  '[Campground] Delete Campground Success',
+  props<{ id: string }>()
+);
+
+export const deleteCampgroundFailure = createAction(
+  '[Campground] Delete Campground Failure',
+  props<{ error: any }>()
+);
