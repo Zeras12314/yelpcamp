@@ -46,7 +46,6 @@ updateCampground$ = createEffect(() =>
             });
           }),
           catchError((error) => {
-            console.log(error)
             // Show error toastr
             this.toastr.error(error.error.message, 'Error');
             return of(
@@ -95,6 +94,38 @@ addCampground$ = createEffect(() =>
     () =>
       this.actions$.pipe(
         ofType(CampGroundsAction.addCampgroundSuccess),
+        tap(() => this.router.navigate(['/']))
+      ),
+    { dispatch: false }
+  );
+
+  deleteCampground$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CampGroundsAction.deleteCampground),
+      mergeMap(({ id }) =>
+        this.campService.deleteCampground(id).pipe(
+          //map() transforms it into an NgRx action:
+          // {
+          //   type: "[Campground] Delete Campground Success",
+          //   id: "123"
+          // }
+          map(() => {
+            this.toastr.success('Successfully Deleted');
+            return CampGroundsAction.deleteCampgroundSuccess({ id });
+          }),
+          catchError((error) => {
+            this.toastr.error(error.error.message, 'Error');
+            return of(CampGroundsAction.deleteCampgroundFailure({ error }));
+          })
+        )
+      )
+    )
+  );
+
+  deleteCampgroundSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CampGroundsAction.deleteCampgroundSuccess),
         tap(() => this.router.navigate(['/']))
       ),
     { dispatch: false }
