@@ -33,14 +33,17 @@ export class CampGroundEffects {
     )
   );
 
-updateCampground$ = createEffect(() =>
+  updateCampground$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CampGroundsAction.updateCampground),
       mergeMap(({ id, campground }) =>
         this.campService.updateCampground(id, campground).pipe(
           map((updatedCampground) => {
             // Show success toastr
-            this.toastr.success('Successfully updated!', updatedCampground.title);
+            this.toastr.success(
+              'Successfully updated!',
+              updatedCampground.title
+            );
             return CampGroundsAction.updateCampgroundSuccess({
               campground: updatedCampground,
             });
@@ -68,7 +71,7 @@ updateCampground$ = createEffect(() =>
     { dispatch: false }
   );
 
-addCampground$ = createEffect(() =>
+  addCampground$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CampGroundsAction.addCampground),
       mergeMap(({ campground }) =>
@@ -83,7 +86,9 @@ addCampground$ = createEffect(() =>
           catchError((error) => {
             // Show error toastr
             this.toastr.error(error.error.message, 'Error');
-            return of(CampGroundsAction.addCampgroundFailure({ error: error.message }));
+            return of(
+              CampGroundsAction.addCampgroundFailure({ error: error.message })
+            );
           })
         )
       )
@@ -100,27 +105,21 @@ addCampground$ = createEffect(() =>
   );
 
   deleteCampground$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CampGroundsAction.deleteCampground),
-      mergeMap(({ id }) =>
-        this.campService.deleteCampground(id).pipe(
-          //map() transforms it into an NgRx action:
-          // {
-          //   type: "[Campground] Delete Campground Success",
-          //   id: "123"
-          // }
-          map(() => {
-            this.toastr.success('Successfully Deleted');
-            return CampGroundsAction.deleteCampgroundSuccess({ id });
-          }),
-          catchError((error) => {
-            this.toastr.error(error.error.message, 'Error');
-            return of(CampGroundsAction.deleteCampgroundFailure({ error }));
-          })
+  this.actions$.pipe(
+    ofType(CampGroundsAction.deleteCampground),
+    mergeMap(({ id }) =>
+      this.campService.deleteCampground(id).pipe(
+        mergeMap(() => [
+          CampGroundsAction.deleteCampgroundSuccess({ id }),
+          CampGroundsAction.loadCampGrounds() // triggers load effect
+        ]),
+        catchError((error) =>
+          of(CampGroundsAction.deleteCampgroundFailure({ error }))
         )
       )
     )
-  );
+  )
+);
 
   deleteCampgroundSuccess$ = createEffect(
     () =>

@@ -14,8 +14,8 @@
           <li class="list-group-item">${{camp?.price}}/night</li>
         </ul>
         <div class="card-body">
-          <a (click)="editCampground(camp._id)" class="card-link btn btn-sm btn-info">Edit</a>
-          <a class="card-link btn btn-sm btn-danger">Delete</a>
+          <button (click)="editCampground(camp._id)" mat-button color="primary" class="me-3">Edit</button>
+          <button (click)="openDialog(camp._id)" mat-button color="warn">Delete</button>
         </div>
         <div class="card-footer text-body-secondary">
           2 days ago
