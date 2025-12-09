@@ -9,7 +9,7 @@ export interface Campground {
 }
 
 export interface Review {
-  id: string;
+  _id: string;
   body: string;
   rating: number;
 }

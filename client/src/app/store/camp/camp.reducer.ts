@@ -10,6 +10,7 @@ import {
   updateCampgroundFailure,
   updateCampgroundSuccess,
 } from './camp.action';
+import { createReviewSuccess } from '../review/review.action';
 
 export interface CampGroundState {
   campgrounds: Campground[];
@@ -67,5 +68,14 @@ export const campGroundsReducer = createReducer(
           c._id === campground._id ? campground : c
         )
       : [...state.campgrounds, campground],
+  })),
+  on(createReviewSuccess, (state, { id, review }) => ({
+    ...state,
+    campgrounds: state.campgrounds.map((camp) =>
+      camp._id === id
+        ? { ...camp, reviews: [...(camp.reviews || []), review] }
+        : camp
+    ),
+    loading: false,
   }))
 );
