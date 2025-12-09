@@ -10,7 +10,6 @@ export class StoreService {
   private store = inject(Store);
 
   campGrounds$ = this.store.select(selectCampGrounds);
-  // loading$ = this.store.select(selectLoading);
   loading$ = combineLatest([
     this.store.select(selectLoading),
     this.store.select(selectReviewLoading),
