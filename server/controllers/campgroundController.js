@@ -34,7 +34,7 @@ const getCampground = asyncHandler(async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid product ID" });
   }
-  const campground = await campgroundData.findById(id);
+  const campground = await campgroundData.findById(id).populate("reviews");
   res.status(200).json(campground);
 });
 
