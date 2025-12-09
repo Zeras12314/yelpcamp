@@ -8,7 +8,7 @@
   </div>
 
   @if (loading$ | async) {
-    <p>Loading campgrounds...</p>
+    <app-loading [loading]="loading$ | async"></app-loading>
   }
   @else {
 

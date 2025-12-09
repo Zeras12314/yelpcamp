@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Campground } from '../models/campground.model';
+import { Campground } from '../../models/campground.model';
 
 export const loadCampGrounds = createAction('[Campgrounds] Load Campgrounds');
 
@@ -55,5 +55,20 @@ export const deleteCampgroundSuccess = createAction(
 
 export const deleteCampgroundFailure = createAction(
   '[Campground] Delete Campground Failure',
+  props<{ error: any }>()
+);
+
+export const loadCampgroundById = createAction(
+  '[Campground] Load Campground By ID',
+  props<{ id: string }>()
+);
+
+export const loadCampgroundByIdSuccess = createAction(
+  '[Campground] Load Campground By ID Success',
+  props<{ campground: Campground }>()
+);
+
+export const loadCampgroundByIdFailure = createAction(
+  '[Campground] Load Campground By ID Failure',
   props<{ error: any }>()
 );

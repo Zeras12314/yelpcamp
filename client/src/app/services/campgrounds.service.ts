@@ -4,16 +4,17 @@ import { Observable } from 'rxjs';
 import { Campground } from '../models/campground.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CampgroundsService {
-  private http = inject(HttpClient)
+  private http = inject(HttpClient);
   private apiUrl = 'http://localhost:3000/api/campgrounds'; // 🔹 replace with your backend URL
 
   constructor() {}
 
   // Get all campgrounds
   getCampgrounds(): Observable<Campground[]> {
+    console.log('campgrounds are now updated')
     return this.http.get<Campground[]>(this.apiUrl);
   }
 

@@ -16,3 +16,8 @@ export const selectLoading = createSelector(
   selectCampGroundsState,
   (state) => state.loading
 );
+
+export const selectCampgroundById = (id: string) =>
+  createSelector(selectCampGroundsState, (state) =>
+    state.campgrounds.find((c) => c._id === id)
+  );
