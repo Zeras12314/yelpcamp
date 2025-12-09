@@ -74,7 +74,7 @@ const updateCampground = asyncHandler(async (req, res) => {
 });
 
 // DEELETE EXISTING CAMPGROUND
-const deleteCampGounrd = asyncHandler(async (req, res) => {
+const deleteCampGround = asyncHandler(async (req, res) => {
   const { id } = req.params;
   // Validate the ID format (optional, but recommended for added safety)
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -92,5 +92,5 @@ module.exports = {
   getCampground,
   newCampground,
   updateCampground,
-  deleteCampGounrd,
+  deleteCampGround,
 };
