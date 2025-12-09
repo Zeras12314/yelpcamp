@@ -1,6 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectCampGrounds, selectLoading } from './camp/camp.selector';
+import {
+  selectCampGrounds,
+  selectLoadCampError,
+  selectLoading,
+} from './camp/camp.selector';
 import * as CampActions from './camp/camp.action';
 import { combineLatest, map } from 'rxjs';
 import { selectReviewLoading } from './review/review.selector';
@@ -10,6 +14,7 @@ export class StoreService {
   private store = inject(Store);
 
   campGrounds$ = this.store.select(selectCampGrounds);
+  error$ = this.store.select(selectLoadCampError);
   loading$ = combineLatest([
     this.store.select(selectLoading),
     this.store.select(selectReviewLoading),
