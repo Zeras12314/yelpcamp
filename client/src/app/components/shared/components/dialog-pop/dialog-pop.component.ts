@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import {
   deleteCampground,
   deleteCampgroundSuccess,
-} from '../../../../store/camp.action';
+} from '../../../../store/camp/camp.action';
 import { Actions, ofType } from '@ngrx/effects';
 
 @Component({

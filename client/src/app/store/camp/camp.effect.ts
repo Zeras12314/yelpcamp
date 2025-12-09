@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { CampgroundsService } from '../services/campgrounds.service';
+import { CampgroundsService } from '../../services/campgrounds.service';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import * as CampGroundsAction from './camp.action';
 import { Router } from '@angular/router';
@@ -105,21 +105,21 @@ export class CampGroundEffects {
   );
 
   deleteCampground$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(CampGroundsAction.deleteCampground),
-    mergeMap(({ id }) =>
-      this.campService.deleteCampground(id).pipe(
-        mergeMap(() => [
-          CampGroundsAction.deleteCampgroundSuccess({ id }),
-          CampGroundsAction.loadCampGrounds() // triggers load effect
-        ]),
-        catchError((error) =>
-          of(CampGroundsAction.deleteCampgroundFailure({ error }))
+    this.actions$.pipe(
+      ofType(CampGroundsAction.deleteCampground),
+      mergeMap(({ id }) =>
+        this.campService.deleteCampground(id).pipe(
+          mergeMap(() => [
+            CampGroundsAction.deleteCampgroundSuccess({ id }),
+            CampGroundsAction.loadCampGrounds(), // triggers load effect
+          ]),
+          catchError((error) =>
+            of(CampGroundsAction.deleteCampgroundFailure({ error }))
+          )
         )
       )
     )
-  )
-);
+  );
 
   deleteCampgroundSuccess$ = createEffect(
     () =>
@@ -128,5 +128,21 @@ export class CampGroundEffects {
         tap(() => this.router.navigate(['/']))
       ),
     { dispatch: false }
+  );
+
+  loadCampgroundById$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CampGroundsAction.loadCampgroundById),
+      mergeMap(({ id }) =>
+        this.campService.getCampground(id).pipe(
+          map((campground) =>
+            CampGroundsAction.loadCampgroundByIdSuccess({ campground })
+          ),
+          catchError((error) =>
+            of(CampGroundsAction.loadCampGroundsFailure({ error }))
+          )
+        )
+      )
+    )
   );
 }
