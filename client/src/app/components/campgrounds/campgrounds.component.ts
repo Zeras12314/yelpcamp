@@ -16,6 +16,7 @@ export class CampgroundsComponent {
   private storeService = inject(StoreService);
   campGrounds$ = this.storeService.campGrounds$;
   loading$ = this.storeService.loading$;
+  errorLoading$ = this.storeService.error$;
   campGrounds: Campground[] = [];
 
   ngOnInit() {
