@@ -5,8 +5,12 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { StoreService } from '../../../store/store.service';
 import { Campground } from '../../../models/campground.model';
 import { Store } from '@ngrx/store';
-import { addCampground, updateCampground } from '../../../store/camp.action';
+import {
+  addCampground,
+  updateCampground,
+} from '../../../store/camp/camp.action';
 import { ToastrService } from 'ngx-toastr';
+import { filter, take } from 'rxjs';
 
 @Component({
   selector: 'app-add-edit-campground',
@@ -26,7 +30,6 @@ export class AddEditCampgroundComponent implements OnInit {
 
   ngOnInit(): void {
     this.campGroundOnInit();
-    console.log(this.campgroundForm)
   }
 
   campGroundOnInit() {
@@ -34,25 +37,40 @@ export class AddEditCampgroundComponent implements OnInit {
     this.btnLabel = this.id ? 'Update' : 'Add';
 
     if (this.id) {
-      this.storeService.campGrounds$.subscribe((campgrounds) => {
+      this.storeService.campGrounds$.pipe(take(1)).subscribe((campgrounds) => {
+        // If campgrounds not yet loaded, trigger load
         if (!campgrounds || campgrounds.length === 0) {
-          // trigger load if data missing (e.g. after refresh)
           this.storeService.getCampGrounds();
+
+          // Wait for loaded campgrounds and then patch
+          this.storeService.campGrounds$
+            .pipe(
+              filter((c) => c.length > 0),
+              take(1)
+            )
+            .subscribe((loadedCamps) => {
+              const camp = loadedCamps.find((c) => c._id === this.id);
+              if (camp) this.patchCampForm(camp);
+            });
+
           return;
         }
 
+        // If already loaded, just patch
         const camp = campgrounds.find((c) => c._id === this.id);
-        if (camp) {
-          this.campgroundForm.patchValue({
-            title: camp.title,
-            image: camp.image,
-            price: camp.price,
-            description: camp.description,
-            location: camp.location,
-          });
-        }
+        if (camp) this.patchCampForm(camp);
       });
     }
+  }
+
+  private patchCampForm(camp: Campground) {
+    this.campgroundForm.patchValue({
+      title: camp.title,
+      image: camp.image,
+      price: camp.price,
+      description: camp.description,
+      location: camp.location,
+    });
   }
 
   onSubmit() {

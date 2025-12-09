@@ -3,10 +3,11 @@ import { AsyncPipe } from '@angular/common';
 import { Campground } from '../../models/campground.model';
 import { Router, RouterLink } from '@angular/router';
 import { StoreService } from '../../store/store.service';
+import { LoadingComponent } from '../shared/loading/loading.component';
 
 @Component({
   selector: 'app-campgrounds',
-  imports: [AsyncPipe, RouterLink],
+  imports: [AsyncPipe, RouterLink, LoadingComponent],
   templateUrl: './campgrounds.component.html',
   styleUrl: './campgrounds.component.scss',
 })

@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const campGroundRoute = require("./routes/campgroundRoutes");
+const reviewRoute = require("./routes/reviewRoutes");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const app = express();
@@ -15,7 +16,9 @@ app.use(morgan("tiny"));
 
 app.use(express.urlencoded({ extended: false }));
 
+// API Routes
 app.use("/api/campgrounds", campGroundRoute);
+app.use("/api/campgrounds/:id/reviews", reviewRoute);
 
 const connect = mongoose.connect(
   "mongodb+srv://chickentaba01:EuTu2XiQsURoSsk9@cluster0.rbvedxm.mongodb.net/YelpCamp?retryWrites=true&w=majority&appName=Cluster0"

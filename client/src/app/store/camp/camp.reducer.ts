@@ -1,7 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import { Campground } from '../models/campground.model';
+import { Campground } from '../../models/campground.model';
 import {
   addCampgroundSuccess,
+  loadCampgroundByIdSuccess,
   loadCampGrounds,
   loadCampGroundsSuccess,
   updateCampground,
@@ -48,5 +49,13 @@ export const campGroundsReducer = createReducer(
   on(addCampgroundSuccess, (state, { campground }) => ({
     ...state,
     campgrounds: [...state.campgrounds, campground],
+  })),
+  on(loadCampgroundByIdSuccess, (state, { campground }) => ({
+    ...state,
+    campgrounds: state.campgrounds.some((c) => c._id === campground._id)
+      ? state.campgrounds.map((c) =>
+          c._id === campground._id ? campground : c
+        )
+      : [...state.campgrounds, campground],
   }))
 );
