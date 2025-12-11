@@ -1,7 +1,7 @@
 import {
   ApplicationConfig,
   importProvidersFrom,
-  provideZoneChangeDetection,
+  provideZoneChangeDetection, isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {
@@ -17,6 +17,7 @@ import { campGroundsReducer } from './store/camp/camp.reducer';
 import { CampGroundEffects } from './store/camp/camp.effect';
 import { reviewReducer } from './store/review/review.reducer';
 import { ReviewEffects } from './store/review/review.effect';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,6 +28,7 @@ export const appConfig: ApplicationConfig = {
     provideEffects([CampGroundEffects, ReviewEffects]),
     provideAnimations(), // required animations providers
     importProvidersFrom(BrowserAnimationsModule), // ✅ correct way to "import" modules
-    provideToastr(), // Toastr providers
-  ],
+    provideToastr(),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
+],
 };

@@ -24,15 +24,31 @@ const validateReview = (data) => {
 const createReview = asyncHandler(async (req, res) => {
   const validatedData = validateReview(req.body);
   const campground = await CampGroundData.findById(req.params.id);
-  if (!campground) {
-    return res.status(404).json({ message: "Campground not found" });
-  }
   const review = await reviewData.create(validatedData);
   campground.reviews.push(review._id);
   await campground.save();
   res.status(200).json(review);
 });
 
+const deleteReview = asyncHandler(async (req, res) => {
+  const { id, reviewId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(reviewId)) {
+    return res.status(400).json({ message: "Invalid review id" });
+  }
+
+  // check if review exists
+  const existingReview = await reviewData.findById(reviewId);
+
+  if (!existingReview) {
+    return res.status(400).json({ message: "Review not found" });
+  }
+
+  await CampGroundData.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+  await reviewData.findByIdAndDelete(reviewId);
+  res.status(200).json("Successfully Deleted");
+});
+
 module.exports = {
   createReview,
+  deleteReview,
 };

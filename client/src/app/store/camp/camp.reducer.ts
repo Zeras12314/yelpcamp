@@ -4,20 +4,24 @@ import {
   addCampgroundSuccess,
   loadCampgroundByIdSuccess,
   loadCampGrounds,
+  loadCampGroundsFailure,
   loadCampGroundsSuccess,
   updateCampground,
   updateCampgroundFailure,
   updateCampgroundSuccess,
 } from './camp.action';
+import { createReviewSuccess } from '../review/review.action';
 
 export interface CampGroundState {
   campgrounds: Campground[];
   loading: boolean;
+  error: any | null;
 }
 
 export const initialState: CampGroundState = {
   campgrounds: [],
   loading: false,
+  error: null,
 };
 
 export const campGroundsReducer = createReducer(
@@ -25,11 +29,18 @@ export const campGroundsReducer = createReducer(
   on(loadCampGrounds, (state) => ({
     ...state,
     loading: true,
+    error: null,
   })),
   on(loadCampGroundsSuccess, (state, { campgrounds }) => ({
     ...state,
     campgrounds,
     loading: false,
+    error: null,
+  })),
+  on(loadCampGroundsFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error: error,
   })),
   on(updateCampground, (state) => ({
     ...state,
@@ -57,5 +68,14 @@ export const campGroundsReducer = createReducer(
           c._id === campground._id ? campground : c
         )
       : [...state.campgrounds, campground],
+  })),
+  on(createReviewSuccess, (state, { id, review }) => ({
+    ...state,
+    campgrounds: state.campgrounds.map((camp) =>
+      camp._id === id
+        ? { ...camp, reviews: [...(camp.reviews || []), review] }
+        : camp
+    ),
+    loading: false,
   }))
 );
