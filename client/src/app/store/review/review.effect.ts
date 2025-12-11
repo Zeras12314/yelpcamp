@@ -4,7 +4,7 @@ import { ReviewService } from '../../services/review.service';
 import { ToastrService } from 'ngx-toastr';
 import * as ReviewAction from './review.action';
 import * as CampGroundsAction from '../camp/camp.action';
-import { catchError, map, mergeMap, of, tap } from 'rxjs';
+import { catchError, map, mergeMap, of, pipe, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 @Injectable()
@@ -37,6 +37,24 @@ export class ReviewEffects {
           )
         )
       )
+    )
+  );
+
+  deleteReview$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ReviewAction.deleteReview),
+      mergeMap(({ campId, reviewId }) =>
+        this.reviewService
+          .deleteReview(campId, reviewId)
+          .pipe(
+            map(() => ReviewAction.deleteReviewSuccess({ campId, reviewId }))
+          )
+      ),
+      tap(() => this.toastr.success('Success Delete')),
+      catchError((error) => {
+        this.toastr.error(error.error.message, 'Error');
+        return of(ReviewAction.deleteReviewFailure({ error }));
+      })
     )
   );
 }

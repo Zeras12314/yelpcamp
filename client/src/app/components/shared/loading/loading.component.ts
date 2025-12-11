@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { loadCampGrounds } from '../../../store/camp/camp.action';
 
 @Component({
   selector: 'app-loading',
@@ -8,4 +10,6 @@ import { Component, Input } from '@angular/core';
 })
 export class LoadingComponent {
   @Input() loading: boolean | null = false;
+  @Input() errorLoading: boolean | null = false;
+  store = inject(Store);
 }

@@ -5,7 +5,7 @@ const {
   getCampground,
   newCampground,
   updateCampground,
-  deleteCampGounrd
+  deleteCampGround
 } = require("../controllers/campgroundController");
 
 // GET ALL CAMPGROUNDs
@@ -21,6 +21,6 @@ router.post("/", newCampground);
 router.put("/:id", updateCampground);
 
 //DELETE EXISTING ROOM
-router.delete('/:id', deleteCampGounrd)
+router.delete('/:id', deleteCampGround)
 
 module.exports = router;

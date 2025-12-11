@@ -8,11 +8,15 @@ import { Review } from '../models/campground.model';
 })
 export class ReviewService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/api/campgrounds'; 
+  private apiUrl = 'http://localhost:3000/api/campgrounds';
 
   constructor() {}
 
   createReview(id: string, review: Review): Observable<Review> {
     return this.http.post<Review>(`${this.apiUrl}/${id}/reviews`, review);
+  }
+
+  deleteReview(campId: string, reviewId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${campId}/reviews/${reviewId}`);
   }
 }
