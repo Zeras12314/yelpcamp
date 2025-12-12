@@ -2,21 +2,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  input,
   OnInit,
   signal,
 } from '@angular/core';
-import { Campground, Review } from '../../models/campground.model';
+import { Campground, } from '../../models/campground.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  BehaviorSubject,
-  distinctUntilChanged,
-  filter,
   map,
   Observable,
-  take,
 } from 'rxjs';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MaterialElementsModule } from '../shared/material/material.module';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogPopComponent } from '../shared/components/dialog-pop/dialog-pop.component';
@@ -27,12 +22,9 @@ import {
 } from '@angular/forms';
 import { createReviewForm } from '../shared/forms/review-form';
 import { Store } from '@ngrx/store';
-import { createReview, deleteReview } from '../../store/review/review.action';
 import { selectCampgroundById } from '../../store/camp/camp.selector';
 import { loadCampgroundById } from '../../store/camp/camp.action';
 import { StoreService } from '../../store/store.service';
-import { LoadingComponent } from '../shared/loading/loading.component';
-import { ReviewService } from '../../services/review.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ReviewsComponent } from '../shared/components/reviews/reviews.component';
 
@@ -43,7 +35,7 @@ import { ReviewsComponent } from '../shared/components/reviews/reviews.component
     MaterialElementsModule,
     ɵInternalFormsSharedModule,
     ReactiveFormsModule,
-    LoadingComponent, ReviewsComponent
+    ReviewsComponent
   ],
   templateUrl: './campground-details.component.html',
   styleUrls: ['./campground-details.component.scss'],
@@ -56,8 +48,6 @@ export class CampgroundDetailsComponent implements OnInit {
   private dialog = inject(MatDialog);
   private store = inject(Store);
   private storeService = inject(StoreService);
-
-  // campId!: string;
   campId = toSignal(
     this.activatedRoute.paramMap.pipe(map((params) => params.get('id')!)),
     { initialValue: '' } // ✅ initialValue is valid here
@@ -86,18 +76,4 @@ export class CampgroundDetailsComponent implements OnInit {
   editCampground(id: string) {
     this.router.navigate(['/campgrounds', id, 'edit']);
   }
-
-//   submitReview(id: string) {
-//     const { body, rating } = this.reviewForm.value;
-//     const review: Review = { body, rating } as Review;
-//     this.store.dispatch(createReview({ id, review }));
-//     // Optional: reset form
-//     this.reviewForm.reset();
-//   }
-// 
-//   deleteReview(reviewId: string) {
-//     this.store.dispatch(
-//       deleteReview({ campId: this.campId(), reviewId: reviewId })
-//     );
-//   }
 }
