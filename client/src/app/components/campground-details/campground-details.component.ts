@@ -3,18 +3,12 @@ import {
   Component,
   inject,
   OnInit,
+  signal,
 } from '@angular/core';
-import { Campground, Review } from '../../models/campground.model';
+import { Campground } from '../../models/campground.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  BehaviorSubject,
-  distinctUntilChanged,
-  filter,
-  map,
-  Observable,
-  take,
-} from 'rxjs';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { map, Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 import { MaterialElementsModule } from '../shared/material/material.module';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogPopComponent } from '../shared/components/dialog-pop/dialog-pop.component';
@@ -25,12 +19,11 @@ import {
 } from '@angular/forms';
 import { createReviewForm } from '../shared/forms/review-form';
 import { Store } from '@ngrx/store';
-import { createReview, deleteReview } from '../../store/review/review.action';
 import { selectCampgroundById } from '../../store/camp/camp.selector';
 import { loadCampgroundById } from '../../store/camp/camp.action';
 import { StoreService } from '../../store/store.service';
-import { LoadingComponent } from '../shared/loading/loading.component';
-import { ReviewService } from '../../services/review.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ReviewsComponent } from '../shared/components/reviews/reviews.component';
 
 @Component({
   selector: 'app-campground-details',
@@ -39,8 +32,7 @@ import { ReviewService } from '../../services/review.service';
     MaterialElementsModule,
     ɵInternalFormsSharedModule,
     ReactiveFormsModule,
-    LoadingComponent,
-    JsonPipe,
+    ReviewsComponent,
   ],
   templateUrl: './campground-details.component.html',
   styleUrls: ['./campground-details.component.scss'],
@@ -53,18 +45,15 @@ export class CampgroundDetailsComponent implements OnInit {
   private dialog = inject(MatDialog);
   private store = inject(Store);
   private storeService = inject(StoreService);
-
-  campId!: string;
+  campId = signal(this.activatedRoute.snapshot.paramMap.get('id')!);
   campground$!: Observable<Campground | undefined>;
   loading$ = this.storeService.loading$;
   imageLoading = true;
 
   ngOnInit() {
-    this.campId = this.activatedRoute.snapshot.paramMap.get('id')!;
-    this.store.dispatch(loadCampgroundById({ id: this.campId }));
-
+    this.store.dispatch(loadCampgroundById({ id: this.campId() }));
     // Subscribe to real-time changes from the store
-    this.campground$ = this.store.select(selectCampgroundById(this.campId));
+    this.campground$ = this.store.select(selectCampgroundById(this.campId()));
   }
 
   openDialog(id: string) {
@@ -78,21 +67,5 @@ export class CampgroundDetailsComponent implements OnInit {
 
   editCampground(id: string) {
     this.router.navigate(['/campgrounds', id, 'edit']);
-  }
-
-  submitReview(id: string) {
-    const { body, rating } = this.reviewForm.value;
-    const review: Review = { body, rating } as Review;
-    this.store.dispatch(createReview({ id, review }));
-    // Optional: reset form
-    this.reviewForm.reset();
-  }
-
-  deleteReview(reviewId: string) {
-    console.log('reviewId: ', reviewId);
-    console.log('campId: ', this.campId);
-    this.store.dispatch(
-      deleteReview({ campId: this.campId, reviewId: reviewId })
-    );
   }
 }

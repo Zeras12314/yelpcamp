@@ -5,7 +5,7 @@ export interface Campground {
   price: number;
   description?: string;
   location?: string;
-  reviews?: Review[];
+  reviews: Review[];
 }
 
 export interface Review {

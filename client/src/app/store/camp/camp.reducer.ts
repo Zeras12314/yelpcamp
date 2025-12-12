@@ -10,7 +10,10 @@ import {
   updateCampgroundFailure,
   updateCampgroundSuccess,
 } from './camp.action';
-import { createReviewSuccess } from '../review/review.action';
+import {
+  createReviewSuccess,
+  deleteReviewSuccess,
+} from '../review/review.action';
 
 export interface CampGroundState {
   campgrounds: Campground[];
@@ -74,6 +77,15 @@ export const campGroundsReducer = createReducer(
     campgrounds: state.campgrounds.map((camp) =>
       camp._id === id
         ? { ...camp, reviews: [...(camp.reviews || []), review] }
+        : camp
+    ),
+    loading: false,
+  })),
+  on(deleteReviewSuccess, (state, { campId, reviewId }) => ({
+    ...state,
+    campgrounds: state.campgrounds.map((camp) =>
+      camp._id === campId
+        ? { ...camp, reviews: camp.reviews.filter((r) => r._id !== reviewId) }
         : camp
     ),
     loading: false,
