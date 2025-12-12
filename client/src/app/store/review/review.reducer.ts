@@ -9,21 +9,31 @@ import {
 } from './review.action';
 
 export interface ReviewState {
-  loading: boolean;
+  loadingCreate: boolean;
+  loadingDelete: boolean;
   error: string | null;
 }
 
 const initialState: ReviewState = {
-  loading: false,
+  loadingCreate: false,
+  loadingDelete: false,
   error: null,
 };
 
 export const reviewReducer = createReducer(
   initialState,
-  on(createReview, (state) => ({ ...state, loading: true })),
-  on(createReviewSuccess, (state) => ({ ...state, loading: false })),
-  on(createReviewFailure, (state, { error }) => ({ ...state, loading: false, error })),
-  on(deleteReview, (state) => ({ ...state, loading: true })),
-  on(deleteReviewSuccess, (state) => ({ ...state, loading: false })),
-  on(deleteReviewFailure, (state, { error }) => ({ ...state, loading: false, error }))
+  on(createReview, (state) => ({ ...state, loadingCreate: true })),
+  on(createReviewSuccess, (state) => ({ ...state, loadingCreate: false })),
+  on(createReviewFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+  on(deleteReview, (state) => ({ ...state, loadingDelete: true })),
+  on(deleteReviewSuccess, (state) => ({ ...state, loadingDelete: false })),
+  on(deleteReviewFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }))
 );
