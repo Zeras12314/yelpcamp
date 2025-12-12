@@ -7,8 +7,11 @@ import {
   selectLoading,
 } from './camp/camp.selector';
 import * as CampActions from './camp/camp.action';
-import { combineLatest, map, Observable } from 'rxjs';
-import { selectReviewLoading } from './review/review.selector';
+import { Observable } from 'rxjs';
+import {
+  selectReviewLoadingCreate,
+  selectReviewLoadingDelete,
+} from './review/review.selector';
 import { Campground } from '../models/campground.model';
 
 @Injectable({ providedIn: 'root' })
@@ -17,12 +20,15 @@ export class StoreService {
 
   campGrounds$ = this.store.select(selectCampGrounds);
   error$ = this.store.select(selectLoadCampError);
-  loading$ = combineLatest([
-    this.store.select(selectLoading),
-    this.store.select(selectReviewLoading),
-  ]).pipe(map(([campLoading, reviewLoading]) => campLoading || reviewLoading));
+  loading$ = this.store.select(selectLoading);
+  loadingReviewCreate$ = this.store.select(selectReviewLoadingCreate);
+  loadingReviewDelete$ = this.store.select(selectReviewLoadingDelete);
+  // loading$ = combineLatest([this.store.select(selectLoading)]).pipe(
+  //   map(([campLoading]) => campLoading)
+  // );
 
   private initialized = false;
+  selectReviewLoadingCreate$: any;
 
   getCampGrounds() {
     if (!this.initialized) {

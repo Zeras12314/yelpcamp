@@ -5,9 +5,14 @@ import { AppState } from '../app.state';
 export const selectReviewState = (state: AppState) => state.review;
 
 // 2. Select loading (for spinner UI)
-export const selectReviewLoading = createSelector(
+export const selectReviewLoadingCreate = createSelector(
   selectReviewState,
-  (state) => state.loading
+  (state) => state.loadingCreate
+);
+
+export const selectReviewLoadingDelete = createSelector(
+  selectReviewState,
+  (state) => state.loadingDelete
 );
 
 // 3. Select error (optional)
