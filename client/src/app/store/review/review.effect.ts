@@ -27,13 +27,14 @@ export class ReviewEffects {
           tap(() => {
             this.toastr.success('Review Submitted');
           }),
-          catchError((error) =>
-            of(
+          catchError((error) => {
+            this.toastr.error(error.error.message);
+            return of(
               ReviewAction.createReviewFailure({
                 error: error.message || 'Failed to create review',
               })
-            )
-          )
+            );
+          })
         )
       )
     )

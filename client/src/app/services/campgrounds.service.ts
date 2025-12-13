@@ -14,7 +14,6 @@ export class CampgroundsService {
 
   // Get all campgrounds
   getCampgrounds(): Observable<Campground[]> {
-    console.log('campgrounds are now updated')
     return this.http.get<Campground[]>(this.apiUrl);
   }
 

@@ -26,7 +26,7 @@ export const reviewReducer = createReducer(
   on(createReviewSuccess, (state) => ({ ...state, loadingCreate: false })),
   on(createReviewFailure, (state, { error }) => ({
     ...state,
-    loading: false,
+    loadingCreate: false,
     error,
   })),
   on(deleteReview, (state) => ({ ...state, loadingDelete: true })),
