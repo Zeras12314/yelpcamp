@@ -45,7 +45,7 @@ export class CampgroundDetailsComponent implements OnInit {
   private dialog = inject(MatDialog);
   private store = inject(Store);
   private storeService = inject(StoreService);
-  campId = signal(this.activatedRoute.snapshot.paramMap.get('id')!);
+  campId = signal(this.activatedRoute.snapshot.paramMap.get('id'));
   campground$!: Observable<Campground | undefined>;
   loading$ = this.storeService.loading$;
   imageLoading = true;

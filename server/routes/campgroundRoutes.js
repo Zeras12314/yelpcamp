@@ -4,7 +4,7 @@ const {
   getAllCampgrounds,
   getCampground,
   newCampground,
-  updateCampground,
+  updateCampground, 
   deleteCampGround
 } = require("../controllers/campgroundController");
 
