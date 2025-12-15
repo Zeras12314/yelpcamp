@@ -5,13 +5,13 @@ import {
   selectCampGrounds,
   selectLoadCampError,
   selectLoading,
-} from './camp/camp.selector';
-import * as CampActions from './camp/camp.action';
+} from './selectors/camp.selector';
+import * as CampActions from './actions/camp.action';
 import { Observable } from 'rxjs';
 import {
   selectReviewLoadingCreate,
   selectReviewLoadingDelete,
-} from './review/review.selector';
+} from './selectors/review.selector';
 import { Campground } from '../models/campground.model';
 
 @Injectable({ providedIn: 'root' })
