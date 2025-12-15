@@ -4,11 +4,12 @@ const {
   createReview,
   deleteReview,
 } = require("../controllers/reviewController");
+const { isLoggedIn } = require("../middleware");
 
 // CREATE REVIEW
-router.post("/", createReview);
+router.post("/", isLoggedIn, createReview);
 
 // DELETE REVIEW
-router.delete("/:reviewId", deleteReview);
+router.delete("/:reviewId", isLoggedIn, deleteReview);
 
 module.exports = router;

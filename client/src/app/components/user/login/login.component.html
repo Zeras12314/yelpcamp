@@ -1,0 +1,14 @@
+<section class="container register-container row m-auto">
+    <h2>Login</h2>
+    <form class="col-6" [formGroup]="userLoginForm">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" formControlName="username">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" formControlName="password">
+        </div>
+        <button (click)="login()" class="btn btn-primary">Submit</button>
+    </form>
+</section>
