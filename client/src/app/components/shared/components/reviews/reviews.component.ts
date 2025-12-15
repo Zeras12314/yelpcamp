@@ -3,7 +3,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   createReview,
   deleteReview,
-} from '../../../../store/review/review.action';
+} from '../../../../store/actions/review.action';
 import { Campground, Review } from '../../../../models/campground.model';
 import { Store } from '@ngrx/store';
 import { createReviewForm } from '../../forms/review-form';

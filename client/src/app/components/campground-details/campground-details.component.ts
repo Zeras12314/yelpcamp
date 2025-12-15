@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Campground } from '../../models/campground.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { MaterialElementsModule } from '../shared/material/material.module';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,10 +19,9 @@ import {
 } from '@angular/forms';
 import { createReviewForm } from '../shared/forms/review-form';
 import { Store } from '@ngrx/store';
-import { selectCampgroundById } from '../../store/camp/camp.selector';
-import { loadCampgroundById } from '../../store/camp/camp.action';
+import { selectCampgroundById } from '../../store/selectors/camp.selector';
+import { loadCampgroundById } from '../../store/actions/camp.action';
 import { StoreService } from '../../store/store.service';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { ReviewsComponent } from '../shared/components/reviews/reviews.component';
 
 @Component({
