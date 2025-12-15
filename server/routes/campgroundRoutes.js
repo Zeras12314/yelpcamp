@@ -4,9 +4,10 @@ const {
   getAllCampgrounds,
   getCampground,
   newCampground,
-  updateCampground, 
-  deleteCampGround
+  updateCampground,
+  deleteCampGround,
 } = require("../controllers/campgroundController");
+const { isLoggedIn } = require("../middleware");
 
 // GET ALL CAMPGROUNDs
 router.get("/", getAllCampgrounds);
@@ -15,12 +16,12 @@ router.get("/", getAllCampgrounds);
 router.get("/:id", getCampground);
 
 // CREATE CAMPGROUND
-router.post("/", newCampground);
+router.post("/", isLoggedIn, newCampground);
 
 //UPDATE CAMPGROUND
-router.put("/:id", updateCampground);
+router.put("/:id", isLoggedIn, updateCampground);
 
 //DELETE EXISTING ROOM
-router.delete('/:id', deleteCampGround)
+router.delete("/:id", isLoggedIn, deleteCampGround);
 
 module.exports = router;

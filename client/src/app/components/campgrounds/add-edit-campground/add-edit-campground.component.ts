@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import {
   addCampground,
   updateCampground,
-} from '../../../store/camp/camp.action';
+} from '../../../store/actions/camp.action';
 import { ToastrService } from 'ngx-toastr';
 import { filter, take } from 'rxjs';
 

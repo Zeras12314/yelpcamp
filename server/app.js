@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const campGroundRoute = require("./routes/campgroundRoutes");
 const reviewRoute = require("./routes/reviewRoutes");
+const userRoute = require("./routes/userRoutes");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const app = express();
@@ -40,11 +41,25 @@ const sessionConfig = {
   },
 };
 app.use(session(sessionConfig));
+
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const User = require("./models/user");
+// passport - forU User, Session etc.
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 // EXPRESS-SESSION END
 
 // API Routes
 app.use(API_PATHS.CAMP, campGroundRoute);
 app.use(API_PATHS.REVIEW, reviewRoute);
+// app.use(`${API_PATHS.CAMP}/user`, userRoute);
+app.use('/api/campgrounds/user', userRoute);
 
 const connect = mongoose.connect(
   "mongodb+srv://chickentaba01:EuTu2XiQsURoSsk9@cluster0.rbvedxm.mongodb.net/YelpCamp?retryWrites=true&w=majority&appName=Cluster0"
