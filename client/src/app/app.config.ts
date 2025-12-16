@@ -20,7 +20,7 @@ import { reviewReducer } from './store/reducers/review.reducer';
 import { ReviewEffects } from './store/effects/review.effect';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { authInterceptor } from './interceptors/auth.interceptor';
-import { loginReducer, registerReducer } from './store/reducers/user.reducer';
+import { authReducer } from './store/reducers/user.reducer';
 import { UserEffects } from './store/effects/user.effect';
 
 export const appConfig: ApplicationConfig = {
@@ -31,8 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       campgrounds: campGroundsReducer,
       review: reviewReducer,
-      login: loginReducer,
-      register: registerReducer,
+      userAuth: authReducer
     }),
     provideEffects([CampGroundEffects, ReviewEffects, UserEffects]),
     provideAnimations(), // required animations providers

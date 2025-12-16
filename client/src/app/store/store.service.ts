@@ -13,6 +13,7 @@ import {
   selectReviewLoadingDelete,
 } from './selectors/review.selector';
 import { Campground } from '../models/campground.model';
+import { selectIsLoggedIn, selectUser } from './selectors/user.selector';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
@@ -23,9 +24,8 @@ export class StoreService {
   loading$ = this.store.select(selectLoading);
   loadingReviewCreate$ = this.store.select(selectReviewLoadingCreate);
   loadingReviewDelete$ = this.store.select(selectReviewLoadingDelete);
-  // loading$ = combineLatest([this.store.select(selectLoading)]).pipe(
-  //   map(([campLoading]) => campLoading)
-  // );
+  user$ = this.store.select(selectUser);
+  isLoggedIn$ = this.store.select(selectIsLoggedIn);
 
   private initialized = false;
   selectReviewLoadingCreate$: any;
@@ -40,5 +40,13 @@ export class StoreService {
   // 🔥 expose campground by id to any component
   campgroundById(id: string): Observable<Campground | undefined> {
     return this.store.select(selectCampgroundById(id));
+  }
+
+  getUser() {
+    return this.store.select(selectUser);
+  }
+
+  getisLOggedIn() {
+    return this.store.select(selectIsLoggedIn);
   }
 }
