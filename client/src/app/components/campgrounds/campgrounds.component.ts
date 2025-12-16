@@ -4,6 +4,7 @@ import { Campground } from '../../models/campground.model';
 import { Router, RouterLink } from '@angular/router';
 import { StoreService } from '../../store/store.service';
 import { LoadingComponent } from '../shared/loading/loading.component';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-campgrounds',
@@ -14,10 +15,12 @@ import { LoadingComponent } from '../shared/loading/loading.component';
 export class CampgroundsComponent {
   private router = inject(Router);
   private storeService = inject(StoreService);
+  private userService = inject(UserService);
   campGrounds$ = this.storeService.campGrounds$;
   loading$ = this.storeService.loading$;
   errorLoading$ = this.storeService.error$;
   campGrounds: Campground[] = [];
+  imageLoading = true;
 
   ngOnInit() {
     this.storeService.getCampGrounds();
@@ -25,16 +28,11 @@ export class CampgroundsComponent {
     this.campGrounds$.subscribe((camps) => {
       this.campGrounds = [...camps];
     });
+
+    this.userService.authMe().subscribe((data) => console.log(data));
   }
 
   viewDetails(camp: Campground) {
     this.router.navigate(['/campground-details', camp._id]);
-  }
-  sortByDate() {
-    this.campGrounds = [...this.campGrounds].sort((a, b) => {
-      const timeA = parseInt(a._id.substring(0, 8), 16);
-      const timeB = parseInt(b._id.substring(0, 8), 16);
-      return timeB - timeA; // newest first
-    });
   }
 }

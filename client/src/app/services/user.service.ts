@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user.model';
+import { catchError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,19 @@ export class UserService {
 
   register(username: string, password: string, email: string) {
     return this.http.post<{
-      user: { id: string, username: string; password: string; email: string };
+      _id: string;
+      username: string;
+      email: string;
     }>(`${this.apiUrl}/register`, { username, password, email });
+  }
+
+  authMe() {
+    return this.http
+      .get<User>(`${this.apiUrl}/auth/me`, { withCredentials: true })
+      .pipe(catchError(() => of(null)));
+  }
+
+  logout() {
+    return this.http.get(`${this.apiUrl}/logout`);
   }
 }

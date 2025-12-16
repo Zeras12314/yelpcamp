@@ -59,8 +59,12 @@ passport.deserializeUser(User.deserializeUser());
 app.use(API_PATHS.CAMP, campGroundRoute);
 app.use(API_PATHS.REVIEW, reviewRoute);
 // app.use(`${API_PATHS.CAMP}/user`, userRoute);
-app.use('/api/campgrounds/user', userRoute);
+app.use("/api/campgrounds/user", userRoute);
 
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
 const connect = mongoose.connect(
   "mongodb+srv://chickentaba01:EuTu2XiQsURoSsk9@cluster0.rbvedxm.mongodb.net/YelpCamp?retryWrites=true&w=majority&appName=Cluster0"
 );
