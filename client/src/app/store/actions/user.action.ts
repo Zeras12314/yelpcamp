@@ -30,3 +30,14 @@ export const registerFailure = createAction(
   '[Register] Register User Failure',
   props<{ error: any }>()
 );
+
+export const logout = createAction('[Logout] Logout User');
+
+export const logoutSuccess = createAction('[Logout] Logout User Success');
+
+export const logoutFailure = createAction(
+  '[Logout] Logout User Failure',
+  props<{ error: any }>()
+);
+
+export const appInit = createAction('[App] Init');

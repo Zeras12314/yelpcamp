@@ -22,8 +22,16 @@
 
           <!-- Image -->
           <div class="col-md-4">
-            <div class="ratio ratio-4x3">
-              <img [src]="camp.image" [alt]="camp.title" class="img-fluid object-fit-cover rounded-start" />
+            <div class="image-wrapper">
+              <!-- Spinner -->
+              @if(imageLoading){
+              <div class="spinner-container">
+                <div class="spinner-border text-primary" role="status"></div>
+              </div>
+              }
+              <!-- Actual image -->
+              <img [src]="camp.image" [alt]="camp.title" class="img-fluid object-fit-cover rounded-start card-img-top"
+                (load)="imageLoading = false" (error)="imageLoading = false" />
             </div>
           </div>
 

@@ -1,74 +1,64 @@
 import { createReducer, on } from '@ngrx/store';
 import {
   login,
-  loginFailure,
   loginSuccess,
+  loginFailure,
   register,
-  registerFailure,
   registerSuccess,
+  registerFailure,
+  logout,
+  logoutSuccess,
+  logoutFailure,
 } from '../actions/user.action';
 import { User } from '../../models/user.model';
 
-export interface LoginState {
+export interface AuthState {
   user: User | null;
-  loadingLogin: boolean;
+  loading: boolean;
   error: any;
 }
 
-export const initialStateLogin: LoginState = {
+export const initialAuthState: AuthState = {
   user: null,
-  loadingLogin: false,
+  loading: false,
   error: null,
 };
 
-export interface RegisterState {
-  user: User | null;
-  loadingRegister: boolean;
-  error: any;
-}
+export const authReducer = createReducer(
+  initialAuthState,
 
-export const initialStateRegister: RegisterState = {
-  user: null,
-  loadingRegister: false,
-  error: null,
-};
-
-export const loginReducer = createReducer(
-  initialStateLogin,
-  on(login, (state) => ({
-    ...state,
-    loadingLogin: true,
-    error: null,
-  })),
+  // Login
+  on(login, (state) => ({ ...state, loading: true, error: null })),
   on(loginSuccess, (state, { user }) => ({
     ...state,
-    loadingLogin: false,
     user,
+    loading: false,
     error: null,
   })),
-  on(loginFailure, (state, { error }) => ({
-    ...state,
-    loadingLogin: false,
-    error,
-  }))
-);
+  on(loginFailure, (state, { error }) => ({ ...state, loading: false, error })),
 
-export const registerReducer = createReducer(
-  initialStateRegister,
-  on(register, (state) => ({
-    ...state,
-    loadingRegister: true,
-    error: null,
-  })),
+  // Register
+  on(register, (state) => ({ ...state, loading: true, error: null })),
   on(registerSuccess, (state, { user }) => ({
     ...state,
-    loadingRegister: false,
     user,
+    loading: false,
     error: null,
   })),
   on(registerFailure, (state, { error }) => ({
     ...state,
-    loadingRegister: false,
+    loading: false,
     error,
-  }))
+  })),
+
+  // Logout
+  // Register
+  on(logout, (state) => ({ ...state, loading: true, error: null })),
+  on(logoutSuccess, (state) => ({
+    ...state,
+    user: null, // clear user
+    loading: false,
+    error: null,
+  })),
+  on(logoutFailure, (state, { error }) => ({ ...state, loading: false, error }))
 );
