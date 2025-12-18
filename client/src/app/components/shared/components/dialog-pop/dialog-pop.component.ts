@@ -22,7 +22,6 @@ export class DialogPopComponent {
   dialogRef = inject(MatDialogRef);
 
   ngOnInit() {
-    console.log(this.matData);
   }
 
   confirmDelete() {

@@ -7,7 +7,7 @@ const {
   updateCampground,
   deleteCampGround,
 } = require("../controllers/campgroundController");
-const { isLoggedIn } = require("../middleware");
+const { isLoggedIn, isAuthor } = require("../middleware");
 
 // GET ALL CAMPGROUNDs
 router.get("/", getAllCampgrounds);
@@ -19,9 +19,9 @@ router.get("/:id", getCampground);
 router.post("/", isLoggedIn, newCampground);
 
 //UPDATE CAMPGROUND
-router.put("/:id", isLoggedIn, updateCampground);
+router.put("/:id", isLoggedIn, isAuthor, updateCampground);
 
 //DELETE EXISTING ROOM
-router.delete("/:id", isLoggedIn, deleteCampGround);
+router.delete("/:id", isLoggedIn, isAuthor, deleteCampGround);
 
 module.exports = router;

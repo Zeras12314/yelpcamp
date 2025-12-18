@@ -22,26 +22,25 @@ export class ReviewsComponent implements OnInit {
   private store = inject(Store);
   private storeService = inject(StoreService);
   campId = input<string>();
-  // camp$ = Observable<Campground | undefined>;
   loadingCreate$ = this.storeService.loadingReviewCreate$;
   loadingDelete$ = this.storeService.loadingReviewDelete$;
-
   loading$ = this.storeService.loading$;
 
   @Input() campground: Campground;
+  currentUserId: string;
 
   ngOnInit(): void {
-    const campId = this.campId();
-    if (campId) {
-      // this.camp$ = this.store.dispatch(loadCampgroundById({ id: campId }));
-    }
+    this.storeService.getUser().subscribe((user) => {
+      if (user) {
+        this.currentUserId = user['_id'];
+      }
+    });
   }
 
   submitReview(id: string) {
     const { body, rating } = this.reviewForm.value;
     const review: Review = { body, rating } as Review;
     this.store.dispatch(createReview({ id, review }));
-    // Optional: reset form
     this.reviewForm.reset();
   }
 

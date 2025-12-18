@@ -15,7 +15,6 @@ import { UserService } from '../../services/user.service';
 export class CampgroundsComponent {
   private router = inject(Router);
   private storeService = inject(StoreService);
-  private userService = inject(UserService);
   campGrounds$ = this.storeService.campGrounds$;
   loading$ = this.storeService.loading$;
   errorLoading$ = this.storeService.error$;
@@ -28,8 +27,6 @@ export class CampgroundsComponent {
     this.campGrounds$.subscribe((camps) => {
       this.campGrounds = [...camps];
     });
-
-    this.userService.authMe().subscribe((data) => console.log(data));
   }
 
   viewDetails(camp: Campground) {

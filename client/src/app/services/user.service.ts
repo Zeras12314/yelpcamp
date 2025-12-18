@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user.model';
-import { catchError, of } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,10 +11,9 @@ export class UserService {
   private apiUrl = 'http://localhost:3000/api/campgrounds/user';
 
   login(username: string, password: string) {
-    return this.http.post<{ user: { username: string; email: string } }>(
-      `${this.apiUrl}/login`,
-      { username, password }
-    );
+    return this.http.post<{
+      user: { _id: string; username: string; email: string };
+    }>(`${this.apiUrl}/login`, { username, password });
   }
 
   register(username: string, password: string, email: string) {
@@ -26,9 +25,13 @@ export class UserService {
   }
 
   authMe() {
-    return this.http
-      .get<User>(`${this.apiUrl}/auth/me`, { withCredentials: true })
-      .pipe(catchError(() => of(null)));
+    return this.http.get<User>(`${this.apiUrl}/auth/me`).pipe(
+      tap((res) => console.log('authMe response:', res)),
+      catchError((err) => {
+        console.error('authMe error:', err);
+        return of(null);
+      })
+    );
   }
 
   logout() {

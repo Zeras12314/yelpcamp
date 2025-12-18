@@ -41,3 +41,9 @@ export const logoutFailure = createAction(
 );
 
 export const appInit = createAction('[App] Init');
+
+export const loadUser = createAction('[Auth] Load User');
+export const loadUserSuccess = createAction(
+  '[Auth] Load User Success',
+  props<{ user: User }>()
+);

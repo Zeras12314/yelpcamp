@@ -1,6 +1,3 @@
-<!-- <app-loading [loading]="loadingDelete$ | async"></app-loading> -->
-
-
 <div class="review-container">
     <h2>Leave a review</h2>
     <form class="mb-5" [formGroup]="reviewForm">
@@ -32,10 +29,13 @@
             @for (review of campground.reviews ?? []; track $index) {
             <div class="card mb-2">
                 <div class="container card-body">
-                    <h6>{{review._id}}</h6>
+                    @let isReviewOwner = currentUserId === review?.author?._id;
                     <h5 class="card-title">Rating: {{ review.rating }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{review?.author?.username}}</h6>
                     <p class="card-text">{{ review.body }}</p>
+                    @if(isReviewOwner){
                     <button class="btn btn-sm btn-danger" (click)="deleteReview(review._id)">Delete</button>
+                    }
                 </div>
             </div>
             }
