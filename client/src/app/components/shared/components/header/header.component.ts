@@ -19,7 +19,8 @@ export class HeaderComponent implements OnInit {
   user$ = this.storeService.getUser();
   isLoggedIn$ = this.storeService.getisLOggedIn();
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   logout() {
     this.store.dispatch(logout());

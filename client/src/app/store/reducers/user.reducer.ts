@@ -9,6 +9,7 @@ import {
   logout,
   logoutSuccess,
   logoutFailure,
+  loadUserSuccess,
 } from '../actions/user.action';
 import { User } from '../../models/user.model';
 
@@ -60,5 +61,15 @@ export const authReducer = createReducer(
     loading: false,
     error: null,
   })),
-  on(logoutFailure, (state, { error }) => ({ ...state, loading: false, error }))
+  on(logoutFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+  on(loadUserSuccess, (state, { user }) => ({
+    ...state,
+    user,
+    loading: false,
+    error: null,
+  }))
 );

@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   appInit,
+  loadUser,
+  loadUserSuccess,
   login,
   loginFailure,
   loginSuccess,
@@ -17,6 +19,7 @@ import { UserService } from '../../services/user.service';
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../models/user.model';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class UserEffects {
@@ -24,6 +27,7 @@ export class UserEffects {
   router = inject(Router);
   userService = inject(UserService);
   toastr = inject(ToastrService);
+  store = inject(Store);
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -34,7 +38,14 @@ export class UserEffects {
             this.toastr.success('Succesfully login');
             this.router.navigate(['/home']);
           }),
-          map((res) => loginSuccess({ user: res.user })),
+          map((res) => {
+            const user: User = {
+              id: res.user._id, // map MongoDB _id to frontend id
+              username: res.user.username,
+              email: res.user.email,
+            };
+            return loginSuccess({ user });
+          }),
           catchError((error) => {
             this.toastr.error(error.error.message, 'Error');
             return of(loginFailure({ error }));
@@ -63,7 +74,6 @@ export class UserEffects {
           }),
           catchError((error) => {
             this.toastr.error(error.message, 'Error');
-            console.log(error.error.message);
             return of(registerFailure({ error }));
           })
         )
@@ -71,22 +81,25 @@ export class UserEffects {
     )
   );
 
-  loadUser$ = createEffect(() =>
+  loadUserAfterLogin$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(appInit),
-      switchMap(() =>
-        this.userService
-          .authMe()
-          .pipe(
-            map((user) =>
-              user
-                ? loginSuccess({ user })
-                : loginFailure({ error: 'Not logged in' })
-            )
-          )
-      )
+      ofType(loginSuccess),
+      map(() => loadUser()) // dispatch loadUser once
     )
   );
+
+loadUser$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(loadUser, appInit), // triggers on app start or after login
+    switchMap(() =>
+      this.userService.authMe().pipe(
+        map((user) => loadUserSuccess({ user })), // ✅ pass user here
+      )
+    )
+  )
+);
+
+
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(logout),

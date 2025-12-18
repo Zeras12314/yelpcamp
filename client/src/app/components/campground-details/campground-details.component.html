@@ -1,40 +1,25 @@
-<section class="container my-5">
-  @if (campground$ | async; as camp) {
-
-  <div class="row">
+<section class="container my-5"> @if (campground$ | async; as camp) { <div class="row">
     <div class="col-6 mb-3">
       <div class="card mb-3" style="width: 100%;">
-        <div class="image-wrapper">
-          <!-- Spinner -->
-          @if(imageLoading){
-          <div class="spinner-container">
+        <div class="image-wrapper"> <!-- Spinner --> @if(imageLoading){ <div class="spinner-container">
             <div class="spinner-border text-primary" role="status"></div>
-          </div>
-          }
-          <!-- Actual image -->
-          <img [src]="camp.image" [alt]="camp.title" class="card-img-top" (load)="imageLoading = false"
-            (error)="imageLoading = false">
-        </div>
+          </div> } <!-- Actual image --> <img [src]="camp.image" [alt]="camp.title" class="card-img-top"
+            (load)="imageLoading = false" (error)="imageLoading = false"> </div>
         <div class="card-body">
           <h5 class="card-title">{{ camp.title }}</h5>
           <p class="card-text">{{ camp.description }}</p>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item text-muted">{{ camp.location }}</li>
+          <li class="list-group-item">Submitted by: {{ camp?.author?.username }}</li>
           <li class="list-group-item">${{ camp.price }}/night</li>
         </ul>
-        <div class="card-body">
-          <button (click)="editCampground(camp._id)" mat-button color="primary" class="me-3">Edit</button>
-          <button (click)="openDialog(camp._id)" mat-button color="warn">Delete</button>
-        </div>
-        <div class="card-footer text-body-secondary">
-          2 days ago
-        </div>
+        <div class="card-body"> <button (click)="editCampground(camp._id)" mat-button color="primary" class="me-3"
+            [disabled]="!isCampOwner">Edit</button> <button (click)="openDialog(camp._id)" mat-button color="warn"
+            [disabled]="!isCampOwner">Delete</button> @if(!isCampOwner){ <small class="text-danger d-block">Only the
+            owner of this camp can modify it.</small> } </div>
+        <div class="card-footer text-body-secondary"> 2 days ago </div>
       </div>
     </div>
-    <div class="col-6">
-      <app-reviews [campground]="campground$ | async" [campId]="campId()"> </app-reviews>
-    </div>
-  </div>
-  }
-</section>
+    <div class="col-6"> <app-reviews [campground]="campground$ | async" [campId]="campId()"> </app-reviews> </div>
+  </div> } </section>
