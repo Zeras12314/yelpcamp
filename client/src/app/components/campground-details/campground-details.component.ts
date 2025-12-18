@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Campground } from '../../models/campground.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { combineLatest, filter, map, Observable, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { MaterialElementsModule } from '../shared/material/material.module';
 import { MatDialog } from '@angular/material/dialog';
@@ -48,13 +48,27 @@ export class CampgroundDetailsComponent implements OnInit {
   campground$!: Observable<Campground | undefined>;
   loading$ = this.storeService.loading$;
   imageLoading = true;
+  currentUserId: string;
+  campAuthorId: string;
+  isCampOwner: boolean = false;
 
   ngOnInit() {
     this.store.dispatch(loadCampgroundById({ id: this.campId() }));
-    // Subscribe to real-time changes from the store
-    this.campground$ = this.store.select(selectCampgroundById(this.campId()));
+    this.storeService.getUser().subscribe((user) => {
+      if (user) {
+        this.currentUserId = user['_id'];
+      }
+    });
+    this.campground$ = this.store
+      .select(selectCampgroundById(this.campId()))
+      .pipe(
+        filter(Boolean),
+        tap((camp) => {
+          this.campAuthorId = camp?.author?._id;
+          this.isCampOwner = this.campAuthorId === this.currentUserId;
+        })
+      );
   }
-
   openDialog(id: string) {
     this.dialog.open(DialogPopComponent, {
       data: {

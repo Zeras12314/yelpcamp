@@ -44,17 +44,15 @@ export class ReviewEffects {
     this.actions$.pipe(
       ofType(ReviewAction.deleteReview),
       mergeMap(({ campId, reviewId }) =>
-        this.reviewService
-          .deleteReview(campId, reviewId)
-          .pipe(
-            map(() => ReviewAction.deleteReviewSuccess({ campId, reviewId }))
-          )
-      ),
-      tap(() => this.toastr.success('Success Delete')),
-      catchError((error) => {
-        this.toastr.error(error.error.message, 'Error');
-        return of(ReviewAction.deleteReviewFailure({ error }));
-      })
+        this.reviewService.deleteReview(campId, reviewId).pipe(
+          map(() => ReviewAction.deleteReviewSuccess({ campId, reviewId })),
+          tap(() => this.toastr.success('Successfully deleted')),
+          catchError((error) => {
+            this.toastr.error(error.error?.message || 'Error', 'Error');
+            return of(ReviewAction.deleteReviewFailure({ error }));
+          })
+        )
+      )
     )
   );
 }

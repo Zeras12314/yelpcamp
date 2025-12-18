@@ -63,14 +63,13 @@ const logout = (req, res, next) => {
 };
 
 const authMe = (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.status(401).json(null);
+  if (req.isAuthenticated()) {
+    res.json({
+      _id: req.user._id,
+      username: req.user.username,
+      email: req.user.email,
+    });
   }
-
-  res.json({
-    username: req.user.username,
-    email: req.user.email,
-  });
 };
 
 module.exports = {

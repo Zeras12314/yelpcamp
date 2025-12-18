@@ -34,7 +34,15 @@ const getCampground = asyncHandler(async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid product ID" });
   }
-  const campground = await campgroundData.findById(id).populate("reviews");
+  const campground = await campgroundData
+    .findById(id)
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "author",
+      },
+    })
+    .populate("author");
   res.status(200).json(campground);
 });
 
@@ -44,10 +52,15 @@ const newCampground = asyncHandler(async (req, res) => {
   const existingCamp = await campgroundData.findOne({
     title: validatedData.title,
   });
+  campgroundData.author = req.user._id;
   if (existingCamp) {
     return res.status(400).json({ message: "Campground already exists" });
   }
-  const camp = await campgroundData.create(req.body);
+  // Create the new campground
+  const camp = await campgroundData.create({
+    ...validatedData,
+    author: req.user._id, // assign the currently logged-in user as author
+  });
   res.status(200).json(camp);
 });
 
@@ -55,7 +68,7 @@ const newCampground = asyncHandler(async (req, res) => {
 const updateCampground = asyncHandler(async (req, res) => {
   const validatedData = validateCampground(req.body);
   const { id } = req.params;
-  // Validate the ID format (optional, but recommended for added safety)
+
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid ID" });
   }
@@ -78,7 +91,7 @@ const deleteCampGround = asyncHandler(async (req, res) => {
   const { id } = req.params;
   // Validate the ID format (optional, but recommended for added safety)
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid product ID" });
+    return res.status(400).json({ message: "Invalid camp ID" });
   }
   const campGround = await campgroundData.findByIdAndDelete(id);
   if (!campGround) {
