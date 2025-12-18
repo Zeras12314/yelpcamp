@@ -2,30 +2,18 @@ const reviewData = require("../models/review");
 const mongoose = require("mongoose");
 const { asyncHandler } = require("../utils/asyncHandler");
 const CampGroundData = require("../models/campground");
-const Joi = require("joi");
-
-const validateReview = (data) => {
-  const schema = Joi.object({
-    body: Joi.string().required().min(5),
-    rating: Joi.number().required().min(1),
-  });
-
-  const { error, value } = schema.validate(data, { abortEarly: false });
-  if (error) {
-    const messages = error.details.map((d) => d.message);
-    const err = new Error(messages.join(", "));
-    err.statusCode = 400;
-    throw err;
-  }
-  return value;
-};
+const { validateReview } = require("../middleware");
 
 //POST review
 const createReview = asyncHandler(async (req, res) => {
   const validatedData = validateReview(req.body);
   const campground = await CampGroundData.findById(req.params.id);
-  const review = await reviewData.create(validatedData);
+  const review = await reviewData.create({
+    ...validatedData,
+    author: req.user._id,
+  });
   campground.reviews.push(review._id);
+  await review.populate("author");
   await campground.save();
   res.status(200).json(review);
 });
