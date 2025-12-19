@@ -1,4 +1,3 @@
-const { asyncHandler } = require("../utils/asyncHandler");
 const User = require("../models/user");
 const passport = require("passport");
 const Joi = require("joi");
@@ -20,7 +19,7 @@ const validateUserRegistration = (user) => {
   return value;
 };
 
-const registerUser = asyncHandler(async (req, res) => {
+const registerUser = async (req, res) => {
   validateUserRegistration(req.body);
   const { email, username, password } = req.body;
   const user = new User({ email, username });
@@ -33,7 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
     if (err) return next(err);
     res.json(registeredUser);
   });
-});
+};
 
 const loginUser = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {

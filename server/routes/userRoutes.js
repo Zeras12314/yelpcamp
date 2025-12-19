@@ -6,8 +6,10 @@ const {
   authMe,
   logout,
 } = require("../controllers/userController");
+const { asyncHandler } = require("../utils/asyncHandler");
 
-router.post("/register", registerUser);
+
+router.post("/register", asyncHandler(registerUser));
 router.post("/login", loginUser);
 router.get("/auth/me", authMe);
 router.get("/logout", logout);
