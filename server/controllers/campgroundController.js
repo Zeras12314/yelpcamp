@@ -1,6 +1,5 @@
 const campgroundData = require("../models/campground");
 const mongoose = require("mongoose");
-const { asyncHandler } = require("../utils/asyncHandler");
 const Joi = require("joi");
 
 const validateCampground = (data) => {
@@ -23,12 +22,12 @@ const validateCampground = (data) => {
 };
 
 // GET ALL CAMPGROUNDS
-const getAllCampgrounds = asyncHandler(async (req, res) => {
+const getAllCampgrounds = async (req, res) => {
   const campgrounds = await campgroundData.find({});
   res.status(200).json(campgrounds);
-});
+};
 // GET CAMPGROUND BY ID
-const getCampground = asyncHandler(async (req, res) => {
+const getCampground = async (req, res) => {
   const { id } = req.params;
   // Validate the ID format (optional, but recommended for added safety)
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -44,10 +43,10 @@ const getCampground = asyncHandler(async (req, res) => {
     })
     .populate("author");
   res.status(200).json(campground);
-});
+};
 
 // CREATE NEW CAMPGROUND
-const newCampground = asyncHandler(async (req, res) => {
+const newCampground = async (req, res) => {
   const validatedData = validateCampground(req.body);
   const existingCamp = await campgroundData.findOne({
     title: validatedData.title,
@@ -62,10 +61,10 @@ const newCampground = asyncHandler(async (req, res) => {
     author: req.user._id, // assign the currently logged-in user as author
   });
   res.status(200).json(camp);
-});
+};
 
 // UPDATE CAMPGROUND BY ID
-const updateCampground = asyncHandler(async (req, res) => {
+const updateCampground = async (req, res) => {
   const validatedData = validateCampground(req.body);
   const { id } = req.params;
 
@@ -84,10 +83,10 @@ const updateCampground = asyncHandler(async (req, res) => {
 
   const updateCampGround = await campgroundData.findById(id);
   res.status(200).json(updateCampGround);
-});
+};
 
 // DEELETE EXISTING CAMPGROUND
-const deleteCampGround = asyncHandler(async (req, res) => {
+const deleteCampGround = async (req, res) => {
   const { id } = req.params;
   // Validate the ID format (optional, but recommended for added safety)
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -98,7 +97,7 @@ const deleteCampGround = asyncHandler(async (req, res) => {
     return res.status(404).json(`cannot find any camp ground with ID ${id}`);
   }
   res.status(200).json(`Successfully deleted ${campGround.title}`);
-});
+};
 
 module.exports = {
   getAllCampgrounds,

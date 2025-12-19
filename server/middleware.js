@@ -24,7 +24,6 @@ const isAuthor = async (req, res, next) => {
 
 const isReviewAuthor = async (req, res, next) => {
   const { reviewId } = req.params;
-
   const review = await reviewData.findById(reviewId);
   if (!review) {
     return res.status(404).json({ message: "Review not found" });
