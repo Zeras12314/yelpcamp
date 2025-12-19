@@ -8,20 +8,17 @@ const {
   deleteCampGround,
 } = require("../controllers/campgroundController");
 const { isLoggedIn, isAuthor } = require("../middleware");
+const { asyncHandler } = require("../utils/asyncHandler");
 
-// GET ALL CAMPGROUNDs
-router.get("/", getAllCampgrounds);
+router
+  .route("/")
+  .get(asyncHandler(getAllCampgrounds))
+  .post(isLoggedIn, asyncHandler(newCampground));
 
-// GET CAMPGROUND BY ID
-router.get("/:id", getCampground);
-
-// CREATE CAMPGROUND
-router.post("/", isLoggedIn, newCampground);
-
-//UPDATE CAMPGROUND
-router.put("/:id", isLoggedIn, isAuthor, updateCampground);
-
-//DELETE EXISTING ROOM
-router.delete("/:id", isLoggedIn, isAuthor, deleteCampGround);
+router
+  .route("/:id")
+  .get(asyncHandler(getCampground))
+  .put(isLoggedIn, isAuthor, asyncHandler(updateCampground))
+  .delete(isLoggedIn, isAuthor, asyncHandler(deleteCampGround));
 
 module.exports = router;
