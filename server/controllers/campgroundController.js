@@ -1,25 +1,5 @@
 const campgroundData = require("../models/campground");
 const mongoose = require("mongoose");
-const Joi = require("joi");
-
-const validateCampground = (data) => {
-  const schema = Joi.object({
-    title: Joi.string().required(),
-    image: Joi.string().required(),
-    price: Joi.number().required().min(1),
-    description: Joi.string().required().min(10),
-    location: Joi.string().required().min(5),
-  });
-
-  const { error, value } = schema.validate(data, { abortEarly: false });
-  if (error) {
-    const messages = error.details.map((d) => d.message);
-    const err = new Error(messages.join(", "));
-    err.statusCode = 400;
-    throw err;
-  }
-  return value;
-};
 
 // GET ALL CAMPGROUNDS
 const getAllCampgrounds = async (req, res) => {
@@ -47,42 +27,73 @@ const getCampground = async (req, res) => {
 
 // CREATE NEW CAMPGROUND
 const newCampground = async (req, res) => {
-  const validatedData = validateCampground(req.body);
+  // ✅ Image validation first
+  if (!req.files || req.files.length === 0) {
+    return res
+      .status(400)
+      .json({ status: "error", message: '"image" is required' });
+  }
+
+  // ✅ Check duplicate
   const existingCamp = await campgroundData.findOne({
-    title: validatedData.title,
+    title: req.body.title,
   });
-  campgroundData.author = req.user._id;
+
   if (existingCamp) {
     return res.status(400).json({ message: "Campground already exists" });
   }
-  // Create the new campground
+
+  // ✅ Create campground
   const camp = await campgroundData.create({
-    ...validatedData,
-    author: req.user._id, // assign the currently logged-in user as author
+    ...req.body,
+    author: req.user._id,
+    images: req.files.map((f) => ({
+      url: f.path,
+      filename: f.filename,
+    })),
   });
-  res.status(200).json(camp);
+  console.log(camp);
+  res.status(201).json(camp);
 };
 
 // UPDATE CAMPGROUND BY ID
 const updateCampground = async (req, res) => {
-  const validatedData = validateCampground(req.body);
   const { id } = req.params;
 
+  // ✅ Validate ID
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid ID" });
   }
-  const campGround = await campgroundData.findByIdAndUpdate(id, validatedData, {
-    new: true,
-  });
 
-  if (!campGround) {
+  // ✅ Fetch existing campground
+  const existingCamp = await campgroundData.findById(id);
+  if (!existingCamp) {
     return res
       .status(404)
       .json({ message: `Cannot find any campground with ID ${id}` });
   }
 
-  const updateCampGround = await campgroundData.findById(id);
-  res.status(200).json(updateCampGround);
+  // ✅ Handle new uploaded files
+  let images = existingCamp.images || []; // start with existing images
+  if (req.files && req.files.length > 0) {
+    const newImages = req.files.map((f) => ({
+      url: f.path,
+      filename: f.filename,
+    }));
+    images = images.concat(newImages); // merge existing + new
+  }
+
+  // ✅ Update campground data
+  const updatedData = {
+    ...req.body,
+    images, // merged images
+  };
+
+  const updatedCamp = await campgroundData.findByIdAndUpdate(id, updatedData, {
+    new: true,
+  });
+
+  res.status(200).json(updatedCamp);
 };
 
 // DEELETE EXISTING CAMPGROUND
