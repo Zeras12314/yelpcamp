@@ -1,7 +1,7 @@
 <section class="container add-edit-container">
   <h2 class="">Edit Campground</h2>
   <div class="add-edit-container-form">
-    <form [formGroup]="campgroundForm" class="card p-4 shadow-sm mt-4">
+    <form [formGroup]="campgroundForm" class="card p-4 shadow-sm mt-4" enctype="multipart/form-data">
 
       <!-- Title -->
       <div class="mb-3">
@@ -15,13 +15,12 @@
 
       <!-- Image -->
       <div class="mb-3">
-        <label for="image" class="form-label">Image URL</label>
-        <input id="image" type="text" formControlName="image" class="form-control"
-          placeholder="https://example.com/camp.jpg">
+        <label for="image" class="form-label">Upload Images</label>
+        <input type="file" class="form-control" name="image" accept="image/*" multiple
+          (change)="onFileSelected($event)">
       </div>
-      @if(campgroundForm.controls['image'].invalid && campgroundForm.controls['image'].touched){
-      <small class="text-danger">Image URL is required.</small>
-      }
+
+
 
       <!-- Price -->
       <div class="mb-3">
@@ -54,8 +53,7 @@
       <!-- Submit -->
       <div class="d-flex justify-content-between mt-4">
         <a [routerLink]="['/']">Back to Campgrounds</a>
-        <button type="submit" class="btn btn-primary" [disabled]="campgroundForm.pristine || campgroundForm.invalid"
-          (click)="onSubmit()">
+        <button type="submit" class="btn btn-primary" [disabled]="campgroundForm.pristine" (click)="onSubmit()">
           {{ btnLabel }} Campground
         </button>
       </div>

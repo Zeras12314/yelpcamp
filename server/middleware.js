@@ -1,5 +1,5 @@
 const campgroundData = require("./models/campground");
-const reviewData = require("./models/review")
+const reviewData = require("./models/review");
 const Joi = require("joi");
 
 const isLoggedIn = (req, res, next) => {
@@ -55,4 +55,42 @@ const validateReview = (data) => {
   return value;
 };
 
-module.exports = { isLoggedIn, isAuthor, validateReview, isReviewAuthor };
+const validateCampground = (req, res, next) => {
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    price: Joi.number().min(1).required(),
+    description: Joi.string().min(10).required(),
+    location: Joi.string().min(5).required(),
+  });
+
+  const { error } = schema.validate(req.body, { abortEarly: false });
+
+  if (error) {
+    return res.status(400).json({
+      status: "error",
+      message: error.details.map((d) => d.message).join(", "),
+    });
+  }
+
+  next();
+};
+
+const validateImages = (req, res, next) => {
+  // ✅ Image validation first
+  if (!req.files || req.files.length === 0) {
+    return res
+      .status(400)
+      .json({ status: "error", message: '"image" is required' });
+  }
+
+  next();
+};
+
+module.exports = {
+  isLoggedIn,
+  isAuthor,
+  validateReview,
+  isReviewAuthor,
+  validateCampground,
+  validateImages,
+};
