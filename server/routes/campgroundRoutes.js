@@ -7,18 +7,32 @@ const {
   updateCampground,
   deleteCampGround,
 } = require("../controllers/campgroundController");
-const { isLoggedIn, isAuthor } = require("../middleware");
+const { isLoggedIn, isAuthor, validateCampground } = require("../middleware");
 const { asyncHandler } = require("../utils/asyncHandler");
+const multer = require("multer");
+const { storage } = require("../cloudinary");
+const upload = multer({ storage });
 
 router
   .route("/")
   .get(asyncHandler(getAllCampgrounds))
-  .post(isLoggedIn, asyncHandler(newCampground));
+  .post(
+    isLoggedIn,
+    upload.array("image"),
+    validateCampground,
+    asyncHandler(newCampground)
+  );
 
 router
   .route("/:id")
   .get(asyncHandler(getCampground))
-  .put(isLoggedIn, isAuthor, asyncHandler(updateCampground))
+  .put(
+    isLoggedIn,
+    isAuthor,
+    upload.array("image"),
+    validateCampground,
+    asyncHandler(updateCampground)
+  )
   .delete(isLoggedIn, isAuthor, asyncHandler(deleteCampGround));
 
 module.exports = router;

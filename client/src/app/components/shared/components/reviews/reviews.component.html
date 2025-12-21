@@ -2,11 +2,24 @@
     <h2>Leave a review</h2>
     <form class="mb-5" [formGroup]="reviewForm">
         <div>
-            <label for="rating" class="form-label">Rating</label>
-            <input formControlName="rating" type="range" class="form-range" min="0" max="5" step="1" id="rating">
+            <fieldset class="starability-basic">
+                <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked
+                    aria-label="No rating." />
+                <input type="radio" id="first-rate1" name="rating" value="1" formControlName="rating" />
+                <label for="first-rate1" title="Terrible">1 star</label>
+                <input type="radio" id="first-rate2" name="rating" value="2" formControlName="rating" />
+                <label for="first-rate2" title="Not good">2 stars</label>
+                <input type="radio" id="first-rate3" name="rating" value="3" formControlName="rating" />
+                <label for="first-rate3" title="Average">3 stars</label>
+                <input type="radio" id="first-rate4" name="rating" value="4" formControlName="rating" />
+                <label for="first-rate4" title="Very good">4 stars</label>
+                <input type="radio" id="first-rate5" name="rating" value="5" formControlName="rating" />
+                <label for="first-rate5" title="Amazing">5 stars</label>
+            </fieldset>
         </div>
+
         <div class="mb-3">
-            <label for="review-body" class="form-label">Reviews</label>
+            <label for="review-body" class="form-label">Review Text</label>
             <textarea formControlName="body" class="form-control" id="review-bod" rows="3"></textarea>
         </div>
         <button type="button" class="btn btn-success" (click)="submitReview(campId())"
@@ -30,8 +43,9 @@
             <div class="card mb-2">
                 <div class="container card-body">
                     @let isReviewOwner = currentUserId === review?.author?._id;
-                    <h5 class="card-title">Rating: {{ review.rating }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{review?.author?.username}}</h6>
+                    <h5 class="card-title">{{review?.author?.username}}</h5>
+                    <p class="starability-result" [attr.data-rating]="review?.rating">
+                    </p>
                     <p class="card-text">{{ review.body }}</p>
                     @if(isReviewOwner){
                     <button class="btn btn-sm btn-danger" (click)="deleteReview(review._id)">Delete</button>

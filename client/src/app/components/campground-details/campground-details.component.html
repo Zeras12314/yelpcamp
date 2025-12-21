@@ -1,10 +1,29 @@
 <section class="container my-5"> @if (campground$ | async; as camp) { <div class="row">
     <div class="col-6 mb-3">
       <div class="card mb-3" style="width: 100%;">
-        <div class="image-wrapper"> <!-- Spinner --> @if(imageLoading){ <div class="spinner-container">
+        <div class="image-wrapper"> <!-- Spinner -->
+          @if(imageLoading)
+          {
+          <div class="spinner-container">
             <div class="spinner-border text-primary" role="status"></div>
-          </div> } <!-- Actual image --> <img [src]="camp.image" [alt]="camp.title" class="card-img-top"
-            (load)="imageLoading = false" (error)="imageLoading = false"> </div>
+          </div>
+          }
+          <!-- Actual image -->
+          <!-- @for(img of camp.images; track $index){
+          <img [src]="img.url" [alt]="camp.title" class="card-img-top" (load)="imageLoading = false"
+            (error)="imageLoading = false">
+          } -->
+
+          @if(camp.images && camp.images.length > 0) {
+          @for(img of camp.images; track $index) {
+          <img [src]="img.url" [alt]="camp.title + ' image ' + ($index + 1)" class="card-img-top"
+            (load)="imageLoading = false" (error)="imageLoading = false">
+          }
+          } @else {
+          <img [src]="camp['image']" [alt]="camp.title" class="card-img-top" (load)="imageLoading = false"
+            (error)="imageLoading = false">
+          }
+        </div>
         <div class="card-body">
           <h5 class="card-title">{{ camp.title }}</h5>
           <p class="card-text">{{ camp.description }}</p>
