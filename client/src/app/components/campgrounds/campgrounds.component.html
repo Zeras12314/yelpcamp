@@ -30,8 +30,9 @@
               </div>
               }
               <!-- Actual image -->
-              <img [src]="camp.image" [alt]="camp.title" class="img-fluid object-fit-cover rounded-start card-img-top"
-                (load)="imageLoading = false" (error)="imageLoading = false" />
+              <img [src]="camp['image'] ?? camp?.images[0]?.url" [alt]="camp.title"
+                class="img-fluid object-fit-cover rounded-start card-img-top" (load)="imageLoading = false"
+                (error)="imageLoading = false" />
             </div>
           </div>
 
