@@ -1,8 +1,20 @@
 const mongoose = require("mongoose");
 
+const ImageSchema = new mongoose.Schema({
+  url: String,
+  filename: String,
+});
+
+ImageSchema.virtual("thumbnail").get(function () {
+  return this.url.replace("/upload", "/upload/w_200");
+});
+
+// Important: include virtuals in JSON
+ImageSchema.set("toJSON", { virtuals: true });
+
 const CampgroundSchema = mongoose.Schema({
   title: String,
-  images: [{ url: String, filename: String }],
+  images: [ImageSchema],
   price: Number,
   description: String,
   location: String,
@@ -17,6 +29,7 @@ const CampgroundSchema = mongoose.Schema({
     },
   ],
 });
+
 
 const CampGroundData = mongoose.model("campgrounds", CampgroundSchema);
 module.exports = CampGroundData;

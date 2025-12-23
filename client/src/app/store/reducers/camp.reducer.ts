@@ -1,6 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { Campground } from '../../models/campground.model';
 import {
+  addCampground,
+  addCampgroundFailure,
   addCampgroundSuccess,
   loadCampgroundByIdSuccess,
   loadCampGrounds,
@@ -60,9 +62,18 @@ export const campGroundsReducer = createReducer(
     ...state,
     loading: false,
   })),
+  on(addCampground, (state) => ({
+    ...state,
+    loading: true,
+  })),
   on(addCampgroundSuccess, (state, { campground }) => ({
     ...state,
     campgrounds: [...state.campgrounds, campground],
+    loading: false,
+  })),
+  on(addCampgroundFailure, (state) => ({
+    ...state,
+    loading: false,
   })),
   on(loadCampgroundByIdSuccess, (state, { campground }) => ({
     ...state,
