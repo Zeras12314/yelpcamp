@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { Campground } from '../../models/campground.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, filter, map, Observable, tap } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { filter, Observable, tap } from 'rxjs';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { MaterialElementsModule } from '../shared/material/material.module';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogPopComponent } from '../shared/components/dialog-pop/dialog-pop.component';
@@ -32,7 +32,8 @@ import { ReviewsComponent } from '../shared/components/reviews/reviews.component
     ɵInternalFormsSharedModule,
     ReactiveFormsModule,
     ReviewsComponent,
-  ],
+    NgClass
+],
   templateUrl: './campground-details.component.html',
   styleUrls: ['./campground-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

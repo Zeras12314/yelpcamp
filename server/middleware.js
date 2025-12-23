@@ -57,11 +57,17 @@ const validateReview = (data) => {
 
 const validateCampground = (req, res, next) => {
   const schema = Joi.object({
-    title: Joi.string().required(),
-    price: Joi.number().min(1).required(),
-    description: Joi.string().min(10).required(),
-    location: Joi.string().min(5).required(),
-  });
+    title: Joi.string(),
+    price: Joi.number().min(1),
+    description: Joi.string().min(10),
+    location: Joi.string().min(5),
+
+    // ✅ allow deleteImages from FormData
+    deleteImages: Joi.alternatives().try(
+      Joi.array().items(Joi.string()),
+      Joi.string()
+    ),
+  }).unknown(true); // 👈 IMPORTANT for multipart/form-data
 
   const { error } = schema.validate(req.body, { abortEarly: false });
 

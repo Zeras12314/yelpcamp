@@ -15,7 +15,7 @@ export const loadCampGroundsFailure = createAction(
 
 export const updateCampground = createAction(
   '[Campgrounds] Update Campground',
-  props<{ id: string; campground: Campground }>()
+  props<{ id: string; campground: any }>()
 );
 
 export const updateCampgroundSuccess = createAction(
@@ -30,7 +30,7 @@ export const updateCampgroundFailure = createAction(
 
 export const addCampground = createAction(
   '[Campground] Add Campground',
-  props<{ campground: Campground }>()
+  props<{ campground: any }>()
 );
 
 export const addCampgroundSuccess = createAction(
