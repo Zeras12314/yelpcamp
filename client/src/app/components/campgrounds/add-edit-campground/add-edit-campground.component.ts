@@ -18,11 +18,11 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { filter, take } from 'rxjs';
 import { CampgroundsService } from '../../../services/campgrounds.service';
-import { NgFor } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-campground',
-  imports: [ReactiveFormsModule, RouterLink, NgFor],
+  imports: [ReactiveFormsModule, RouterLink, AsyncPipe],
   templateUrl: './add-edit-campground.component.html',
   styleUrl: './add-edit-campground.component.scss',
 })
@@ -38,6 +38,11 @@ export class AddEditCampgroundComponent implements OnInit {
   btnLabel: string = '';
   id: string | null = null;
   selectedFiles: File[] = [];
+  campImages = [];
+  deleteImages: string[] = [];
+  loading$ = this.storeService.loading$;
+  hasOneImage: boolean = true;
+  isImgUploadEmpty: boolean = false;
 
   ngOnInit(): void {
     this.campGroundOnInit();
@@ -50,23 +55,20 @@ export class AddEditCampgroundComponent implements OnInit {
 
     if (this.id) {
       this.storeService.campGrounds$.pipe(take(1)).subscribe((campgrounds) => {
-        // If campgrounds not yet loaded, trigger load
-        if (!campgrounds || campgrounds.length === 0) {
-          this.storeService.getCampGrounds();
+        this.storeService.getCampGrounds();
 
-          // Wait for loaded campgrounds and then patch
-          this.storeService.campGrounds$
-            .pipe(
-              filter((c) => c.length > 0),
-              take(1)
-            )
-            .subscribe((loadedCamps) => {
-              const camp = loadedCamps.find((c) => c._id === this.id);
-              if (camp) this.patchCampForm(camp);
-            });
-
-          return;
-        }
+        // Wait for loaded campgrounds and then patch
+        this.storeService.campGrounds$
+          .pipe(
+            filter((c) => c.length > 0),
+            take(1)
+          )
+          .subscribe((loadedCamps) => {
+            const camp = loadedCamps.find((c) => c._id === this.id);
+            if (camp) this.patchCampForm(camp);
+            this.campImages = camp?.images;
+            this.hasOneImage = camp?.images?.length === 1;
+          });
 
         // If already loaded, just patch
         const camp = campgrounds.find((c) => c._id === this.id);
@@ -91,71 +93,65 @@ export class AddEditCampgroundComponent implements OnInit {
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
+    this.isImgUploadEmpty = input.files.length > 0;
 
     if (input.files && input.files.length > 0) {
       this.selectedFiles = Array.from(input.files);
-      console.log(this.selectedFiles);
+      this.campgroundForm.markAsDirty();
     }
   }
 
-  // onSubmit() {
-  //   if (this.campgroundForm.invalid) return;
-  //   const campground: Campground = this.campgroundForm.value;
-  //   console.log('campground: ', campground);
-  //   if (this.id) {
-  //     // ✅ EXECUTE the updateCampground action here
-  //     this.store.dispatch(
-  //       updateCampground({
-  //         id: this.id,
-  //         campground,
-  //       })
-  //     );
-  //   } else {
-  //     // ✅ EXECUTE the addCampground action here
-  //     this.store.dispatch(addCampground({ campground }));
-  //   }
-  // }
+  isEmptyImage(): boolean {
+    return !this.isImgUploadEmpty && this.hasOneImage;
+  }
 
   onSubmit() {
-    // if (this.campgroundForm.invalid) return;
-
     // Build FormData for upload
     const formData = new FormData();
+    // 1. Append normal form fields
     Object.entries(this.campgroundForm.value).forEach(([key, value]) => {
       if (key !== 'images') {
         formData.append(key, value as any);
       }
     });
-
+    // 2. Append new uploaded images
     this.selectedFiles.forEach((file) => {
       formData.append('image', file); // 👈 SAME KEY NAME
     });
+    // 3. (deleteImages)
+    this.deleteImages.forEach((filename) => {
+      formData.append('deleteImages', filename);
+    });
+
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
 
     if (this.id) {
-      this.campService.updateCampground(this.id, formData).subscribe({
-        next: (res) => console.log('Created:', res),
-        error: (err) => console.error('Error:', err),
-      });
       // Update existing campground
-      // this.store.dispatch(
-      //   updateCampground({
-      //     id: this.id,
-      //     formData,
-      //   })
-      // );
+      this.store.dispatch(
+        updateCampground({
+          id: this.id,
+          campground: formData,
+        })
+      );
     } else {
       // Create new campground
-      // Send to backend
-      this.campService.createCampground(formData).subscribe({
-        next: (res) => console.log('Created:', res),
-        error: (err) => console.error('Error:', err),
-      });
-      // console.log('formData: ',formData)
-      // this.store.dispatch(
-      //   addCampground({
-      //     formData,
-      //   })
-      // );
+      this.store.dispatch(
+        addCampground({
+          campground: formData,
+        })
+      );
     }
+  }
+
+  onDeleteToggle(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    if (checkbox.checked) {
+      this.deleteImages.push(checkbox.value);
+    } else {
+      this.deleteImages = this.deleteImages.filter((v) => v !== checkbox.value);
+    }
+    this.campgroundForm.markAsDirty();
   }
 }
