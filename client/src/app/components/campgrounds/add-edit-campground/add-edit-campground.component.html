@@ -13,15 +13,6 @@
 
       </div>
 
-      <!-- Image -->
-      <div class="mb-3">
-        <label for="image" class="form-label">Upload Images</label>
-        <input type="file" class="form-control" name="image" accept="image/*" multiple
-          (change)="onFileSelected($event)">
-      </div>
-
-
-
       <!-- Price -->
       <div class="mb-3">
         <label for="price" class="form-label">Price ($)</label>
@@ -50,11 +41,37 @@
       <small class="text-danger">Location is required.</small>
       }
 
+      <!-- Image -->
+      <div class="mb-3">
+        <label for="image" class="form-label">Upload Images</label>
+        <input type="file" class="form-control" name="image" accept="image/*" multiple
+          (change)="onFileSelected($event)">
+      </div>
+      @for(img of campImages; track $index){
+      <div class="mb-3">
+        <img [src]="img.thumbnail" alt="" class="img-thumbnail">
+        <div class="form-check-inline">
+          <input type="checkbox" name="deleteImages" [id]="'image-' + $index" name="deleteImages[]"
+            [value]="img?.filename" [disabled]="isEmptyImage()" (change)="onDeleteToggle($event)">
+        </div>
+        <label [for]="'image-' + $index">Delete?</label>
+      </div>
+      }
+
       <!-- Submit -->
       <div class="d-flex justify-content-between mt-4">
         <a [routerLink]="['/']">Back to Campgrounds</a>
         <button type="submit" class="btn btn-primary" [disabled]="campgroundForm.pristine" (click)="onSubmit()">
+          @if ((!(loading$ | async))) {
           {{ btnLabel }} Campground
+          } @else {
+          <span class="spinner-border spinner-border-sm" role="status"></span>
+          @if(id){
+          Updating Campground...
+          }@else{
+          Creating Campground...
+          }
+          }
         </button>
       </div>
 

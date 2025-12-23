@@ -1,5 +1,6 @@
 const campgroundData = require("../models/campground");
 const mongoose = require("mongoose");
+const { cloudinary } = require("../cloudinary");
 
 // GET ALL CAMPGROUNDS
 const getAllCampgrounds = async (req, res) => {
@@ -60,12 +61,10 @@ const newCampground = async (req, res) => {
 const updateCampground = async (req, res) => {
   const { id } = req.params;
 
-  // ✅ Validate ID
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid ID" });
   }
 
-  // ✅ Fetch existing campground
   const existingCamp = await campgroundData.findById(id);
   if (!existingCamp) {
     return res
@@ -73,20 +72,41 @@ const updateCampground = async (req, res) => {
       .json({ message: `Cannot find any campground with ID ${id}` });
   }
 
-  // ✅ Handle new uploaded files
-  let images = existingCamp.images || []; // start with existing images
-  if (req.files && req.files.length > 0) {
-    const newImages = req.files.map((f) => ({
-      url: f.path,
-      filename: f.filename,
-    }));
-    images = images.concat(newImages); // merge existing + new
+  // Normalize deleteImages to array
+  const deleteImages = req.body.deleteImages
+    ? Array.isArray(req.body.deleteImages)
+      ? req.body.deleteImages
+      : [req.body.deleteImages]
+    : [];
+
+  // Handle deletion
+  if (deleteImages.length) {
+    await existingCamp.updateOne({
+      $pull: { images: { filename: { $in: deleteImages } } },
+    });
+
+    // Delete from Cloudinary
+    for (let public_id of deleteImages) {
+      await cloudinary.uploader.destroy(public_id);
+    }
   }
 
-  // ✅ Update campground data
+  // Handle new uploaded files
+  const newImages =
+    req.files?.map((f) => ({
+      url: f.path,
+      filename: f.filename,
+    })) || [];
+
+  // Merge existing images (after deletion) + new images
+  const updatedImages = existingCamp.images
+    .filter((img) => !deleteImages.includes(img.filename))
+    .concat(newImages);
+
+  // Update campground data
   const updatedData = {
     ...req.body,
-    images, // merged images
+    images: updatedImages,
   };
 
   const updatedCamp = await campgroundData.findByIdAndUpdate(id, updatedData, {
