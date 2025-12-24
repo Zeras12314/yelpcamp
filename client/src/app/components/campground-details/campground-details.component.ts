@@ -23,6 +23,7 @@ import { selectCampgroundById } from '../../store/selectors/camp.selector';
 import { loadCampgroundById } from '../../store/actions/camp.action';
 import { StoreService } from '../../store/store.service';
 import { ReviewsComponent } from '../shared/components/reviews/reviews.component';
+import { CampgroundMapComponent } from '../shared/components/campground-map/campground-map.component';
 
 @Component({
   selector: 'app-campground-details',
@@ -32,8 +33,9 @@ import { ReviewsComponent } from '../shared/components/reviews/reviews.component
     ɵInternalFormsSharedModule,
     ReactiveFormsModule,
     ReviewsComponent,
-    NgClass
-],
+    NgClass,
+    CampgroundMapComponent,
+  ],
   templateUrl: './campground-details.component.html',
   styleUrls: ['./campground-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,7 +48,8 @@ export class CampgroundDetailsComponent implements OnInit {
   private store = inject(Store);
   private storeService = inject(StoreService);
   campId = signal(this.activatedRoute.snapshot.paramMap.get('id'));
-  campground$!: Observable<Campground | undefined>;
+  // campground$!: Observable<Campground | undefined>;
+  campground$!: Observable<any>;
   loading$ = this.storeService.loading$;
   imageLoading = true;
   currentUserId: string;

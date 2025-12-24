@@ -1,6 +1,8 @@
 const campgroundData = require("../models/campground");
 const mongoose = require("mongoose");
 const { cloudinary } = require("../cloudinary");
+const maptilerClient = require("@maptiler/client");
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 // GET ALL CAMPGROUNDS
 const getAllCampgrounds = async (req, res) => {
@@ -28,6 +30,18 @@ const getCampground = async (req, res) => {
 
 // CREATE NEW CAMPGROUND
 const newCampground = async (req, res) => {
+  const geoData = await maptilerClient.geocoding.forward(req.body.location, {
+    limit: 1,
+  });
+  // console.log(geoData);
+  if (!geoData.features?.length) {
+    return res.status(400).json({
+      status: "error",
+      message:
+        "Could not geocode that location. Please try again and enter a valid location.",
+    });
+  }
+
   // ✅ Image validation first
   if (!req.files || req.files.length === 0) {
     return res
@@ -48,6 +62,8 @@ const newCampground = async (req, res) => {
   const camp = await campgroundData.create({
     ...req.body,
     author: req.user._id,
+    geometry: geoData.features[0].geometry,
+    location: geoData.features[0].place_name,
     images: req.files.map((f) => ({
       url: f.path,
       filename: f.filename,
@@ -60,6 +76,17 @@ const newCampground = async (req, res) => {
 // UPDATE CAMPGROUND BY ID
 const updateCampground = async (req, res) => {
   const { id } = req.params;
+  const geoData = await maptilerClient.geocoding.forward(req.body.location, {
+    limit: 1,
+  });
+  // console.log(geoData);
+  if (!geoData.features?.length) {
+    return res.status(400).json({
+      status: "error",
+      message:
+        "Could not geocode that location. Please try again and enter a valid location.",
+    });
+  }
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid ID" });
@@ -107,6 +134,8 @@ const updateCampground = async (req, res) => {
   const updatedData = {
     ...req.body,
     images: updatedImages,
+    geometry: geoData.features[0].geometry,
+    location: geoData.features[0].place_name,
   };
 
   const updatedCamp = await campgroundData.findByIdAndUpdate(id, updatedData, {
