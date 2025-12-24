@@ -50,5 +50,9 @@
         <div class="card-footer text-body-secondary"> 2 days ago </div>
       </div>
     </div>
-    <div class="col-6"> <app-reviews [campground]="campground$ | async" [campId]="campId()"> </app-reviews> </div>
+    <div class="col-6">
+      @if (campground$ | async; as campground) {
+      <app-campground-map [campground]="campground"></app-campground-map>
+      }<app-reviews [campground]="campground$ | async" [campId]="campId()"> </app-reviews>
+    </div>
   </div> } </section>
