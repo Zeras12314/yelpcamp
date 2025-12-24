@@ -1,80 +1,107 @@
-<section class="container add-edit-container">
-  <h2 class="">Edit Campground</h2>
-  <div class="add-edit-container-form">
-    <form [formGroup]="campgroundForm" class="card p-4 shadow-sm mt-4" enctype="multipart/form-data">
+<section class="container add-edit-container py-4">
+  <h2 class="text-center">{{ btnLabel }} Campground</h2>
 
+  <form [formGroup]="campgroundForm" class="card p-3 p-md-4 mt-4 mx-auto" style="max-width: 720px;"
+    enctype="multipart/form-data">
+
+    <!-- Title & Price -->
+    <div class="row">
       <!-- Title -->
-      <div class="mb-3">
+      <div class="col-12 col-md-8 mb-3">
         <label for="title" class="form-label">Title</label>
         <input id="title" type="text" formControlName="title" class="form-control" placeholder="Enter title">
         @if(campgroundForm.controls['title'].invalid && campgroundForm.controls['title'].touched){
         <small class="text-danger">Title is required.</small>
         }
-
       </div>
 
       <!-- Price -->
-      <div class="mb-3">
+      <div class="col-12 col-md-4 mb-3">
         <label for="price" class="form-label">Price ($)</label>
         <input id="price" type="number" formControlName="price" class="form-control" placeholder="0">
+        @if(campgroundForm.controls['price'].invalid && campgroundForm.controls['price'].touched){
+        <small class="text-danger">Price is required.</small>
+        }
       </div>
-      @if(campgroundForm.controls['price'].invalid && campgroundForm.controls['price'].touched){
-      <small class="text-danger">Price is required.</small>
-      }
+    </div>
 
-      <!-- Description -->
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea id="description" formControlName="description" rows="5" class="form-control"
-          placeholder="Enter description"></textarea>
-      </div>
+    <!-- Description -->
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea id="description" formControlName="description" rows="5" class="form-control"
+        placeholder="Enter description"></textarea>
       @if(campgroundForm.controls['description'].invalid && campgroundForm.controls['description'].touched){
       <small class="text-danger">Description is required.</small>
       }
+    </div>
 
-      <!-- Location -->
-      <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input id="location" type="text" formControlName="location" class="form-control" placeholder="Enter location">
-      </div>
+    <!-- Location -->
+    <div class="mb-3">
+      <label for="location" class="form-label">Location</label>
+      <input id="location" type="text" formControlName="location" class="form-control" placeholder="Enter location">
       @if(campgroundForm.controls['location'].invalid && campgroundForm.controls['location'].touched){
       <small class="text-danger">Location is required.</small>
       }
+    </div>
 
-      <!-- Image -->
-      <div class="mb-3">
-        <label for="image" class="form-label">Upload Images</label>
-        <input type="file" class="form-control" name="image" accept="image/*" multiple
-          (change)="onFileSelected($event)">
-      </div>
+    <!-- Image Upload -->
+    <div class="mb-3">
+      <label for="image" class="form-label">Upload Images</label>
+      <input type="file" class="form-control" name="image" accept="image/*" multiple (change)="onFileSelected($event)">
+    </div>
+
+    <!-- Image Preview Grid -->
+    @if(campImages?.length){
+    <div class="row g-3 mb-3">
       @for(img of campImages; track $index){
-      <div class="mb-3">
-        <img [src]="img.thumbnail" alt="" class="img-thumbnail">
-        <div class="form-check-inline">
-          <input type="checkbox" name="deleteImages" [id]="'image-' + $index" name="deleteImages[]"
-            [value]="img?.filename" [disabled]="isEmptyImage()" (change)="onDeleteToggle($event)">
+      <div class="col-6 col-md-4 col-lg-3 text-center">
+        <img [src]="img.thumbnail" alt="" class="img-fluid img-thumbnail mb-2">
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [id]="'image-' + $index" [value]="img.filename"
+            [disabled]="isEmptyImage()" (change)="onDeleteToggle($event)">
+          <label class="form-check-label" [for]="'image-' + $index">
+            Delete
+          </label>
         </div>
-        <label [for]="'image-' + $index">Delete?</label>
       </div>
       }
+    </div>
+    }
+
+    <!-- Actions -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mt-4">
+      <!-- Back link -->
+      <div class="flex-shrink-0">
+        @if(id){
+        <a class="text-nowrap" [routerLink]="['/campground-details', id]">
+          Back to {{ campgroundForm.get('title')?.value }}
+        </a>
+        } @else {
+        <a class="text-nowrap" [routerLink]="['/campgrounds']">
+          Back to Campgrounds
+        </a>
+        }
+      </div>
 
       <!-- Submit -->
-      <div class="d-flex justify-content-between mt-4">
-        <a [routerLink]="['/']">Back to Campgrounds</a>
-        <button type="submit" class="btn btn-primary" [disabled]="campgroundForm.pristine" (click)="onSubmit()">
-          @if ((!(loading$ | async))) {
+      <div class="flex-grow-0">
+        <button type="submit" class="btn btn-primary w-100 w-md-auto" [disabled]="campgroundForm.pristine"
+          (click)="onSubmit()">
+          @if (!(loading$ | async)) {
           {{ btnLabel }} Campground
           } @else {
-          <span class="spinner-border spinner-border-sm" role="status"></span>
+          <span class="spinner-border spinner-border-sm me-2"></span>
           @if(id){
           Updating Campground...
-          }@else{
+          } @else {
           Creating Campground...
           }
           }
         </button>
       </div>
+    </div>
 
-    </form>
-  </div>
+
+  </form>
 </section>
