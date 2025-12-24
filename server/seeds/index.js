@@ -40,7 +40,7 @@ const seedDB = async () => {
       title: `${sample(descriptors)} ${sample(places)}`,
       // image: `https://picsum.photos/400?random=${Math.random()}`,
       description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores possimus facere officia dicta a adipisci, voluptatum, iure itaque, atque perferendis eos? Labore nostrum alias dolor illum error. Perferendis, eligendi facere.",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores possimus facere officia dicta a adipisci, voluptatum, iure itaque, atque perferendis eos.",
       price,
       images: sampleImages(images, Math.floor(Math.random() * 3) + 1),
     });

@@ -1,6 +1,7 @@
 @use "../../../../styles/tokens.scss" as *;
 
 .add-edit-container {
-  max-width: 600px;
+  width: 800px;
+  min-width: 500px;
   padding: $space-4;
 }
