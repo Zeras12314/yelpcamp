@@ -2,14 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Campground } from '../models/campground.model';
-import { environment } from '../environment/environment';
+import { env } from '../../environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CampgroundsService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl;
+  private apiUrl = env.apiUrl;
 
   constructor() {}
 

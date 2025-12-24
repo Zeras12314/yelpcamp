@@ -99,6 +99,7 @@ export class CampGroundEffects {
           map((newCampground) => {
             // Show success toastr
             this.toastr.success('Successfully created!', newCampground.title);
+            console.log(newCampground);
             return addCampgroundSuccess({
               campground: newCampground,
             });
