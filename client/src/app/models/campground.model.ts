@@ -5,6 +5,7 @@ export interface Campground {
   price: number;
   description?: string;
   location?: string;
+  geometry?: Geometry;
   author: Author;
   reviews: Review[];
 }
@@ -20,4 +21,9 @@ export interface Author {
   _id: string;
   username: string;
   email: string;
+}
+
+export interface Geometry {
+  type: 'Point';
+  coordinates: [number, number]; // [lng, lat]
 }
