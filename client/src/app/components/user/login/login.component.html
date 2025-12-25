@@ -1,14 +1,24 @@
-<section class="container register-container row m-auto">
-    <h2>Login</h2>
-    <form class="col-6" [formGroup]="userLoginForm">
-        <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" formControlName="username">
+<section class="container d-flex justify-content-center align-items-center login-section">
+    <div class="card login-card bg-glass shadow">
+        <div class="card-body">
+            <h5 class="card-title text-center">Login</h5>
+            <form [formGroup]="userLoginForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" formControlName="username">
+                    @if(userLoginForm.controls['username'].invalid && userLoginForm.controls['username'].touched){
+                    <small class="text-danger"> Username is required.</small>
+                    }
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" formControlName="password">
+                    @if(userLoginForm.controls['password'].invalid && userLoginForm.controls['password'].touched){
+                    <small class="text-danger"> Password is required.</small>
+                    }
+                </div>
+                <button (click)="login()" class="flame-cta-fill w-100">Submit</button>
+            </form>
         </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" formControlName="password">
-        </div>
-        <button (click)="login()" class="btn btn-primary">Submit</button>
-    </form>
+    </div>
 </section>

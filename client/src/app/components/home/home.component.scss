@@ -1,0 +1,19 @@
+@use "../../../styles/tokens.scss" as *;
+
+main {
+  height: 60vh;
+  place-content: center;
+
+  h1 {
+    font-size: $display;
+    margin-bottom: $space-6;
+  }
+  p {
+    margin-bottom: $space-20;
+  }
+
+  .flame-cta-fill{
+    margin: 0;
+    font-size: $title;
+  }
+}

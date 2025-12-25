@@ -1,35 +1,192 @@
-.image-wrapper {
-  position: relative;
-  width: 100%;
-  height: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #f7f7f7;
-  overflow: hidden;
+@use "../../../styles/tokens.scss" as *;
+
+/* =========================
+   CAROUSEL IMAGE (FIXED)
+   ========================= */
+.carousel-inner {
+  img {
+    height: 500px; // ✅ FIXED SIZE (unchanged)
+    width: 100%;
+    object-fit: cover;
+    display: block;
+  }
 }
 
+/* =========================
+   LOADER
+   ========================= */
 .spinner-container {
   position: absolute;
   z-index: 10;
 }
 
-.card-img-top {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .loader-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0, 0, 0, 0.35);
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: inherit;
   z-index: 10;
+}
+
+/* =========================
+   MEDIA WRAPPER
+   ========================= */
+.camp-media {
+  position: relative;
+}
+
+/* =========================
+   CAROUSEL CONTROLS
+   ========================= */
+/* =========================
+   BOOTSTRAP CAROUSEL CONTROLS (VISIBLE FIX)
+   ========================= */
+
+.carousel-control-container {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  pointer-events: auto;
+  width: 44px;
+  height: 44px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: rgba(15, 25, 40, 0.75);
+  border: 1px solid rgba(255, 138, 61, 0.45);
+  backdrop-filter: blur(6px);
+  opacity: 1;
+  transition: all 0.25s ease;
+}
+
+/* Positioning */
+.carousel-control-prev {
+  left: 1rem;
+}
+
+.carousel-control-next {
+  right: 1rem;
+}
+
+/* Remove Bootstrap default icons */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-image: none;
+}
+
+/* Custom arrows */
+.carousel-control-prev::after,
+.carousel-control-next::after {
+  color: #ff8a3d;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.carousel-control-prev::after {
+  content: "‹";
+}
+
+.carousel-control-next::after {
+  content: "›";
+}
+
+/* Hover glow */
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  box-shadow: 0 0 16px rgba(255, 138, 61, 0.6);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* =========================
+   CONTENT
+   ========================= */
+.camp-body {
+  padding: 2rem 1.75rem; // ⬅️ more breathing room
+}
+
+.camp-title {
+  font-size: 1.6rem;
+  font-weight: $fw-400;
+  margin-bottom: 0.75rem;
+}
+
+.camp-desc {
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+/* =========================
+   META INFO
+   ========================= */
+.camp-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 1rem;
+
+  .meta {
+    font-size: 0.9rem;
+    font-weight: $fw-400;
+
+    &.flame {
+      color: #ff8a3d; // 🔥 ember orange
+    }
+
+    &.muted {
+      font-weight: 500;
+    }
+  }
+}
+
+.delete {
+  background-color: $accent-flame-dark;
+  &:hover {
+    filter: brightness(1.05) saturate(1.1);
+    box-shadow: 0 10px 26px rgba(255, 134, 12, 0.55),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  }
+
+  &:active {
+    filter: brightness(0.98);
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(255, 134, 12, 0.4),
+      inset 0 2px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: none;
+    background: rgba(255, 134, 12, 0.3);
+    border-color: rgba($primary-white, 0.15);
+    box-shadow: none;
+  }
+}
+
+/* =========================
+   ACTION BUTTONS
+   ========================= */
+.camp-actions {
+  display: flex;
+  gap: 1rem;
+  padding: 0 1.75rem 1.75rem;
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+.camp-footer {
+  padding: 1rem 1.75rem;
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.8);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.25);
 }

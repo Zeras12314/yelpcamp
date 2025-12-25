@@ -1,0 +1,32 @@
+@use "../../../../styles/tokens.scss" as *;
+
+.register-section {
+  min-height: 80vh;
+
+  .register-card {
+    max-width: 400px;
+
+    .card-body {
+      padding: $space-8;
+
+      .card-title {
+        font-size: $title;
+        margin-bottom: $title;
+        color: $primary-white;
+      }
+
+      .form-control {
+        background-color: rgba(255, 255, 255, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: $primary-white;
+
+        &:focus {
+          background-color: rgba(255, 255, 255, 0.35);
+          color: $primary-white;
+          border-color: rgba(255, 255, 255, 0.6);
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}
