@@ -1,5 +1,5 @@
 <section class="container d-flex justify-content-center align-items-center login-section">
-    <div class="card login-card shadow">
+    <div class="card login-card bg-glass shadow">
         <div class="card-body">
             <h5 class="card-title text-center">Login</h5>
             <form [formGroup]="userLoginForm">
@@ -17,7 +17,7 @@
                     <small class="text-danger"> Password is required.</small>
                     }
                 </div>
-                <button (click)="login()" class="btn btn-login w-100" [disabled]="!userLoginForm.valid">Submit</button>
+                <button (click)="login()" class="flame-cta-fill w-100">Submit</button>
             </form>
         </div>
     </div>

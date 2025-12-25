@@ -43,6 +43,7 @@ export class AddEditCampgroundComponent implements OnInit {
   loading$ = this.storeService.loading$;
   hasOneImage: boolean = true;
   isImgUploadEmpty: boolean = false;
+  showFileUploadValidation: boolean = false;
 
   ngOnInit(): void {
     this.campGroundOnInit();
@@ -98,6 +99,13 @@ export class AddEditCampgroundComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       this.selectedFiles = Array.from(input.files);
       this.campgroundForm.markAsDirty();
+      this.showFileUploadValidation = false;
+    } else {
+      // User cleared the file input
+      this.selectedFiles = [];
+      this.isImgUploadEmpty = true;
+      this.showFileUploadValidation = true; // optional: show validation
+      this.campgroundForm.markAsDirty();
     }
   }
 
@@ -108,24 +116,15 @@ export class AddEditCampgroundComponent implements OnInit {
   onSubmit() {
     // Build FormData for upload
     const formData = new FormData();
-    // 1. Append normal form fields
-    Object.entries(this.campgroundForm.value).forEach(([key, value]) => {
-      if (key !== 'images') {
-        formData.append(key, value as any);
-      }
-    });
-    // 2. Append new uploaded images
-    this.selectedFiles.forEach((file) => {
-      formData.append('image', file); // 👈 SAME KEY NAME
-    });
-    // 3. (deleteImages)
-    this.deleteImages.forEach((filename) => {
-      formData.append('deleteImages', filename);
-    });
+    this.processFormData(formData);
 
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
+    const isValid = this.validateForm(formData);
+    if (!isValid) {
+      this.campgroundForm.markAllAsTouched();
+      this.showFileUploadValidation = !this.isImgUploadEmpty;
+      return;
     }
+    this.showFileUploadValidation = false;
 
     if (this.id) {
       // Update existing campground
@@ -143,6 +142,48 @@ export class AddEditCampgroundComponent implements OnInit {
         })
       );
     }
+  }
+
+  processFormData(formData) {
+    // 1. Append normal form fields
+    Object.entries(this.campgroundForm.value).forEach(([key, value]) => {
+      if (key !== 'images') {
+        formData.append(key, value as any);
+      }
+    });
+    // 2. Append new uploaded images
+    this.selectedFiles.forEach((file) => {
+      formData.append('image', file); // 👈 SAME KEY NAME
+    });
+    // 3. (deleteImages)
+    this.deleteImages.forEach((filename) => {
+      formData.append('deleteImages', filename);
+    });
+
+    return formData;
+  }
+
+  validateForm(formData: FormData): boolean {
+    for (const [key, value] of formData.entries()) {
+      // Strings: must not be empty
+      if (typeof value === 'string' && value.trim() === '') {
+        return false;
+      }
+
+      // Files: must exist and size > 0
+      if (value instanceof File && value.size === 0) {
+        return false;
+      }
+
+      // Other types can be added if needed
+    }
+
+    // Extra check: make sure at least one file exists if 'image' key is required
+    if (!formData.has('image')) {
+      return false;
+    }
+
+    return true; // all checks passed
   }
 
   onDeleteToggle(event: Event) {

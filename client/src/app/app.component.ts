@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   title = 'yelpcamp';
   store = inject(Store);
   router = inject(Router);
-  dispalyLandingImage(): boolean {
+  dispalyLandingImage2(): boolean {
     const url = this.router.url.toLowerCase();
     return (
       url.includes('login') ||
@@ -24,6 +24,9 @@ export class AppComponent implements OnInit {
       url === '/' ||
       url.includes('home')
     );
+  }
+  dispalyLandingImage(): boolean {
+    return true;
   }
   ngOnInit(): void {
     this.store.dispatch(appInit());

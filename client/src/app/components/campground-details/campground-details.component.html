@@ -1,58 +1,81 @@
-<section class="container my-5"> @if (campground$ | async; as camp) { <div class="row">
-    <div class="col-6 mb-3">
-      <div class="card mb-3" style="width: 100%;">
-        @if(imageLoading)
-        {
-        <div class="spinner-container">
-          <div class="spinner-border text-primary" role="status"></div>
+<section class="container my-5 text-light">
+  @if (campground$ | async; as camp) {
+  <div class="row g-4">
+
+    <!-- LEFT -->
+    <div class="col-lg-6">
+      <div class="bg-glass">
+
+        @if(imageLoading) {
+        <div class="loader-overlay">
+          <div class="spinner-border text-warning"></div>
         </div>
         }
 
         @if(camp.images && camp.images.length > 0) {
-        <!-- Carousel Container -->
         <div id="campCarousel" class="carousel slide">
           <div class="carousel-inner">
             @for(img of camp.images; track $index) {
             <div class="carousel-item" [ngClass]="{ 'active': $index === 0 }">
-              <img [src]="img.url" [alt]="camp.title + ' image ' + ($index + 1)" class="d-block w-100"
-                (load)="imageLoading = false" (error)="imageLoading = false">
+              <img [src]="img.url" [alt]="camp.title + ' image ' + ($index + 1)" (load)="imageLoading = false"
+                (error)="imageLoading = false" />
             </div>
             }
           </div>
+
           @if(camp.images.length > 1){
           <div class="carousel-control-container">
-            <button class="carousel-control-prev" type="button" data-bs-target="#campCarousel" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
+            <button class="carousel-control-prev flame-control" type="button" data-bs-target="#campCarousel"
+              data-bs-slide="prev">
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#campCarousel" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
+            <button class="carousel-control-next flame-control" type="button" data-bs-target="#campCarousel"
+              data-bs-slide="next">
             </button>
           </div>
           }
         </div>
         }
-        <!-- Carousel End -->
-        <div class="card-body">
-          <h5 class="card-title">{{ camp.title }}</h5>
-          <p class="card-text">{{ camp.description }}</p>
+
+        <!-- CONTENT -->
+        <div class="camp-body">
+          <h3 class="camp-title">{{ camp.title }}</h3>
+          <p class="camp-desc">{{ camp.description }}</p>
+
+          <div class="camp-meta">
+            <span class="meta flame">🔥 ${{ camp.price }}/night</span>
+            <span class="meta">📍 {{ camp.location }}</span>
+            <span class="meta muted">by {{ camp?.author?.username }}</span>
+          </div>
         </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item text-muted">{{ camp.location }}</li>
-          <li class="list-group-item">Submitted by: {{ camp?.author?.username }}</li>
-          <li class="list-group-item">${{ camp.price }}/night</li>
-        </ul>
-        <div class="card-body"> <button (click)="editCampground(camp._id)" mat-button color="primary" class="me-3"
-            [disabled]="!isCampOwner">Edit</button> <button (click)="openDialog(camp._id)" mat-button color="warn"
-            [disabled]="!isCampOwner">Delete</button> @if(!isCampOwner){ <small class="text-danger d-block">Only the
-            owner of this camp can modify it.</small> } </div>
-        <div class="card-footer text-body-secondary"> 2 days ago </div>
+
+        @if(isCampOwner){
+        <div class="camp-actions">
+          <button class="btn-card" (click)="editCampground(camp._id)">
+            Edit
+          </button>
+
+          <button class="btn-card delete" (click)="openDialog(camp._id)">
+            Delete
+          </button>
+        </div>
+        }
+
+        <div class="camp-footer">
+          {{daysAgo}} days ago
+        </div>
+
       </div>
     </div>
-    <div class="col-6">
+
+    <!-- RIGHT -->
+    <div class="col-lg-6">
       @if (campground$ | async; as campground) {
       <app-campground-map [campground]="campground"></app-campground-map>
-      }<app-reviews [campground]="campground$ | async" [campId]="campId()"> </app-reviews>
+      }
+      <app-reviews [campground]="campground$ | async" [campId]="campId()">
+      </app-reviews>
     </div>
-  </div> } </section>
+
+  </div>
+  }
+</section>

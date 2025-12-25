@@ -1,10 +1,10 @@
-<section class="container my-4">
-  <div class="map-container" id="map-all"></div>
+<section class="container my-4 text-white">
+  <div class="map-container mb-5" id="map-all"></div>
 
   @if(!(errorLoading$ | async) && !(loading$ | async)){
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="m-0">Campgrounds</h2>
-    <button class="btn btn-success btn-sm" [routerLink]="['/campgrounds/add-campground']"
+    <button class="btn flame-cta btn-sm" [routerLink]="['/campgrounds/add-campground']"
       [disabled]="errorLoading$ | async">
       + Add Campground
     </button>
@@ -15,7 +15,7 @@
   <div class="row g-4">
     @for (camp of campgrounds; track camp._id) {
     <div class="col-12 col-md-6 col-lg-4">
-      <div class="card shadow-sm border-0 rounded-3 overflow-hidden h-100">
+      <div class="card rounded-3">
         <div class="image-wrapper">
           @if(imageLoading){
           <div class="spinner-container">
@@ -28,14 +28,15 @@
 
         <div class="card-body d-flex flex-column">
           <h5 class="card-title mb-1">{{ camp.title }}</h5>
-          <p class="location small mb-2">{{ camp.location || 'Unknown location' }}</p>
+          <p class="location small flame-text mb-2">📍{{ camp.location || 'Unknown location' }}</p>
           <p class="description mb-3 flex-grow-1">{{ camp.description }}</p>
 
           <div class="d-flex justify-content-between align-items-center mt-auto">
             <span class=" fs-6">
-              ${{ camp.price }}<span class="fs-6">/night</span>
+              <span class="flame-text">${{ camp.price }}</span>
+              <span>/night</span>
             </span>
-            <button class="btn btn-primary btn-sm" (click)="viewDetails(camp)">View Details</button>
+            <button class="btn-card" (click)="viewDetails(camp)">View Details</button>
           </div>
         </div>
       </div>
