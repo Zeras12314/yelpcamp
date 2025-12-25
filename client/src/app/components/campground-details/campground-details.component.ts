@@ -55,6 +55,7 @@ export class CampgroundDetailsComponent implements OnInit {
   currentUserId: string;
   campAuthorId: string;
   isCampOwner: boolean = false;
+  daysAgo: number;
 
   ngOnInit() {
     this.store.dispatch(loadCampgroundById({ id: this.campId() }));
@@ -72,6 +73,7 @@ export class CampgroundDetailsComponent implements OnInit {
           this.isCampOwner = this.campAuthorId === this.currentUserId;
         })
       );
+    this.daysAgo = this.randomDays();
   }
   openDialog(id: string) {
     this.dialog.open(DialogPopComponent, {
@@ -84,5 +86,9 @@ export class CampgroundDetailsComponent implements OnInit {
 
   editCampground(id: string) {
     this.router.navigate(['/campgrounds', id, 'edit']);
+  }
+
+  randomDays() {
+    return Math.floor(Math.random() * 100);
   }
 }

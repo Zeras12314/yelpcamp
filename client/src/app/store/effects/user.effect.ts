@@ -73,7 +73,7 @@ export class UserEffects {
             return of(registerSuccess({ user }));
           }),
           catchError((error) => {
-            this.toastr.error(error.message, 'Error');
+            this.toastr.error(error.error.message, 'Error');
             return of(registerFailure({ error }));
           })
         )

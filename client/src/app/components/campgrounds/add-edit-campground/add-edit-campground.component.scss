@@ -1,6 +1,57 @@
 @use "../../../../styles/tokens.scss" as *;
 
 .add-edit-container {
-  max-width: 600px;
+  width: 800px;
+  min-width: 500px;
   padding: $space-4;
+}
+
+/* =========================
+   GLASS FORM
+   ========================= */
+.glass-form {
+  padding: 2rem 2.25rem;
+}
+
+/* =========================
+   GLASS INPUTS
+   ========================= */
+.glass-input {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  backdrop-filter: blur(6px);
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  &:focus {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba($acccent-flame, 0.6);
+    box-shadow: 0 0 0 0.15rem rgba($acccent-flame, 0.25);
+    color: #fff;
+  }
+}
+
+/* =========================
+   IMAGE THUMBNAILS
+   ========================= */
+.glass-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(6px);
+}
+
+/* =========================
+   LINKS
+   ========================= */
+.glass-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+
+  &:hover {
+    color: $acccent-flame;
+    text-decoration: underline;
+  }
 }

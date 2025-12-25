@@ -1,5 +1,16 @@
-<app-header></app-header>
-<section class="pb-5">
-    <router-outlet />
-</section>
-<app-footer class="text-center"></app-footer>
+<div class="app-wrapper d-flex flex-column min-vh-100" [ngClass]="dispalyLandingImage() ? 'homepage' : 'bg-dark'">
+    <app-header [ngClass]="{ 'bg-dark': !dispalyLandingImage() }"></app-header>
+    <main class="flex-fill">
+        <router-outlet></router-outlet>
+    </main>
+    <app-footer class="text-center"></app-footer>
+</div>
+
+
+<!-- <div class="app-wrapper d-flex flex-column min-vh-100 homepage">
+    <app-header></app-header>
+    <main class="flex-fill">
+        <router-outlet></router-outlet>
+    </main>
+    <app-footer class="text-center"></app-footer>
+</div> -->
