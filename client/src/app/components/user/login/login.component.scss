@@ -3,12 +3,6 @@
 
   .login-card {
     max-width: 400px;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.15); // semi-transparent frosted glass
-    backdrop-filter: blur(10px);
-    border-radius: 1rem;
-    overflow: hidden;
-    color: #fff;
 
     .card-body {
       padding: 2rem;
@@ -29,24 +23,6 @@
           color: #fff;
           border-color: rgba(255, 255, 255, 0.6);
           box-shadow: none;
-        }
-      }
-
-      .btn-login {
-        background-color: rgba(20, 40, 80, 0.8); // darker blue
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #fff;
-        font-weight: 700;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-
-        &:hover {
-          background-color: rgba(30, 60, 120, 0.95); // slightly brighter on hover
-          box-shadow: 0 0 20px rgba(30, 60, 120, 0.6); // subtle glow
-          transform: translateY(-2px);
-        }
-
-        &:active {
-          transform: translateY(0);
         }
       }
     }
