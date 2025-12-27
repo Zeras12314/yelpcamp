@@ -12,8 +12,22 @@ main {
     margin-bottom: $space-20;
   }
 
-  .flame-cta-fill{
+  .flame-cta-fill {
     margin: 0;
     font-size: $title;
+  }
+}
+
+@media (max-width: 576px) {
+  h1 {
+    font-size: $heading-lg !important;
+    margin-bottom: $space-6;
+  }
+  p {
+    font-size: $paragraph;
+  }
+  .flame-cta-fill {
+    margin: 0;
+    font-size: $subtitle !important;
   }
 }

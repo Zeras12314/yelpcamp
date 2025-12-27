@@ -20,7 +20,8 @@
 
         <div class="mb-3">
             <label for="review-body" class="form-label">Review Text</label>
-            <textarea formControlName="body" class="form-control glass-input" id="review-body" rows="3" placeholder="Write your review here..."></textarea>
+            <textarea formControlName="body" class="form-control glass-input" id="review-body" rows="3"
+                placeholder="Write your review here..."></textarea>
         </div>
         <button type="button" class="flame-cta-fill" (click)="submitReview(campId())"
             [disabled]="!reviewForm.valid || (loadingCreate$ | async)">
@@ -51,6 +52,10 @@
                     <button class="flame-cta-fill delete" (click)="deleteReview(review._id)">Delete</button>
                     }
                 </div>
+            </div>
+            } @if(campground.reviews.length === 0){
+            <div class="card mb-2 bg-glass p-3">
+                <div class="container card-body text-center">There are currently no reviews for this campground.</div>
             </div>
             }
         </div>

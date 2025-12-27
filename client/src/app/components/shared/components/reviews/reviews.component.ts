@@ -46,7 +46,6 @@ export class ReviewsComponent implements OnInit {
 
   deleteReview(reviewId: string) {
     const campId = this.campId();
-    console.log('campId', campId);
     if (campId) {
       this.store.dispatch(deleteReview({ campId: campId, reviewId: reviewId }));
     }

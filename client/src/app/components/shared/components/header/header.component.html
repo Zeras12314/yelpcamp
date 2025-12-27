@@ -2,17 +2,17 @@
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto">
     <header class="mb-auto d-flex w-100 justify-content-between align-items-center">
       <!-- Title -->
-      <h3>YelpCamp</h3>
+      <h3><a [routerLink]="['/']" class="text-white text-decoration-none">YelpCamp</a></h3>
 
       <!-- Navigation -->
       <nav class="nav nav-masthead">
-        <a class="nav-link active" aria-current="page" href="#">Home</a>
-        <a class="nav-link" [routerLink]="['/campgrounds']">Campgrounds</a>
+        <a class="nav-link" [class.active]="isActive('/home')" aria-current="page" [routerLink]="['/']">Home</a>
+        <a class="nav-link" [routerLink]="['/campgrounds']" [class.active]="isActive('/campgrounds')">Campgrounds</a>
         @if (isLoggedIn$ | async; as isLoggedIn) {
         <a class="nav-link" (click)="logout()">Logout</a>
         } @else {
-        <a class="nav-link" [routerLink]="['/campgrounds/login']">Login</a>
-        <a class="nav-link" [routerLink]="['/campgrounds/register']">Register</a>
+        <a class="nav-link" [routerLink]="['/campgrounds/login']" [class.active]="isActive('campgrounds/login')">Login</a>
+        <a class="nav-link" [routerLink]="['/campgrounds/register']" [class.active]="isActive('campgrounds/register')">Register</a>
         }
 
 
