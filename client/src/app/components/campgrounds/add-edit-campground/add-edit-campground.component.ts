@@ -47,7 +47,6 @@ export class AddEditCampgroundComponent implements OnInit {
 
   ngOnInit(): void {
     this.campGroundOnInit();
-    console.log('campgroundForm', this.campgroundForm.value);
   }
 
   campGroundOnInit() {

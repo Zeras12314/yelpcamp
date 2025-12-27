@@ -33,7 +33,6 @@ const newCampground = async (req, res) => {
   const geoData = await maptilerClient.geocoding.forward(req.body.location, {
     limit: 1,
   });
-  // console.log(geoData);
   if (!geoData.features?.length) {
     return res.status(400).json({
       status: "error",
@@ -69,7 +68,6 @@ const newCampground = async (req, res) => {
       filename: f.filename,
     })),
   });
-  console.log(camp);
   res.status(201).json(camp);
 };
 
@@ -79,7 +77,6 @@ const updateCampground = async (req, res) => {
   const geoData = await maptilerClient.geocoding.forward(req.body.location, {
     limit: 1,
   });
-  // console.log(geoData);
   if (!geoData.features?.length) {
     return res.status(400).json({
       status: "error",

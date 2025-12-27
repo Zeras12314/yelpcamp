@@ -7,17 +7,24 @@ const cors = require("cors");
 const campGroundRoute = require("./routes/campgroundRoutes");
 const reviewRoute = require("./routes/reviewRoutes");
 const userRoute = require("./routes/userRoutes");
+const helmet = require("helmet");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const app = express();
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+
+// MONGO SESSION
+// const { MongoStore } = require("connect-mongo");
+// const MongoDBStore = require("connect-mongo")(session);
+const MongoStore = require("connect-mongo")(session);
+
 const API_PATHS = {
   CAMP: "/api/campgrounds",
   REVIEW: "/api/campgrounds/:id/reviews",
 };
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(
   cors({
@@ -26,21 +33,38 @@ app.use(
     credentials: true, // Allow cookies to be sent cross-origin
   })
 );
+
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(morgan("tiny")); //automatically logs details about incoming requests and responses
 app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: false }));
 
 // EXPRESS-SESSION
+
+const store = new MongoStore({
+  url: process.env.MONGO_URI,
+  touchAfter: 24 * 60 * 60,
+  crypto: {
+    secret: process.env.SESSION_SECRET,
+  },
+});
+
+store.on("error", function (e) {
+  console.log("SESSION STORE ERROR", e);
+});
+
 const sessionConfig = {
-  secret: "thisshouldbeabettersecret!",
+  store,
+  name: "session",
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week in ms
-    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // correct Date object
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
     httpOnly: true,
-    secure: false, // true in production with HTTPS
+    // secure: true, // true in production with HTTPS
     sameSite: "lax",
   },
 };
@@ -69,9 +93,7 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
-const connect = mongoose.connect(
-  "mongodb+srv://chickentaba01:EuTu2XiQsURoSsk9@cluster0.rbvedxm.mongodb.net/YelpCamp?retryWrites=true&w=majority&appName=Cluster0"
-);
+const connect = mongoose.connect(process.env.MONGO_URI);
 
 connect
   .then(() => {

@@ -1,7 +1,14 @@
 const mongoose = require("mongoose");
 const cities = require("./cities");
-const { places, descriptors, images } = require("./seedHelpers");
+const {
+  places,
+  descriptors,
+  images,
+  users,
+  reviews,
+} = require("./seedHelpers");
 const Campground = require("../models/campground");
+const Review = require("../models/review")
 
 const connect = mongoose.connect(
   "mongodb+srv://chickentaba01:EuTu2XiQsURoSsk9@cluster0.rbvedxm.mongodb.net/YelpCamp?retryWrites=true&w=majority&appName=Cluster0"
@@ -27,8 +34,9 @@ const seedDB = async () => {
   for (let i = 0; i < 50; i++) {
     const random1000 = Math.floor(Math.random() * 1000);
     const price = Math.floor(Math.random() * 20) + 10;
+    const user = sample(users);
     const camp = new Campground({
-      author: "69415f35e0535c1c6d6c9078",
+      author: user.id,
       location: `${cities[random1000].city}, ${cities[random1000].state}`,
       geometry: {
         type: "Point",
@@ -44,6 +52,19 @@ const seedDB = async () => {
       price,
       images: sampleImages(images, Math.floor(Math.random() * 3) + 1),
     });
+
+    // Seed random number of reviews (0 to 5) for this campground
+    const numberOfReviews = Math.floor(Math.random() * 4);
+    for (let j = 0; j < numberOfReviews; j++) {
+      const author = sample(users);
+      const review = new Review({
+        body: sample(reviews), // array of review text
+        rating: Math.floor(Math.random() * 3) + 3, // 1-5
+        author: author.id,
+      });
+      await review.save();
+      camp.reviews.push(review._id);
+    }
     await camp.save();
   }
 };

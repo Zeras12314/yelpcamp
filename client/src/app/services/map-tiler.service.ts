@@ -3,13 +3,20 @@ import * as maptilersdk from '@maptiler/sdk';
 
 @Injectable({ providedIn: 'root' })
 export class MapTilerService {
+  mapLoaded = false;
+
   createMap(
     containerId: string | HTMLElement,
     campgroundsGeoJson: GeoJSON.FeatureCollection,
     apiKey: string
   ): maptilersdk.Map {
+    if (!containerId) return null;
+    if (
+      typeof containerId === 'string' &&
+      !document.getElementById(containerId)
+    )
+      return null;
     maptilersdk.config.apiKey = apiKey;
-
     const map = new maptilersdk.Map({
       container: containerId,
       style: maptilersdk.MapStyle.BRIGHT,
@@ -18,6 +25,8 @@ export class MapTilerService {
     });
 
     map.on('load', () => {
+      this.mapLoaded = true;
+
       map.addSource('campgrounds', {
         type: 'geojson',
         data: campgroundsGeoJson,
