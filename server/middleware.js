@@ -3,7 +3,6 @@ const reviewData = require("./models/review");
 const Joi = require("joi");
 
 const isLoggedIn = (req, res, next) => {
-  console.log("REQ.USER...", req.user);
   if (!req.isAuthenticated()) {
     return res
       .status(401)

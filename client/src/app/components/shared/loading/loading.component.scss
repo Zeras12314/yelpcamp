@@ -1,3 +1,5 @@
+@use "../../../../styles/tokens.scss" as *;
+
 .loading-overlay {
   position: absolute; /* was fixed, now relative to parent */
   inset: 0; /* top:0; right:0; bottom:0; left:0 */
@@ -29,19 +31,17 @@
 /* Full page container */
 .error-page {
   width: 100%;
-  height: calc(100vh - 100px); /* adjust based on header height */
+  height: calc(90vh - 100px); /* adjust based on header height */
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #fafafa;
 }
 
 /* Inner card */
-.error-content {
+.bg-glass {
   text-align: center;
   padding: 40px 20px;
   max-width: 420px;
-  background: white;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   border: 1px solid #eee;
@@ -64,23 +64,6 @@
 /* Description */
 .error-description {
   font-size: 15px;
-  color: #666;
   margin-bottom: 25px;
   line-height: 1.5;
-}
-
-/* Retry button */
-.retry-btn {
-  background: #1976d2; /* nice blue */
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.retry-btn:hover {
-  background: #145cab;
 }
