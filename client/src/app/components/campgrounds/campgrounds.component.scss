@@ -1,9 +1,39 @@
-ul {
-  list-style-type: none; /* removes bullets */
-  padding: 0;            /* removes left padding */
-  margin: 0;             /* optional: removes default margin */
+/* Makes all images crop cleanly */
+.object-fit-cover {
+  object-fit: cover;
 }
 
+/* Slightly softer shadow to make cards modern */
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* Ensure consistent spacing between list items */
 li {
-  margin-bottom: 1rem;   /* optional: spacing between items */
+  list-style: none;
+}
+
+/* Title and location spacing */
+.card-title {
+  font-weight: 600;
+}
+
+.text-muted {
+  font-size: 0.9rem;
+}
+
+/* Price styling */
+.text-success {
+  font-weight: 600;
+}
+
+/* Make add button more modern */
+.btn-success {
+  border-radius: 8px;
+  padding: 6px 12px;
 }

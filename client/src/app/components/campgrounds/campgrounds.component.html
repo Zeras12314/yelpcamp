@@ -1,20 +1,82 @@
-<section class="container">
-    <h2>Campgrounds</h2>
-    <ul>
-        @for (camp of campgrounds$ | async; track camp._id) {
-        <div class="camp-detail card">
-            <div class="row">
-                <div class="col-md-4"> <img [src]="camp.image" [alt]="camp.title" class="img-fluid"></div>
-                <div class="col-8">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ camp.title }}</h5>
-                        <p class="card-text">{{ camp.description }}</p>
-                        <p class="card-text"><small class="text-muted">{{ camp.description }}</small></p>
-                        <button class="btn btn-primary" (click)="viewDetails(camp)">View {{camp.title}}</button>
-                    </div>
+<section class="container my-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0">Campgrounds</h2>
+    <a class="btn btn-success btn-sm" [routerLink]="['/campgrounds/add-campground']">
+      + Add Campground
+    </a>
+  </div>
+
+  @if (loading$ | async) {
+    <p>Loading campgrounds...</p>
+  }
+  @else {
+
+    @if (campGrounds$ | async; as campgrounds) {
+
+      <ul class="list-unstyled">
+
+        @for (camp of campgrounds; track camp._id) {
+
+          <li class="mb-3">
+
+            <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+
+              <div class="row g-0">
+
+                <!-- Image -->
+                <div class="col-md-4">
+                  <div class="ratio ratio-4x3">
+                    <img
+                      [src]="camp.image"
+                      [alt]="camp.title"
+                      class="img-fluid object-fit-cover rounded-start"
+                    />
+                  </div>
                 </div>
+
+                <!-- Details -->
+                <div class="col-md-8">
+                  <div class="card-body">
+
+                    <h5 class="card-title mb-1">{{ camp.title }}</h5>
+
+                    <p class="text-muted small mb-2">
+                      {{ camp.location || 'Unknown location' }}
+                    </p>
+
+                    <p class="card-text mb-3">
+                      {{ camp.description }}
+                    </p>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="fw-bold text-success fs-5">
+                        ${{ camp.price }}
+                        <span class="text-muted fs-6">/night</span>
+                      </span>
+
+                      <button class="btn btn-primary btn-sm" (click)="viewDetails(camp)">
+                        View Details
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
             </div>
-        </div>
+
+          </li>
+
         }
-    </ul>
+
+      </ul>
+
+    }
+    @else {
+      <p>No data to display</p>
+    }
+
+  }
+
 </section>
