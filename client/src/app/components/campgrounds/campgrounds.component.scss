@@ -1,39 +1,88 @@
-/* Makes all images crop cleanly */
+@use "../../../styles/tokens.scss" as *;
+
+.loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: inherit;
+  z-index: 10;
+}
+
+.map-container {
+  width: 100%;
+  height: 600px; /* or any height you want */
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent; // remove white background
+  overflow: hidden;
+  border-radius: 0.5rem 0.5rem 0 0; // match top card corners
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem !important;
+  //start
+  background: rgba(255, 255, 255, 0.12) !important; // lighter frosted glass
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(15px); // stronger blur
+  -webkit-backdrop-filter: blur(15px); // Safari support
+  border: 1px solid rgba(255, 255, 255, 0.35) !important; // subtle glass border
+  //end
+  color: #fff;
+  padding: 1rem;
+  overflow: hidden;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+    background-color 0.2s ease, border 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); // stronger shadow on hover
+    background: rgba(255, 255, 255, 0.18); // slightly brighter on hover
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  p {
+    font-weight: $fw-200;
+  }
+}
+
 .object-fit-cover {
   object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5rem 0.5rem 0 0; // rounded top corners
 }
 
-/* Slightly softer shadow to make cards modern */
-.card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-}
-
-/* Ensure consistent spacing between list items */
-li {
-  list-style: none;
-}
-
-/* Title and location spacing */
 .card-title {
-  font-weight: 600;
+  font-weight: $fw-400;
+  color: $primary-white;
 }
 
-.text-muted {
-  font-size: 0.9rem;
+.location {
+  color: rgba($primary-white, 0.5);
 }
 
-/* Price styling */
 .text-success {
   font-weight: 600;
+  color: #a8ff60; // optional: bright text for visibility
 }
 
-/* Make add button more modern */
-.btn-success {
-  border-radius: 8px;
-  padding: 6px 12px;
-}
+/* =========================
+   BTN CARD CTA — ADD CAMPGROUND
+   ========================= */
+

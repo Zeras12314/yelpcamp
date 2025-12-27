@@ -1,0 +1,31 @@
+@use "../../../../../styles/tokens.scss" as *;
+
+
+.cover-container {
+  max-width: 70vw;
+
+  .nav-link {
+    padding: 0.25rem 0;
+    font-weight: $fw-500;
+    color: rgba(255, 255, 255, 0.5);
+    margin-left: 1rem;
+    border-bottom: 0.25rem solid transparent;
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      border-bottom-color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    &:first-child {
+      margin-left: 0; // remove extra margin for the first link
+    }
+
+    &.active {
+      color: #fff; // active link text color
+      border-bottom-color: $primary-white; // underline color for active
+      font-weight: $fw-500; // optional: make active bolder
+    }
+  }
+}

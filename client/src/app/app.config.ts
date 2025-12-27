@@ -1,22 +1,42 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideZoneChangeDetection,
+  isDevMode,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import {
+  BrowserAnimationsModule,
+  provideAnimations,
+} from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-import { campGroundsReducer } from './store/camp.reducer';
-import { CampGroundEffects } from './store/camp.effect';
+import { campGroundsReducer } from './store/reducers/camp.reducer';
+import { CampGroundEffects } from './store/effects/camp.effect';
+import { reviewReducer } from './store/reducers/review.reducer';
+import { ReviewEffects } from './store/effects/review.effect';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { authInterceptor } from './interceptors/auth.interceptor';
+import { authReducer } from './store/reducers/user.reducer';
+import { UserEffects } from './store/effects/user.effect';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(),
-    provideStore({ campgrounds: campGroundsReducer }),
-    provideEffects([CampGroundEffects]),
+    provideHttpClient(withInterceptors([authInterceptor])),
+    provideStore({
+      campgrounds: campGroundsReducer,
+      review: reviewReducer,
+      userAuth: authReducer
+    }),
+    provideEffects([CampGroundEffects, ReviewEffects, UserEffects]),
     provideAnimations(), // required animations providers
-    provideToastr(), // Toastr providers
+    importProvidersFrom(BrowserAnimationsModule), // ✅ correct way to "import" modules
+    provideToastr(),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };

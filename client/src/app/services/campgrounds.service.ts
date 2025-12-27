@@ -2,13 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Campground } from '../models/campground.model';
+import { env } from '../../environment/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CampgroundsService {
-  private http = inject(HttpClient)
-  private apiUrl = 'http://localhost:3000/api/campgrounds'; // 🔹 replace with your backend URL
+  private http = inject(HttpClient);
+  private apiUrl = env.apiUrl;
 
   constructor() {}
 
@@ -23,12 +24,16 @@ export class CampgroundsService {
   }
 
   // Create a new campground
-  createCampground(campground: Campground): Observable<Campground> {
+  // createCampground(campground: Campground): Observable<Campground> {
+  //   return this.http.post<Campground>(this.apiUrl, campground);
+  // }
+
+  createCampground(campground: any): Observable<Campground> {
     return this.http.post<Campground>(this.apiUrl, campground);
   }
 
   // Update an existing campground
-  updateCampground(id: string, campground: Campground): Observable<Campground> {
+  updateCampground(id: string, campground: any): Observable<Campground> {
     return this.http.put<Campground>(`${this.apiUrl}/${id}`, campground);
   }
 

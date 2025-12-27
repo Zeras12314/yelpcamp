@@ -1,0 +1,31 @@
+<section class="container d-flex justify-content-center align-items-center register-section">
+    <div class="card register-card bg-glass shadow">
+        <div class="card-body">
+            <h5 class="card-title text-center">Register</h5>
+            <form [formGroup]="userRegisterForm">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" formControlName="email">
+                    @if(userRegisterForm.controls['email'].invalid && userRegisterForm.controls['email'].touched){
+                    <small class="text-danger"> Email is Invalid.</small>
+                    }
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" formControlName="username">
+                    @if(userRegisterForm.controls['username'].invalid && userRegisterForm.controls['username'].touched){
+                    <small class="text-danger"> Username is required.</small>
+                    }
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" formControlName="password">
+                    @if(userRegisterForm.controls['password'].invalid && userRegisterForm.controls['password'].touched){
+                    <small class="text-danger"> Password is required.</small>
+                    }
+                </div>
+                <button type="submit" class="flame-cta-fill w-100" (click)="register()">Register</button>
+            </form>
+        </div>
+    </div>
+</section>

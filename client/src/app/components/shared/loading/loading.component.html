@@ -1,0 +1,20 @@
+@if (loading) {
+<div class="loading-overlay">
+    <div class="spinner"></div>
+</div>
+}
+
+@if (errorLoading) {
+<div class="error-page">
+    <div class="error-content">
+        <div class="error-icon">⚠️</div>
+
+        <h2 class="error-title">Failed to load data</h2>
+
+        <p class="error-description">
+            Something went wrong while connecting to the server.<br>
+            Please check your internet connection or try again.
+        </p>
+    </div>
+</div>
+}

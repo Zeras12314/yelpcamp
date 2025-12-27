@@ -1,22 +1,74 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config({ quiet: true });
+}
+
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const campGroundRoute = require("./routes/campgroundRoutes");
+const reviewRoute = require("./routes/reviewRoutes");
+const userRoute = require("./routes/userRoutes");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const app = express();
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const API_PATHS = {
+  CAMP: "/api/campgrounds",
+  REVIEW: "/api/campgrounds/:id/reviews",
+};
 
 const port = 3000;
-
-// Middleware to parse JSON bodies
-app.use(express.json());
-app.use(cors());
-app.use(morgan("tiny"));
+app.use(express.json()); // Middleware to parse JSON bodies
+app.use(
+  cors({
+    origin: "http://localhost:4200", // Angular dev server
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // Allow cookies to be sent cross-origin
+  })
+);
+app.use(morgan("tiny")); //automatically logs details about incoming requests and responses
+app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/api/campgrounds", campGroundRoute);
+// EXPRESS-SESSION
+const sessionConfig = {
+  secret: "thisshouldbeabettersecret!",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week in ms
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // correct Date object
+    httpOnly: true,
+    secure: false, // true in production with HTTPS
+    sameSite: "lax",
+  },
+};
+app.use(session(sessionConfig));
 
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const User = require("./models/user");
+// passport - forU User, Session etc.
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// EXPRESS-SESSION END
+
+// API Routes
+app.use(API_PATHS.CAMP, campGroundRoute);
+app.use(API_PATHS.REVIEW, reviewRoute);
+// app.use(`${API_PATHS.CAMP}/user`, userRoute);
+app.use("/api/campgrounds/user", userRoute);
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
 const connect = mongoose.connect(
   "mongodb+srv://chickentaba01:EuTu2XiQsURoSsk9@cluster0.rbvedxm.mongodb.net/YelpCamp?retryWrites=true&w=majority&appName=Cluster0"
 );
