@@ -26,7 +26,6 @@ export class UserService {
 
   authMe() {
     return this.http.get<User>(`${this.apiUrl}/auth/me`).pipe(
-      tap((res) => console.log('authMe response:', res)),
       catchError((err) => {
         console.error('authMe error:', err);
         return of(null);
