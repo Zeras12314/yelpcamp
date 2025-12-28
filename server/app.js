@@ -40,10 +40,13 @@ app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: false }));
 
-// EXPRESS-SESSION
+const username = process.env.MONGODB_USERNAME;
+const password = process.env.MONGODB_PASSWORD;
+const mongoUrl = `mongodb+srv://${username}:${password}@cluster0.rbvedxm.mongodb.net/YelpCamp?retryWrites=true&w=majority&appName=Cluster0`;
+const connect = mongoose.connect(mongoUrl);
 
 const store = new MongoStore({
-  url: process.env.MONGO_URI,
+  url: mongoUrl,
   touchAfter: 24 * 60 * 60,
   crypto: {
     secret: process.env.SESSION_SECRET,
@@ -54,6 +57,7 @@ store.on("error", function (e) {
   console.log("SESSION STORE ERROR", e);
 });
 
+// EXPRESS-SESSION
 const sessionConfig = {
   store,
   name: "session",
@@ -68,6 +72,7 @@ const sessionConfig = {
     sameSite: "lax",
   },
 };
+
 app.use(session(sessionConfig));
 
 const passport = require("passport");
@@ -93,13 +98,16 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
-const connect = mongoose.connect(process.env.MONGO_URI);
 
 connect
   .then(() => {
     console.log("MongoDB Successfully Connected");
     app.listen(port, () => {
-      console.log(`Server running on Port: ${port}`);
+      if (process.env.NODE_ENV === "production") {
+        console.log("🚀 Server is running in production.");
+      } else {
+        console.log(`🛠️ Environment: Development | Port: ${port}`);
+      }
     });
   })
   .catch((error) => {
