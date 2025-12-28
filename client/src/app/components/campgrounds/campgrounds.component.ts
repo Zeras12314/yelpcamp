@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, SlicePipe } from '@angular/common';
 import { Campground } from '../../models/campground.model';
 import { Router, RouterLink } from '@angular/router';
 import { StoreService } from '../../store/store.service';
@@ -9,7 +9,7 @@ import { env } from '../../../environment/environment';
 
 @Component({
   selector: 'app-campgrounds',
-  imports: [AsyncPipe, RouterLink, LoadingComponent],
+  imports: [AsyncPipe, RouterLink, LoadingComponent, SlicePipe],
   templateUrl: './campgrounds.component.html',
   styleUrl: './campgrounds.component.scss',
 })
@@ -25,6 +25,7 @@ export class CampgroundsComponent implements OnDestroy {
   campgroundsGeoJson!: GeoJSON.FeatureCollection;
   private map!: any; // store map instance
   imageLoading = false;
+  mapLoaded = this.mapService.mapLoaded;
 
   ngOnInit() {
     this.storeService.getCampGrounds();

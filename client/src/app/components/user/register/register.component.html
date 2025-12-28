@@ -24,7 +24,14 @@
                     <small class="text-danger"> Password is required.</small>
                     }
                 </div>
-                <button type="submit" class="flame-cta-fill w-100" (click)="register()">Register</button>
+                <!-- <button type="submit" class="flame-cta-fill w-100" (click)="register()">Register</button> -->
+                <button type="submit" class="flame-cta-fill w-100" (click)="register()"
+                    [disabled]="loadingAuth$ | async">@if (!(loadingAuth$ | async)) {
+                    Register
+                    } @else {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Registering...
+                    }</button>
             </form>
         </div>
     </div>

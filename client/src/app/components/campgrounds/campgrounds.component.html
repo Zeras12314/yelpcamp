@@ -1,5 +1,9 @@
 <section class="container my-4 text-white">
+  <!-- @if(mapLoaded){
   <div class="map-container mb-5" id="map-all"></div>
+  } -->
+  <div class="map-container mb-5" id="map-all"></div>
+
 
   @if(!(errorLoading$ | async) && !(loading$ | async)){
   <div class="d-flex justify-content-between align-items-center mb-3">
@@ -29,7 +33,7 @@
         <div class="card-body d-flex flex-column">
           <h5 class="card-title mb-1">{{ camp.title }}</h5>
           <p class="location small flame-text mb-2">📍{{ camp.location || 'Unknown location' }}</p>
-          <p class="description mb-3 flex-grow-1">{{ camp.description }}</p>
+          <p class="description mb-3 flex-grow-1">{{ camp.description | slice:0:115}}...</p>
 
           <div class="d-flex justify-content-between align-items-center mt-auto">
             <span class=" fs-6">

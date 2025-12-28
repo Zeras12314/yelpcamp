@@ -17,7 +17,15 @@
                     <small class="text-danger"> Password is required.</small>
                     }
                 </div>
-                <button (click)="login()" class="flame-cta-fill w-100">Submit</button>
+                <!-- <button (click)="login()" class="flame-cta-fill w-100">Submit</button> -->
+                <button (click)="login()" class="flame-cta-fill w-100" [disabled]="loadingAuth$ | async">
+                    @if (loadingAuth$ | async) {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Logging in...
+                    } @else {
+                    Login
+                    }
+                </button>
             </form>
         </div>
     </div>

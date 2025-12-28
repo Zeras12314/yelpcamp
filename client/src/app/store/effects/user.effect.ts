@@ -44,6 +44,7 @@ export class UserEffects {
               username: res.user.username,
               email: res.user.email,
             };
+            this.router.navigate(['/campgrounds']);
             return loginSuccess({ user });
           }),
           catchError((error) => {
@@ -62,7 +63,7 @@ export class UserEffects {
         this.userService.register(username, password, email).pipe(
           tap(() => {
             this.toastr.success('Succesfully Registered!');
-            this.router.navigate(['/home']);
+            this.router.navigate(['/campgrounds']);
           }),
           switchMap((res) => {
             const user: User = {
