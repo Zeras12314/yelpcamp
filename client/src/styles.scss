@@ -80,29 +80,29 @@ body {
 
 .flame-cta {
   padding: 0.6rem 1.25rem;
-  background: rgba($acccent-flame, 0.15); // light flame overlay
-  border-color: rgba($acccent-flame, 0.45);
-  color: $acccent-flame;
+  background: rgba($accent-flame, 0.15); // light flame overlay
+  border-color: rgba($accent-flame, 0.45);
+  color: $accent-flame;
   font-weight: 600;
 
   &:hover {
-    background: rgba($acccent-flame, 0.3);
-    box-shadow: 0 8px 24px rgba($acccent-flame, 0.4);
+    background: rgba($accent-flame, 0.3);
+    box-shadow: 0 8px 24px rgba($accent-flame, 0.4);
     color: #fff;
     transform: translateY(-2px);
   }
 
   &:active {
     transform: translateY(0);
-    box-shadow: 0 4px 12px rgba($acccent-flame, 0.3);
+    box-shadow: 0 4px 12px rgba($accent-flame, 0.3);
   }
 
   &:disabled {
     opacity: 0.45;
     cursor: not-allowed;
-    background: rgba($acccent-flame, 0.08);
-    border-color: rgba($acccent-flame, 0.25);
-    color: rgba($acccent-flame, 0.5);
+    background: rgba($accent-flame, 0.08);
+    border-color: rgba($accent-flame, 0.25);
+    color: rgba($accent-flame, 0.5);
     box-shadow: none;
   }
 }
@@ -122,22 +122,19 @@ body {
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 6px 18px rgba(255, 134, 12, 0.35);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.25s ease,
-    filter 0.25s ease;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, filter 0.25s ease;
 
   /* 🔥 HOVER — hotter, not lighter */
   &:hover {
     filter: brightness(1.05) saturate(1.1);
-    box-shadow:
-      0 10px 26px rgba(255, 134, 12, 0.55),
+    box-shadow: 0 10px 26px rgba(255, 134, 12, 0.55),
       inset 0 0 0 1px rgba(255, 255, 255, 0.18);
   }
 
   &:active {
     filter: brightness(0.98);
     transform: translateY(0);
-    box-shadow:
-      0 4px 12px rgba(255, 134, 12, 0.4),
+    box-shadow: 0 4px 12px rgba(255, 134, 12, 0.4),
       inset 0 2px 4px rgba(0, 0, 0, 0.25);
   }
 
@@ -163,14 +160,14 @@ body {
 
   &:focus {
     background: rgba(255, 255, 255, 0.22);
-    border-color: rgba($acccent-flame, 0.6);
-    box-shadow: 0 0 0 0.15rem rgba($acccent-flame, 0.25);
-    color: #fff;
+    border-color: rgba($accent-flame, 0.6);
+    box-shadow: 0 0 0 0.15rem rgba($accent-flame, 0.25);
+    color: $primary-white;
   }
 }
 
 .flame-text {
-  color: $acccent-flame !important;
+  color: $accent-flame !important;
 }
 
 .white-gray {

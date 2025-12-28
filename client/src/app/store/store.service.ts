@@ -13,7 +13,7 @@ import {
   selectReviewLoadingDelete,
 } from './selectors/review.selector';
 import { Campground } from '../models/campground.model';
-import { selectIsLoggedIn, selectUser } from './selectors/user.selector';
+import { selectAuthLoading, selectIsLoggedIn, selectUser } from './selectors/user.selector';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
@@ -22,6 +22,7 @@ export class StoreService {
   campGrounds$ = this.store.select(selectCampGrounds);
   error$ = this.store.select(selectLoadCampError);
   loading$ = this.store.select(selectLoading);
+  loadingAuth$ = this.store.select(selectAuthLoading);
   loadingReviewCreate$ = this.store.select(selectReviewLoadingCreate);
   loadingReviewDelete$ = this.store.select(selectReviewLoadingDelete);
   user$ = this.store.select(selectUser);

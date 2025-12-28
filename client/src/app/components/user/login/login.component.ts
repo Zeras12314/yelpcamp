@@ -9,10 +9,11 @@ import { userLoginForm } from '../../shared/forms/user-form';
 import { Store } from '@ngrx/store';
 import { login } from '../../../store/actions/user.action';
 import { StoreService } from '../../../store/store.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [ɵInternalFormsSharedModule, ReactiveFormsModule],
+  imports: [ɵInternalFormsSharedModule, ReactiveFormsModule, AsyncPipe],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -21,6 +22,7 @@ export class LoginComponent {
   userService = inject(UserService);
   storeService = inject(StoreService);
   store = inject(Store);
+  loadingAuth$ = this.storeService.loadingAuth$;
 
   login() {
     const { username, password } = this.userLoginForm.value;

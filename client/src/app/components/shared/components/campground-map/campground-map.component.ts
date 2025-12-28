@@ -39,7 +39,7 @@ export class CampgroundMapComponent implements AfterViewInit {
         .setLngLat(this.campground.geometry.coordinates)
         .setPopup(
           new maptilersdk.Popup({ offset: 25 }).setHTML(
-            `<h3>${this.campground.title}</h3><p>${this.campground.location}</p>`
+            `<h3 style="color: #212529">${this.campground.title}</h3><p style="color: #212529">${this.campground.location}</p>`
           )
         )
         .addTo(this.map);
