@@ -28,8 +28,8 @@
 
   &:focus {
     background: rgba(255, 255, 255, 0.22);
-    border-color: rgba($acccent-flame, 0.6);
-    box-shadow: 0 0 0 0.15rem rgba($acccent-flame, 0.25);
+    border-color: rgba($accent-flame, 0.6);
+    box-shadow: 0 0 0 0.15rem rgba($accent-flame, 0.25);
     color: #fff;
   }
 }
@@ -51,7 +51,7 @@
   text-decoration: none;
 
   &:hover {
-    color: $acccent-flame;
+    color: $accent-flame;
     text-decoration: underline;
   }
 }
