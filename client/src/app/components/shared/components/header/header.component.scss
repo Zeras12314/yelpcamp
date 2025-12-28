@@ -4,6 +4,7 @@
   max-width: 70vw;
 
   .nav-link {
+    cursor: pointer;
     padding: 0.25rem 0;
     font-weight: $fw-400;
     color: rgba(255, 255, 255, 0.5);

@@ -32,6 +32,7 @@
 }
 
 .card {
+  min-height: 503px;
   display: flex;
   flex-direction: column;
   border-radius: 1rem !important;
@@ -42,7 +43,7 @@
   -webkit-backdrop-filter: blur(15px); // Safari support
   border: 1px solid rgba(255, 255, 255, 0.35) !important; // subtle glass border
   //end
-  color: #fff;
+  color: $primary-white;
   padding: 1rem;
   overflow: hidden;
 
@@ -51,7 +52,12 @@
 
   &:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); // stronger shadow on hover
-    background: rgba(255, 255, 255, 0.18) !important; // slightly brighter on hover
+    background: rgba(
+      255,
+      255,
+      255,
+      0.18
+    ) !important; // slightly brighter on hover
     border: 1px solid rgba(255, 255, 255, 0.65) !important;
   }
 
@@ -84,4 +90,3 @@
 /* =========================
    BTN CARD CTA — ADD CAMPGROUND
    ========================= */
-
