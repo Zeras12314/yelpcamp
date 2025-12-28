@@ -4,7 +4,7 @@ import {
   provideZoneChangeDetection,
   isDevMode,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withHashLocation } from '@angular/router';
 import {
   BrowserAnimationsModule,
   provideAnimations,
@@ -26,12 +26,12 @@ import { UserEffects } from './store/effects/user.effect';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes, withHashLocation()),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideStore({
       campgrounds: campGroundsReducer,
       review: reviewReducer,
-      userAuth: authReducer
+      userAuth: authReducer,
     }),
     provideEffects([CampGroundEffects, ReviewEffects, UserEffects]),
     provideAnimations(), // required animations providers
