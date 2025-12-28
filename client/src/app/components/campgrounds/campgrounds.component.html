@@ -2,10 +2,10 @@
   <!-- @if(mapLoaded){
   <div class="map-container mb-5" id="map-all"></div>
   } -->
-  <div class="map-container mb-5" id="map-all"></div>
 
 
   @if(!(errorLoading$ | async) && !(loading$ | async)){
+  <div class="map-container mb-5" id="map-all"></div>
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="m-0">Campgrounds</h2>
     <button class="btn flame-cta btn-sm" [routerLink]="['/campgrounds/add-campground']"
