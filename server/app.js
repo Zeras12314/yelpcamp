@@ -24,16 +24,23 @@ const API_PATHS = {
   REVIEW: "/api/campgrounds/:id/reviews",
 };
 
+const isProduction = process.env.NODE_ENV === "production";
 const port = process.env.PORT || 3000;
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(
   cors({
-    origin: [
-      "http://localhost:4200", // dev
-      "https://yelpcamp-5u6m.onrender.com", // production
-    ],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // required if using cookies/session
+    origin: (origin, callback) => {
+      const allowedOrigins = isProduction
+        ? ["https://yelpcamp-5u6m.onrender.com"]
+        : ["http://localhost:4200"];
+
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   })
 );
 
@@ -60,6 +67,7 @@ store.on("error", function (e) {
   console.log("SESSION STORE ERROR", e);
 });
 
+app.set("trust proxy", 1);
 // EXPRESS-SESSION
 const sessionConfig = {
   store,
@@ -67,13 +75,13 @@ const sessionConfig = {
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
+  proxy: true, // IMPORTANT
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week in ms
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
     httpOnly: true,
-    secure: true, // true in production with HTTPS
-    sameSite: "none",   // allow cross-site cookies
-    // sameSite: "lax", // for development
+    secure: isProduction, // true in production with HTTPS
+    sameSite: isProduction ? "none" : "lax", // allow cross-site cookies
   },
 };
 

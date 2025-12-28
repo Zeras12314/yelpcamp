@@ -77,7 +77,7 @@
       <div>
         @if(id){
         <a [routerLink]="['/campground-details', id]" class="glass-link">
-          Back to {{ campgroundForm.get('title')?.value }}
+          Back to {{ campName }}
         </a>
         } @else {
         <a [routerLink]="['/campgrounds']" class="glass-link">

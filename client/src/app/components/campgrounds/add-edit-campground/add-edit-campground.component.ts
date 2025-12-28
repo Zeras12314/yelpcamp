@@ -44,6 +44,7 @@ export class AddEditCampgroundComponent implements OnInit {
   hasOneImage: boolean = true;
   isImgUploadEmpty: boolean = false;
   showFileUploadValidation: boolean = false;
+  campName: string;
 
   ngOnInit(): void {
     this.campGroundOnInit();
@@ -66,6 +67,7 @@ export class AddEditCampgroundComponent implements OnInit {
           .subscribe((loadedCamps) => {
             const camp = loadedCamps.find((c) => c._id === this.id);
             if (camp) this.patchCampForm(camp);
+            this.campName = camp?.title;
             this.campImages = camp?.images;
             this.hasOneImage = camp?.images?.length === 1;
           });
@@ -118,7 +120,9 @@ export class AddEditCampgroundComponent implements OnInit {
     this.processFormData(formData);
 
     const isValid = this.validateForm(formData);
-    if (!isValid) {
+    const formImg = this.campgroundForm.value['images'];
+    const hasCampImg = formImg && formImg.length > 0;
+    if (!isValid && !hasCampImg) {
       this.campgroundForm.markAllAsTouched();
       this.showFileUploadValidation = !this.isImgUploadEmpty;
       return;
