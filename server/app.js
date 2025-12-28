@@ -28,9 +28,12 @@ const port = process.env.PORT || 3000;
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(
   cors({
-    origin: "http://localhost:4200", // Angular dev server
+    origin: [
+      "http://localhost:4200", // dev
+      "https://yelpcamp-5u6m.onrender.com", // production
+    ],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // Allow cookies to be sent cross-origin
+    credentials: true, // required if using cookies/session
   })
 );
 
