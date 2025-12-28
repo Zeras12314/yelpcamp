@@ -71,8 +71,9 @@ const sessionConfig = {
     maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week in ms
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
     httpOnly: true,
-    // secure: true, // true in production with HTTPS
-    sameSite: "lax",
+    secure: true, // true in production with HTTPS
+    sameSite: "none",   // allow cross-site cookies
+    // sameSite: "lax", // for development
   },
 };
 
