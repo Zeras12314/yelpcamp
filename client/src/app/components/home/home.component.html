@@ -6,6 +6,36 @@
         and connect with fellow campers by leaving comments and tips.
     </p>
 
-    <button class="flame-cta-fill" [routerLink]="['/campgrounds']">View
-        Campgrounds</button>
+    <button class="flame-cta-fill" [routerLink]="['/campgrounds']">View Campgrounds</button>
+
+    <!-- Visitor / Demo Account Note -->
+
+    <div class="note-wrapper">
+        @if(showWelcomeNote){
+        <div class="welcome-note p-4 rounded">
+            <button class="close-btn" (click)="closeNote()">&times;</button>
+            <h3>👋 Welcome, Visitor!</h3>
+            <p>
+                You can explore the site using our <strong>demo account</strong>:
+            </p>
+            <p class="credentials">
+                <span>Username: user</span> |
+                <span>Password: test</span>
+            </p>
+            <p>
+                Or <strong>register your own account</strong> to create, update, and delete campgrounds. Enjoy
+                exploring!
+                🏕️
+            </p>
+        </div> } @else {
+        <!-- Show Welcome Note Button -->
+        <div class="show-note-btn" (click)="showNote()">
+            <i class="bi bi-info-square"></i> Show Welcome Note
+        </div>
+
+
+        }
+    </div>
+
+
 </main>

@@ -7,13 +7,17 @@ import {
   selectLoading,
 } from './selectors/camp.selector';
 import * as CampActions from './actions/camp.action';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import {
   selectReviewLoadingCreate,
   selectReviewLoadingDelete,
 } from './selectors/review.selector';
 import { Campground } from '../models/campground.model';
-import { selectAuthLoading, selectIsLoggedIn, selectUser } from './selectors/user.selector';
+import {
+  selectAuthLoading,
+  selectIsLoggedIn,
+  selectUser,
+} from './selectors/user.selector';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
@@ -27,6 +31,9 @@ export class StoreService {
   loadingReviewDelete$ = this.store.select(selectReviewLoadingDelete);
   user$ = this.store.select(selectUser);
   isLoggedIn$ = this.store.select(selectIsLoggedIn);
+
+  private showNoteSubject = new BehaviorSubject<boolean>(true);
+  showNote$ = this.showNoteSubject.asObservable();
 
   private initialized = false;
   selectReviewLoadingCreate$: any;
@@ -49,5 +56,9 @@ export class StoreService {
 
   getisLOggedIn() {
     return this.store.select(selectIsLoggedIn);
+  }
+
+  setShowNote(value: boolean) {
+    this.showNoteSubject.next(value);
   }
 }
