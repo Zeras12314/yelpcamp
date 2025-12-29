@@ -91,4 +91,8 @@ export class CampgroundDetailsComponent implements OnInit {
   randomDays() {
     return Math.floor(Math.random() * 100);
   }
+
+  goBack() {
+    this.router.navigate(['/campgrounds']);
+  }
 }

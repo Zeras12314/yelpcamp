@@ -1,0 +1,47 @@
+@use "../../../../../styles/tokens.scss" as *;
+
+.dialog-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-align: center;
+  border-radius: 12px;
+
+  // your existing glass style
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+
+  .dialog-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .dialog-content {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    .btn-card,
+    .flame-cta-fill {
+      flex: 1 1 40%;
+      min-width: 100px;
+    }
+  }
+}
+
+.mdc-dialog--open .mat-mdc-dialog-surface,
+.mdc-dialog--closing .mat-mdc-dialog-surface {
+  background-color: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}

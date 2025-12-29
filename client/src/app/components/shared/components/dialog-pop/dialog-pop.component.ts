@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { MaterialElementsModule } from '../../material/material.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
@@ -14,6 +14,7 @@ import { Actions, ofType } from '@ngrx/effects';
   templateUrl: './dialog-pop.component.html',
   styleUrl: './dialog-pop.component.scss',
   standalone: true,
+  encapsulation: ViewEncapsulation.None,
 })
 export class DialogPopComponent {
   matData = inject(MAT_DIALOG_DATA);
@@ -21,8 +22,7 @@ export class DialogPopComponent {
   actions$ = inject(Actions);
   dialogRef = inject(MatDialogRef);
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   confirmDelete() {
     const dataToDelete = this.matData;

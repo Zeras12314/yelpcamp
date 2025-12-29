@@ -180,6 +180,21 @@
   padding: 0 1.75rem 1.75rem;
 }
 
+.back-link {
+  display: inline-block;
+  color: $primary-white;
+  font-weight: 400;
+  font-size: $paragraph-sm;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0 1.75rem 1.75rem;
+  &:hover {
+    color: $accent-flame; // optional, subtle highlight on hover
+  }
+}
+
+
 /* =========================
    FOOTER
    ========================= */
