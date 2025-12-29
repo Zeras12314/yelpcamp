@@ -111,6 +111,7 @@ body {
    FLAME CTA — FILLED GLASS VARIANT
    ========================= */
 .flame-cta-fill {
+  width: 80%;
   padding: 0.6rem 1.4rem;
   border-radius: 6px;
   background: $accent-flame-dark;
@@ -145,6 +146,10 @@ body {
     background: rgba(255, 134, 12, 0.3);
     border-color: rgba($primary-white, 0.15);
     box-shadow: none;
+  }
+
+  @media (min-width: 768px) {
+    width: auto;
   }
 }
 
