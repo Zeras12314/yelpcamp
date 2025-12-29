@@ -6,7 +6,8 @@ maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 // GET ALL CAMPGROUNDS
 const getAllCampgrounds = async (req, res) => {
-  const campgrounds = await campgroundData.find({});
+  const campgrounds = await campgroundData.find({}).sort({ createdAt: -1 }); // 👈 newest first
+
   res.status(200).json(campgrounds);
 };
 // GET CAMPGROUND BY ID

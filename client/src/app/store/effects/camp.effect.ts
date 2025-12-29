@@ -20,6 +20,7 @@ import {
 } from '../actions/camp.action';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class CampGroundEffects {
@@ -27,6 +28,7 @@ export class CampGroundEffects {
   campService = inject(CampgroundsService);
   router = inject(Router);
   toastr = inject(ToastrService);
+  store = inject(Store);
 
   constructor() {}
 
@@ -119,6 +121,7 @@ export class CampGroundEffects {
         ofType(addCampgroundSuccess),
         tap(({ campground }) => {
           this.router.navigate([`/campground-details/${campground._id}`]);
+          // this.router.navigate(['/campgrounds']);
         })
       ),
     { dispatch: false }
@@ -149,7 +152,7 @@ export class CampGroundEffects {
     () =>
       this.actions$.pipe(
         ofType(deleteCampgroundSuccess),
-        tap(() => this.router.navigate(['/']))
+        tap(() => this.router.navigate(['/campgrounds']))
       ),
     { dispatch: false }
   );

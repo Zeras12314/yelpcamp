@@ -86,7 +86,8 @@
         }
       </div>
 
-      <button type="submit" class="flame-cta-fill" [disabled]="campgroundForm.pristine" (click)="onSubmit()">
+      <button type="submit" class="flame-cta-fill" [disabled]="(campgroundForm.pristine) || (loading$ | async)"
+        (click)="onSubmit()">
         @if (!(loading$ | async)) {
         {{ btnLabel }} Campground
         } @else {

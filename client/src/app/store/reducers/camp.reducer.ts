@@ -68,7 +68,7 @@ export const campGroundsReducer = createReducer(
   })),
   on(addCampgroundSuccess, (state, { campground }) => ({
     ...state,
-    campgrounds: [...state.campgrounds, campground],
+    campgrounds: [campground, ...state.campgrounds],
     loading: false,
   })),
   on(addCampgroundFailure, (state) => ({

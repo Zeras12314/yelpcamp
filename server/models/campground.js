@@ -42,7 +42,10 @@ const CampgroundSchema = mongoose.Schema(
       },
     ],
   },
-  opts
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+  }
 );
 
 CampgroundSchema.virtual("properties.popUpMarkup").get(function () {
