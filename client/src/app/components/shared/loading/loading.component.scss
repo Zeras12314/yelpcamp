@@ -1,16 +1,15 @@
 @use "../../../../styles/tokens.scss" as *;
 
 .loading-overlay {
-  position: absolute; /* was fixed, now relative to parent */
-  inset: 0; /* top:0; right:0; bottom:0; left:0 */
-  background: rgba(255, 255, 255, 0.6); /* light translucent */
-  backdrop-filter: blur(6px); /* blurry effect */
-  -webkit-backdrop-filter: blur(6px); /* Safari support */
+  position: fixed; /* absolute to viewport */
+  inset: 0;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
-  border-radius: 8px; /* optional */
+  z-index: 9999;
 }
 
 .spinner {
@@ -30,11 +29,13 @@
 
 /* Full page container */
 .error-page {
-  width: 100%;
-  height: calc(90vh - 100px); /* adjust based on header height */
+  position: fixed;
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 9998;
+  background: transparent; /* optional */
 }
 
 /* Inner card */
@@ -66,4 +67,9 @@
   font-size: 15px;
   margin-bottom: 25px;
   line-height: 1.5;
+}
+
+.loading-overlay,
+.error-page {
+  pointer-events: none;
 }

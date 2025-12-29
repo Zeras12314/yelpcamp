@@ -27,18 +27,26 @@ const API_PATHS = {
 const isProduction = process.env.NODE_ENV === "production";
 const port = process.env.PORT || 3000;
 app.use(express.json()); // Middleware to parse JSON bodies
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      const allowedOrigins = isProduction
-        ? ["https://yelpcamp-5u6m.onrender.com"]
-        : ["http://localhost:4200"];
+      const allowedOrigins = [
+        "http://localhost:4200",
+        "https://yelpcamp-5u6m.onrender.com",
+      ];
 
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
+      // allow server-to-server / Postman / same-origin
+      if (!origin) {
+        return callback(null, true);
       }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // ❗ DO NOT throw an error
+      return callback(null, false);
     },
     credentials: true,
   })
