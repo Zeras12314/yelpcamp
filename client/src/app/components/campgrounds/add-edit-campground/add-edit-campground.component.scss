@@ -1,9 +1,14 @@
 @use "../../../../styles/tokens.scss" as *;
 
 .add-edit-container {
-  width: 800px;
-  min-width: 500px;
+  width: 100%;
+  max-width: 900px;
+  margin-inline: auto;
   padding: $space-4;
+
+  @media (max-width: 576px) {
+    padding: $space-3;
+  }
 }
 
 /* =========================
@@ -11,6 +16,10 @@
    ========================= */
 .glass-form {
   padding: 2rem 2.25rem;
+
+  @media (max-width: 576px) {
+    padding: 1.25rem;
+  }
 }
 
 /* =========================
@@ -41,7 +50,10 @@
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(6px);
+  max-height: 140px;
+  object-fit: cover;
 }
+
 
 /* =========================
    LINKS
