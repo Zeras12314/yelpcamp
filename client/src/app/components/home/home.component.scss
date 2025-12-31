@@ -1,15 +1,15 @@
 @use "../../../styles/tokens.scss" as *;
 
 main {
-  height: 60vh;
-  place-content: center;
+  margin-top: 6%;
+  // place-content: center;
 
   h1 {
     font-size: $display;
-    margin-bottom: $space-6;
+    margin-bottom: $space-5;
   }
   p {
-    margin-bottom: $space-20;
+    margin-bottom: $space-10;
   }
 
   .flame-cta-fill {
@@ -19,13 +19,12 @@ main {
 
   .welcome-note {
     position: absolute; // make it float above other content
-    bottom: 20vh; // distance from top
+    bottom: 10vh; // distance from top
     left: 50%; // center horizontally
     transform: translateX(-50%); // exact horizontal centering
     background: rgba(0, 0, 0, 0.6); // subtle transparent card
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 12px;
-    padding: 1.5rem;
     color: $primary-white;
     max-width: 600px;
     text-align: center;
@@ -66,12 +65,12 @@ main {
 
     p {
       margin-bottom: 0.75rem;
-      line-height: 1.5;
+      font-size: $paragraph-sm;
     }
   }
   .show-note-btn {
     position: absolute;
-    bottom: 35vh; // same as welcome note
+    bottom: 20vh;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
@@ -173,3 +172,20 @@ main {
     }
   }
 }
+
+/* Short laptop screens (13–14", some 16" with low vertical resolution) */
+@media (max-height: 800px) {
+  main {
+    min-height: auto;
+    margin-top: $space-8;
+  }
+
+  main p {
+    margin-bottom: $space-6;
+  }
+
+  .welcome-note {
+    max-width: 480px;
+  }
+}
+
