@@ -10,12 +10,11 @@
     A full-stack campground review application built with Angular, Node.js, MongoDB, and MapTiler.
     <br />
     <br />
-    <a href="https://yelpcamp-5u6m.onrender.com">🚀 Live Demo</a>
+    <a href="https://yelpcamp-5u6m.onrender.com" target="_blank">🚀 Live Demo</a>
   </p>
 </div>
-
-> ⚠️ **Note:** This application is deployed on **Render (free tier)**.  
- Initial requests may take a few seconds due to server cold starts.
+<p align="center">⚠️ **Note:** This application is deployed on **Render (free tier)**.  
+ Initial requests may take a few seconds due to server cold starts.</p>
 
 ---
 
@@ -206,7 +205,7 @@ server/
 
 ```sh
 git clone https://github.com/Zeras12314/yelpcamp.git
-cd yelpCamp
+cd yelpcamp
 ```
 
 <br>
