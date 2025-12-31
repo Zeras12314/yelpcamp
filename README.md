@@ -10,9 +10,12 @@
     A full-stack campground review application built with Angular, Node.js, MongoDB, and MapTiler.
     <br />
     <br />
-    <a href="https://yelpcamp-5u6m.onrender.com">View Demo</a>
+    <a href="https://yelpcamp-5u6m.onrender.com">🚀 Live Demo</a>
   </p>
 </div>
+
+> ⚠️ **Note:** This application is deployed on **Render (free tier)**.  
+ Initial requests may take a few seconds due to server cold starts.
 
 ---
 
@@ -24,26 +27,30 @@
     <li><a href="#about-the-project">About The Project</a></li>
     <li><a href="#tech-stack">Tech Stack</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#project-structure">Project Structure</a></li>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#demo-account">Demo Account</a></li>
+    <li><a href="#seeding-the-database">Seeding the Database</a></li>
+    <li><a href="#responsive">Responsive Design</a></li>
+    <li><a href="#screenhots">Screenshots</a></li>
+    <li><a href="#learning-goals">Learning Goals</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#author">Author</a></li>
   </ol>
 </details>
 
 ---
 
-## <a id="#about-the-project"> About The Project </a>
+## <a id="about-the-project"> About The Project </a>
 
 **YelpCamp** is a full-stack web application that allows users to discover, review, and share campgrounds. Users can explore campgrounds, view locations on an interactive map, leave reviews, upload images, and manage their own campground listings through secure, session-based authentication.
 
-This project is built as a learning-focused and showcase-driven full-stack application, designed to deepen and demonstrate my knowledge of Angular, RxJS, and NgRx on the frontend, alongside a Node.js + Express backend and MongoDB for data persistence. It emphasizes reactive data flows, state management, validation, authentication, and real-world application architecture.
+This project is built as a learning-focused and showcase-driven full-stack application, designed to deepen and demonstrate my knowledge of Angular 19, RxJS, and NgRx on the frontend, alongside a Node.js + Express backend and MongoDB for data persistence. It emphasizes reactive data flows, state management, validation, authentication, and real-world application architecture.
 
 **✨ Key features:**
 
@@ -75,131 +82,111 @@ This project is built as a learning-focused and showcase-driven full-stack appli
 
 ---
 
-## <a id="#tech-stack"> 🛠️ Tech Stack </a>
-## <a id="#tech-stack"> About The Project </a>
+## <a id="tech-stack"> 🛠️ Tech Stack </a>
 
 **Frontend**
 
-- Angular (Standalone & modular components)
-- NgRx (state management, actions, reducers, effects)
-- SCSS with design tokens
-- Bootstrap + custom UI styles
-- RxJS for reactive data handling
+![Angular](https://img.shields.io/badge/Angular-DD0031?logo=angular&logoColor=white)
+![NgRx](https://img.shields.io/badge/NgRx-BA2BD2?logo=ngrx&logoColor=white)
+![RxJS](https://img.shields.io/badge/RxJS-B7178C?logo=reactivex&logoColor=white)
+![SCSS](https://img.shields.io/badge/SCSS-CC6699?logo=sass&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?logo=bootstrap&logoColor=white)
+
 
 <br>
 
- **Backend**
-- Node.js
-- Express.js
-- MongoDB with Mongoose
-- Passport.js (local strategy)
-- Express Session
+**Backend**
+
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express.js-000000?logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)
+![Mongoose](https://img.shields.io/badge/Mongoose-880000?logo=mongoose&logoColor=white)
+![Passport](https://img.shields.io/badge/Passport.js-34E27A?logo=passport&logoColor=black)
+
 
 <br>
 
 **Other Tools**
 
-- MapTiler (maps & clustering)
-- Cloudinary (image uploads)
-- Render
+![MapTiler](https://img.shields.io/badge/MapTiler-1E90FF?logo=mapbox&logoColor=white)
+![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?logo=cloudinary&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?logo=render&logoColor=black)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
-**📂 Project Structure**
+## <a id="project-structure"> 📂 Project Structure </a>
+
+**Frontend**
 ```bash
-YelpCamp/
 client/
-│
-├── public/
-├── src/
-│ ├── app/
-│ │ ├── components/ # Feature-level components
-│ │ │ ├── campground-details/
-│ │ │ ├── campgrounds/
-│ │ │ ├── home/
-│ │ │ └── not-found/
-│ │ │
-│ │ ├── shared/ # Reusable & UI components
-│ │ │ └── components/
-│ │ │ ├── campground-map/
-│ │ │ ├── dialog-pop/
-│ │ │ ├── footer/
-│ │ │ ├── header/
-│ │ │ ├── reviews/
-│ │ │ ├── forms/
-│ │ │ ├── loading/
-│ │ │ ├── material/
-│ │ │ └── user/
-│ │ │
-│ │ ├── interceptors/ # HTTP interceptors
-│ │ ├── models/ # Interfaces & data models
-│ │ ├── services/ # API & business logic services
-│ │ ├── store/ # NgRx state (actions, reducers, effects)
-│ │ │
-│ │ ├── app.component.*
-│ │ ├── app.config.ts
-│ │ └── app.routes.ts
-│ │
-│ ├── environment/ # Environment configs
-│ ├── styles/ # Global styles & design tokens
-│ │ ├── tokens/
-│ │ ├── stars.scss
-│ │ └── tokens.scss
-│ │
-│ ├── index.html
-│ ├── main.ts
-│ └── styles.scss
-│
-├── angular.json
-├── package.json
-├── tsconfig*.json
-│
-server/
-├── cloudinary/
-│ └── index.js # Cloudinary configuration
-│
-├── controllers/ # Route controllers (business logic)
-│ ├── campgroundController.js
-│ ├── reviewController.js
-│ └── userController.js
-│
-├── models/ # Mongoose schemas
-│ ├── campground.js
-│ ├── review.js
-│ └── user.js
-│
-├── routes/ # Express routes
-│ ├── campgroundRoutes.js
-│ ├── reviewRoutes.js
-│ └── userRoutes.js
-│
-├── seeds/ # Database seed scripts
-│ ├── cities.js
-│ ├── index.js
-│ ├── seedHelpers.js
-│ └── users.js
-│
-├── uploads/ # Temporary uploaded files
-│
-├── utils/ # Utility helpers
-│ └── asyncHandler.js
-│
-├── .env
-├── .gitignore
-├── app.js # Express app entry
-├── middleware.js # Custom middleware
-├── package.json
-└── package-lock.json
+└── src/
+    ├── app/
+    │   ├── features/            # Feature-based components
+    │   │   ├── campgrounds/
+    │   │   ├── campground-details/
+    │   │   ├── home/
+    │   │   ├── auth/
+    │   │   └── not-found/
+    │   │
+    │   ├── shared/              # Truly reusable
+    │   │   ├── components/
+    │   │   │   ├── header/
+    │   │   │   ├── footer/
+    │   │   │   ├── loading/
+    │   │   │   ├── dialog/
+    │   │   │   └── campground-map/
+    │   │   ├── material/
+    │   │   └── forms/
+    │   │
+    │   ├── core/                # App-wide singletons
+    │   │   ├── interceptors/
+    │   │   └── services/
+    │   │   
+    │   │
+    │   ├── models/
+    │   ├── store/               # NgRx (actions, reducers, effects)
+    │   │
+    │   ├── app.component.*
+    │   ├── app.routes.ts
+    │   └── app.config.ts
+    │
+    ├── environments/
+    ├── styles/
+    │   ├── tokens/
+    │   └── styles.scss
+    │
+    ├── main.ts
+    └── index.html
+
 
 ```
 
+**Backend**
+
+```sh
+server/
+├── config/
+│   └── cloudinary.js
+├── controllers/
+├── models/
+├── routes/
+├── utils/
+├── seeds/
+├── uploads/
+├── middleware.js
+├── app.js
+└── package.json
+
+```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 <br>
 
-## 🚀 Getting Started
+## <a id="getting-started">🚀 Getting Started</a>
 
-**Prerequisites**
+**<a id="prerequisites">Prerequisites</a>**
 
 - Node.js (v18+ recommended)
 
@@ -211,26 +198,29 @@ server/
   ```sh
   npm install npm@latest -g
   ```
-<br>
+  <br>
 
-## ⚙️ Installation
+## ⚙️<a id="installation">Installation</a>
 
 **1️⃣ Clone the repository**
 
-  ```sh
- git clone https://github.com/Zeras12314/yelpcamp.git
- cd yelpCamp
-  ```
+```sh
+git clone https://github.com/Zeras12314/yelpcamp.git
+cd yelpCamp
+```
+
 <br>
 
 **2️⃣ Backend setup**
-  ```sh
+
+```sh
 cd server
 npm install
-  ```
+```
 
 Create a .env file inside the server folder:
-  ```sh
+
+```sh
 CLOUDINARY_NAME=your_cloudinary_name
 CLOUDINARY_KEY=your_cloudinary_key
 CLOUDINARY_SECRET=your_cloudinary_secret
@@ -238,42 +228,54 @@ MAPTILER_API_KEY=your_maptiler_key
 MONGODB_USERNAME=your_mongo_username
 MONGODB_PASSWORD=your_mongo_password
 SESSION_SECRET=your_session_secret
-  ```
+```
 
 Start the backend server:
-  ```sh
+
+```sh
 npm start
-  ```
+```
+
 <br>
 
 **3️⃣ Frontend setup**
-  ```sh
+
+```sh
 cd ../client
 npm install
 ng serve
-  ```
-Frontend will run at:
-  ```sh
-http://localhost:4200
-  ```
-<br>
+```
 
-## 🔑 Demo Account
+Frontend will run at:
+
+```sh
+http://localhost:4200
+```
+
+<br>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## <a id="demo-account">🔑 Demo Account</a>
+
 For quick access, you can use the demo account:
-  ```sh
+
+```sh
 Username: user
 Password: test
-  ```
+```
 
-## 🔑 Seeding the Database
+## <a id="seeding-the-database">🔑 Seeding the Database</a>
+
 To populate the database with sample campgrounds:
-  ```sh
+
+```sh
 cd server
 node seeds/index.js
-  ```
+```
+
 <br>
 
-## 📱 Responsive Design
+## <a id="responsive">📱 Responsive Design</a>
 
 - Optimized for desktop, laptop, tablet, and mobile screens
 
@@ -281,16 +283,13 @@ node seeds/index.js
 
 - Mobile‑first adjustments using width and height media queries
 
-## 📸 Screenshots
+## <a id="screenshots">📸 Screenshots</a>
 
-![alt text](screen-capture.gif)
+![alt text](client/public/screenshots/screen-capture.gif)
+<img src="client/public/screenshots/img-1.png" width="400" />
+<img src="client/public/screenshots/img-2.png" width="400" />
 
-![alt text](<Screenshot 2025-12-31 180300.png>)
-
-![alt text](<Screenshot 2025-12-31 180317.png>)
-
-
-## 🧠 Learning Goals
+## <a id="learning-goals">🧠 Learning Goals</a>
 
 - This project was built to practice:
 
@@ -308,7 +307,9 @@ node seeds/index.js
 
 <br>
 
-## 🗺️ Roadmap / Improvements
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## <a id="roadmap">🗺️ Roadmap / Improvements</a>
 
 🔍 Advanced search & filtering
 
@@ -322,11 +323,11 @@ node seeds/index.js
 
 <br>
 
-## 📄 License
+## <a id="license">📄 License</a>
 
 This project is for educational purposes.
 
-🙌 Acknowledgements
+## <a id="acknowledgments">🙌 Acknowledgements</a>
 
 - Inspired by Colt Steele’s YelpCamp project
 
@@ -336,7 +337,14 @@ This project is for educational purposes.
 
 <br>
 
-## 👤 Author
+## <a id="author">👤 Author</a>
 
 <strong>Gerson Tiongson</strong>
-<p>Angular Developer | Full‑Stack Learner</p>
+
+<p>Angular Developer | Full-Stack Learner</p>
+
+📧 **Email:** tiongsongerson@gmail.com 
+<br>
+💼 **LinkedIn:** https://www.linkedin.com/in/gerson-tiongson/  
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
