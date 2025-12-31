@@ -1,15 +1,17 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { StoreService } from '../../store/store.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [RouterLink, AsyncPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
   storeService = inject(StoreService);
+  isLoggedIn$ = this.storeService.isLoggedIn$;
   showWelcomeNote = true;
 
   ngOnInit() {

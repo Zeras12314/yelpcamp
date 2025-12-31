@@ -23,17 +23,12 @@ export class CampgroundsService {
     return this.http.get<Campground>(`${this.apiUrl}/${id}`);
   }
 
-  // Create a new campground
-  // createCampground(campground: Campground): Observable<Campground> {
-  //   return this.http.post<Campground>(this.apiUrl, campground);
-  // }
-
   createCampground(campground: any): Observable<Campground> {
     return this.http.post<Campground>(this.apiUrl, campground);
   }
 
   // Update an existing campground
-  updateCampground(id: string, campground: any): Observable<Campground> {
+  updateCampground(id: string, campground: Partial<Campground>): Observable<any> {
     return this.http.put<Campground>(`${this.apiUrl}/${id}`, campground);
   }
 

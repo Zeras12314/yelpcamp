@@ -10,6 +10,7 @@
 
     <!-- Visitor / Demo Account Note -->
 
+    @if(!(isLoggedIn$ | async)){
     <div class="note-wrapper">
         @if(showWelcomeNote){
         <div class="welcome-note p-4 rounded">
@@ -23,7 +24,8 @@
                 <span>Password: test</span>
             </p>
             <p>
-                Or <strong>register your own account</strong> to create, update, and delete campgrounds. Enjoy
+                Or <strong [routerLink]="['/campgrounds/register']" class="text-decoration-underline pointer">register
+                    your own account</strong> to create, update, and delete campgrounds. Enjoy
                 exploring!
                 🏕️
             </p>
@@ -35,7 +37,7 @@
 
 
         }
-    </div>
+    </div> }
 
 
 </main>
