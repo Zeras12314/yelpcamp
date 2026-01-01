@@ -34,6 +34,10 @@
         </button>
 
     </form>
+    @if(isReview$ | async){
+    <app-messages></app-messages>
+    }
+
 
     <!-- Reviews -->
     <div class="review-list-wrapper" [class.loading]="loadingDelete$ | async">

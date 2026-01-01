@@ -19,18 +19,18 @@ import {
   deleteCampgroundSuccess,
 } from '../actions/camp.action';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { Store } from '@ngrx/store';
+import { MessagesService } from '../../services/message.service';
 
 @Injectable()
 export class CampGroundEffects {
   actions$ = inject(Actions);
   campService = inject(CampgroundsService);
   router = inject(Router);
-  toastr = inject(ToastrService);
+  messageService = inject(MessagesService);
   store = inject(Store);
 
-  constructor() {}
+  constructor() { }
 
   loadCampGrounds$ = createEffect(() =>
     this.actions$.pipe(
@@ -56,21 +56,13 @@ export class CampGroundEffects {
         // API call
         return this.campService.updateCampground(id, campground).pipe(
           map((updatedCampground) => {
-            this.toastr.success(
-              'Successfully updated!',
-              updatedCampground.title
-            );
-
+            this.messageService.showSuccess(`Successfully updated ${updatedCampground.title}`)
             return updateCampgroundSuccess({
               campground: updatedCampground,
             });
           }),
           catchError((error) => {
-            this.toastr.error(
-              error?.error?.message ?? 'Update failed',
-              'Error'
-            );
-
+            this.messageService.showError(error?.error?.message ?? 'Update failed')
             return of(
               updateCampgroundFailure({
                 error: error.message,
@@ -99,15 +91,15 @@ export class CampGroundEffects {
       concatMap(({ campground }) =>
         this.campService.createCampground(campground).pipe(
           map((newCampground) => {
-            // Show success toastr
-            this.toastr.success('Successfully created!', newCampground.title);
+            // Show success message
+            this.messageService.showSuccess(`Successfully created ${newCampground.title}`)
             return addCampgroundSuccess({
               campground: newCampground,
             });
           }),
           catchError((error) => {
-            // Show error toastr
-            this.toastr.error(error.error.message, 'Error');
+            // Show error message
+            this.messageService.showError(error.error.message)
             return of(addCampgroundFailure({ error: error.message }));
           })
         )
@@ -133,14 +125,14 @@ export class CampGroundEffects {
       concatMap(({ id }) =>
         this.campService.deleteCampground(id).pipe(
           tap(() => {
-            this.toastr.success('Campground deleted successfully');
+            this.messageService.showSuccess('Campground deleted successfully')
           }),
           mergeMap(() => [
             deleteCampgroundSuccess({ id }),
             loadCampGrounds(), // triggers load effect
           ]),
           catchError((error) => {
-            this.toastr.error(error.error.message, 'Error');
+            this.messageService.showError(error.error.message)
             return of(deleteCampgroundFailure({ error }));
           })
         )

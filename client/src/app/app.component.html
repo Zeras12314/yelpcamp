@@ -1,7 +1,12 @@
 <div class="app-wrapper d-flex flex-column min-vh-100" [ngClass]="dispalyLandingImage() ? 'homepage' : 'bg-dark'">
     <app-header [ngClass]="{ 'bg-dark': !dispalyLandingImage() }"></app-header>
+    @if(!( isReview$ | async)){
+    <app-messages class="text-white"></app-messages>
+    }
+
     <main class="flex-fill">
         <router-outlet></router-outlet>
     </main>
     <app-footer class="text-center"></app-footer>
 </div>
+

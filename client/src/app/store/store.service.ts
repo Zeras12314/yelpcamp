@@ -35,8 +35,13 @@ export class StoreService {
   private showNoteSubject = new BehaviorSubject<boolean>(true);
   showNote$ = this.showNoteSubject.asObservable();
 
+  private isReview = new BehaviorSubject<boolean>(false);
+  isReview$ = this.isReview.asObservable();
+
   private initialized = false;
   selectReviewLoadingCreate$: any;
+
+
 
   getCampGrounds() {
     if (!this.initialized) {
@@ -60,5 +65,13 @@ export class StoreService {
 
   setShowNote(value: boolean) {
     this.showNoteSubject.next(value);
+  }
+
+  setisReview(value: boolean) {
+    this.isReview.next(value)
+  }
+
+  getisReview(): boolean {
+    return this.isReview.getValue();
   }
 }

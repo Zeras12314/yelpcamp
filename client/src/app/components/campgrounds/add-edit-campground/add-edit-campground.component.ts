@@ -15,7 +15,6 @@ import {
   addCampground,
   updateCampground,
 } from '../../../store/actions/camp.action';
-import { ToastrService } from 'ngx-toastr';
 import { filter, take } from 'rxjs';
 import { CampgroundsService } from '../../../services/campgrounds.service';
 import { AsyncPipe } from '@angular/common';
@@ -32,7 +31,6 @@ export class AddEditCampgroundComponent implements OnInit {
   router = inject(Router);
   storeService = inject(StoreService);
   campService = inject(CampgroundsService);
-  toastr = inject(ToastrService);
   store = inject(Store);
   campgroundForm: FormGroup = createCampgroundForm();
   btnLabel: string = '';

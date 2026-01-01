@@ -1,0 +1,7 @@
+@if (messageService.messages$ | async; as msg) {
+<div class="container message-wrapper bg-glass display-flex"
+    [ngClass]="{'success' : msg.type === 'success', 'error' : msg.type === 'error'}">
+    <p class="message-text">{{msg.messages}}</p>
+    <i class="bi bi-x close-btn" (click)="onClose()"></i>
+</div>
+}
