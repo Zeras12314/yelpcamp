@@ -17,16 +17,16 @@ import {
 } from '../actions/user.action';
 import { UserService } from '../../services/user.service';
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 import { User } from '../../models/user.model';
 import { Store } from '@ngrx/store';
+import { MessagesService } from '../../services/message.service';
 
 @Injectable()
 export class UserEffects {
   actions$ = inject(Actions);
   router = inject(Router);
   userService = inject(UserService);
-  toastr = inject(ToastrService);
+  messageService = inject(MessagesService);
   store = inject(Store);
 
   login$ = createEffect(() =>
@@ -35,7 +35,6 @@ export class UserEffects {
       mergeMap(({ username, password }) =>
         this.userService.login(username, password).pipe(
           tap(() => {
-            this.toastr.success('Succesfully login');
             this.router.navigate(['/home']);
           }),
           map((res) => {
@@ -45,10 +44,11 @@ export class UserEffects {
               email: res.user.email,
             };
             this.router.navigate(['/campgrounds']);
+            this.messageService.showSuccess('Successfully Login')
             return loginSuccess({ user });
           }),
           catchError((error) => {
-            this.toastr.error(error.error.message, 'Error');
+            this.messageService.showError(error.error.message)
             return of(loginFailure({ error }));
           })
         )
@@ -62,8 +62,8 @@ export class UserEffects {
       switchMap(({ username, password, email }) =>
         this.userService.register(username, password, email).pipe(
           tap(() => {
-            this.toastr.success('Succesfully Registered!');
             this.router.navigate(['/campgrounds']);
+            this.messageService.showSuccess('Succesfully Registered!')
           }),
           switchMap((res) => {
             const user: User = {
@@ -74,7 +74,7 @@ export class UserEffects {
             return of(registerSuccess({ user }));
           }),
           catchError((error) => {
-            this.toastr.error(error.error.message, 'Error');
+            this.messageService.showError(error.error.message)
             return of(registerFailure({ error }));
           })
         )
@@ -89,16 +89,16 @@ export class UserEffects {
     )
   );
 
-loadUser$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(loadUser, appInit), // triggers on app start or after login
-    switchMap(() =>
-      this.userService.authMe().pipe(
-        map((user) => loadUserSuccess({ user })), // ✅ pass user here
+  loadUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadUser, appInit), // triggers on app start or after login
+      switchMap(() =>
+        this.userService.authMe().pipe(
+          map((user) => loadUserSuccess({ user })), // ✅ pass user here
+        )
       )
     )
-  )
-);
+  );
 
 
   logout$ = createEffect(() =>
@@ -108,8 +108,8 @@ loadUser$ = createEffect(() =>
         this.userService.logout().pipe(
           map(() => logoutSuccess()), // dispatch success action
           tap(() => {
-            this.toastr.success('Succesfully Logout!');
             this.router.navigate(['/campgrounds/login']);
+            this.messageService.showSuccess('Succesfully Logout!')
           }),
           catchError((error) => of(logoutFailure({ error }))) // dispatch failure action
         )

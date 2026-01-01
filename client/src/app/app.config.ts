@@ -9,7 +9,6 @@ import {
   BrowserAnimationsModule,
   provideAnimations,
 } from '@angular/platform-browser/animations';
-import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
@@ -36,7 +35,6 @@ export const appConfig: ApplicationConfig = {
     provideEffects([CampGroundEffects, ReviewEffects, UserEffects]),
     provideAnimations(), // required animations providers
     importProvidersFrom(BrowserAnimationsModule), // ✅ correct way to "import" modules
-    provideToastr(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };

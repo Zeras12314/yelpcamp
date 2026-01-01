@@ -10,10 +10,11 @@ import { createReviewForm } from '../../forms/review-form';
 import { StoreService } from '../../../../store/store.service';
 import { AsyncPipe } from '@angular/common';
 import { LoadingComponent } from '../../loading/loading.component';
+import { MessagesComponent } from '../../messages/messages.component';
 
 @Component({
   selector: 'app-reviews',
-  imports: [ReactiveFormsModule, AsyncPipe, LoadingComponent],
+  imports: [ReactiveFormsModule, AsyncPipe, LoadingComponent, MessagesComponent],
   templateUrl: './reviews.component.html',
   styleUrl: './reviews.component.scss',
 })
@@ -25,11 +26,12 @@ export class ReviewsComponent implements OnInit {
   loadingCreate$ = this.storeService.loadingReviewCreate$;
   loadingDelete$ = this.storeService.loadingReviewDelete$;
   loading$ = this.storeService.loading$;
-
   @Input() campground: Campground;
   currentUserId: string;
+  isReview$ = this.storeService.isReview$
 
   ngOnInit(): void {
+    this.storeService.setisReview(false)
     this.storeService.getUser().subscribe((user) => {
       if (user) {
         this.currentUserId = user['_id'];
@@ -38,6 +40,7 @@ export class ReviewsComponent implements OnInit {
   }
 
   submitReview(id: string) {
+    this.storeService.setisReview(true)
     const { body, rating } = this.reviewForm.value;
     const review: Review = { body, rating } as Review;
     this.store.dispatch(createReview({ id, review }));
@@ -45,6 +48,7 @@ export class ReviewsComponent implements OnInit {
   }
 
   deleteReview(reviewId: string) {
+    this.storeService.setisReview(true)
     const campId = this.campId();
     if (campId) {
       this.store.dispatch(deleteReview({ campId: campId, reviewId: reviewId }));
