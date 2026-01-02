@@ -6,6 +6,8 @@ import { StoreService } from '../../store/store.service';
 import { LoadingComponent } from '../shared/loading/loading.component';
 import { MapTilerService } from '../../services/map-tiler.service';
 import { env } from '../../../environment/environment';
+import { Store } from '@ngrx/store';
+import { sortCampgrounds } from '../../store/actions/camp.action';
 
 @Component({
   selector: 'app-campgrounds',
@@ -15,6 +17,7 @@ import { env } from '../../../environment/environment';
 })
 export class CampgroundsComponent implements OnDestroy {
   private router = inject(Router);
+  private store = inject(Store);
   private storeService = inject(StoreService);
   private mapService = inject(MapTilerService);
 
@@ -26,6 +29,7 @@ export class CampgroundsComponent implements OnDestroy {
   private map!: any; // store map instance
   imageLoading = false;
   mapLoaded = this.mapService.mapLoaded;
+  isSort: boolean = false
 
   ngOnInit() {
     this.storeService.getCampGrounds();
@@ -34,8 +38,7 @@ export class CampgroundsComponent implements OnDestroy {
     this.campGrounds$.subscribe((camps) => {
       this.campGrounds = [...camps];
 
-      if (this.campGrounds.length === 0) return;
-
+      if (this.campGrounds.length === 0 || this.isSort) return;
       // Convert to GeoJSON
       this.campgroundsGeoJson = {
         type: 'FeatureCollection',
@@ -58,6 +61,12 @@ export class CampgroundsComponent implements OnDestroy {
       );
     });
   }
+
+  sortBy(type: keyof Campground, direction: 'asc' | 'desc' = 'asc') {
+    this.store.dispatch(sortCampgrounds({ sortBy: type, direction }));
+    this.isSort = true;
+  }
+
 
   viewDetails(camp: Campground) {
     this.router.navigate(['/campground-details', camp._id]);

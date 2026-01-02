@@ -72,3 +72,8 @@ export const loadCampgroundByIdFailure = createAction(
   '[Campground] Load Campground By ID Failure',
   props<{ error: any }>()
 );
+
+export const sortCampgrounds = createAction(
+  '[Campgrounds] Sort',
+  props<{ sortBy: keyof Campground; direction?: 'asc' | 'desc' }>()
+);

@@ -10,7 +10,7 @@ import {
   loadCampGroundsSuccess,
   updateCampground,
   updateCampgroundFailure,
-  updateCampgroundSuccess,
+  updateCampgroundSuccess, sortCampgrounds
 } from '../actions/camp.action';
 import {
   createReviewSuccess,
@@ -79,8 +79,8 @@ export const campGroundsReducer = createReducer(
     ...state,
     campgrounds: state.campgrounds.some((c) => c._id === campground._id)
       ? state.campgrounds.map((c) =>
-          c._id === campground._id ? campground : c
-        )
+        c._id === campground._id ? campground : c
+      )
       : [...state.campgrounds, campground],
   })),
   on(createReviewSuccess, (state, { id, review }) => ({
@@ -100,5 +100,12 @@ export const campGroundsReducer = createReducer(
         : camp
     ),
     loading: false,
+  })),
+  on(sortCampgrounds, (state, { sortBy, direction = 'asc' }) => ({
+    ...state,
+    campgrounds: [...state.campgrounds].sort((a, b) => {
+      const result = String(a[sortBy]).localeCompare(String(b[sortBy]), undefined, { sensitivity: 'base' });
+      return direction === 'asc' ? result : -result;
+    }),
   }))
 );
