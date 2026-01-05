@@ -1,7 +1,18 @@
 @if (messageService.messages$ | async; as msg) {
-<div class="container message-wrapper bg-glass display-flex"
-    [ngClass]="{'success' : msg.type === 'success', 'error' : msg.type === 'error'}">
-    <p class="message-text">{{msg.messages}}</p>
+<div class="container message-wrapper bg-glass display-flex" [ngClass]="{
+      'success': msg.type === 'success',
+      'error': msg.type === 'error'
+    }">
+    <!-- Status Icon -->
+    <i class="bi status-icon" [ngClass]="{
+        'bi-check-circle-fill': msg.type === 'success',
+        'bi-x-circle-fill': msg.type === 'error'
+      }"></i>
+
+    <!-- Message -->
+    <p class="message-text">{{ msg.messages }}</p>
+
+    <!-- Close -->
     <i class="bi bi-x close-btn" (click)="onClose()"></i>
 </div>
 }

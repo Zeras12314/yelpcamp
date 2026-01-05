@@ -42,3 +42,16 @@
 .close-btn:hover {
   opacity: 1;
 }
+
+.status-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.bg-glass.success .status-icon {
+  color: #a8f0c6; 
+}
+
+.bg-glass.error .status-icon {
+  color: #ffecec;
+}
